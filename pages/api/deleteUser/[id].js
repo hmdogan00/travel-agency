@@ -1,6 +1,7 @@
 import prisma from "../../../lib/prisma";
 
-export default deleteUser = async (req, res) => {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default async (req, res) => {
   if ( req.method !== 'DELETE' ) {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
