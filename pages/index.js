@@ -122,7 +122,7 @@ export default function Home({ initialUsers }) {
               <Table.Row key={ind}>
                 <Table.Cell>
                   <Header as="h4" image>
-                    <Image src={user.avatar} rounded size="mini"></Image>
+                    <Image alt="User Avatar" src={user.avatar} rounded size="mini"></Image>
                     <Header.Content>
                       {`${user.firstName} ${user.lastName}`}
 

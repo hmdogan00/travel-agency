@@ -2,7 +2,7 @@
 
 import prisma from "../../lib/prisma";
 
-export default async (req, res) => {
+export default createUser = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed'});
 
   try {

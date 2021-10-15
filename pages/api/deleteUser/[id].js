@@ -1,6 +1,6 @@
 import prisma from "../../../lib/prisma";
 
-export default async (req, res) => {
+export default deleteUser = async (req, res) => {
   if ( req.method !== 'DELETE' ) {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
