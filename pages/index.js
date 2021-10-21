@@ -119,7 +119,7 @@ export default function Home() {
         </Form>
         <Divider horizontal>Customers</Divider>
 
-        <Table celled collapsing>
+        <Table celled unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Id</Table.HeaderCell>
