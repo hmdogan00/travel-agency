@@ -170,7 +170,7 @@ export default function Home() {
                       const res = await axios.delete(
                         `/api/deleteUser/${user.id}`
                       );
-                      await setUsers(users.filter((u) => u.id !== user.id));
+                      if (res.status === 200) await setUsers(users.filter((u) => u.id !== user.id));
                     }}
                   >
                     <Button.Content visible>Delete</Button.Content>
