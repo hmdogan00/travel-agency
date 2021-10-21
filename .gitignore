@@ -4,7 +4,6 @@
 # dotenv environment variables file (build for Zeit Now)
 .env
 .env.local
-ca-certificate.crt
 
 # Dependency directories
 node_modules/
