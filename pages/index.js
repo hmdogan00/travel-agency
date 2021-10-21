@@ -1,6 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   Container,
@@ -10,22 +10,16 @@ import {
   Image,
   Button,
   Icon,
+  TableRow,
 } from "semantic-ui-react";
-
-/*export async function getServerSideProps() {
-  const users = await axios.get("/api/getUsers");
-  return {
-    props: { initialUsers: users },
-  };
-}*/
 
 const options = [
   { key: "m", text: "MALE", value: "MALE" },
   { key: "f", text: "FEMALE", value: "FEMALE" },
 ];
 
-export default function Home({ initialUsers }) {
-  const [users, setUsers] = useState(initialUsers);
+export default function Home() {
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
@@ -34,6 +28,10 @@ export default function Home({ initialUsers }) {
   const [gender, setGender] = useState("");
 
   const handleChange = (e, { value }) => setGender(value);
+
+  useEffect(() => {
+    axios.get("/api/getUsers").then((res) => setUsers(res.data.results));
+  }, []);
 
   return (
     <>
@@ -57,15 +55,18 @@ export default function Home({ initialUsers }) {
               phone_no: phone_no,
               email: email,
             };
-            axios.post("/api/createUser", { user: body }).then( res => {
-              setUsers([...users, res.data]);
-              setName("");
-              setAge("");
-              setEmail("");
-              setIdentity("");
-              setGender("");
-              setPhoneNo("");
-            }).catch( err => console.error(err))
+            axios
+              .post("/api/createUser", { user: body })
+              .then((res) => {
+                setUsers([...users, res.data]);
+                setName("");
+                setAge("");
+                setEmail("");
+                setIdentity("");
+                setGender("");
+                setPhoneNo("");
+              })
+              .catch((err) => console.error(err));
           }}
         >
           <Form.Group widths="equal">
@@ -116,13 +117,19 @@ export default function Home({ initialUsers }) {
           </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
-        {/* <Divider horizontal>Users</Divider>
+        <Divider horizontal>Customers</Divider>
 
         <Table celled collapsing>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>User Name</Table.HeaderCell>
+              <Table.HeaderCell>Id</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Age</Table.HeaderCell>
+              <Table.HeaderCell>Gender</Table.HeaderCell>
+              <Table.HeaderCell>Phone No</Table.HeaderCell>
+              <Table.HeaderCell>Identity No</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
+              <Table.HeaderCell>Number of Trips</Table.HeaderCell>
               <Table.HeaderCell>Action</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -130,19 +137,30 @@ export default function Home({ initialUsers }) {
             {users?.map((user, ind) => (
               <Table.Row key={ind}>
                 <Table.Cell>
+                  <Header as="h4">{user.id}</Header>
+                </Table.Cell>
+                <Table.Cell>
                   <Header as="h4" image>
-                    <Image alt="User Avatar" src={user.avatar} rounded size="mini"></Image>
-                    <Header.Content>
-                      {`${user.firstName} ${user.lastName}`}
-
-                      <Header.Subheader>
-                        {user.role.toUpperCase()}
-                      </Header.Subheader>
-                    </Header.Content>
+                    <Header.Content>{`${user.name}`}</Header.Content>
                   </Header>
                 </Table.Cell>
                 <Table.Cell>
+                  <Header as="h4">{user.age}</Header>
+                </Table.Cell>
+                <Table.Cell>
+                  <Icon style={{marginLeft:"10px"}} size="large" name={user.gender === "MALE" ? "male" : "female"}></Icon>
+                </Table.Cell>
+                <Table.Cell>
+                  <Header as="h4">{user.phone_no}</Header>
+                </Table.Cell>
+                <Table.Cell>
+                  <Header as="h4">{user.identity_no}</Header>
+                </Table.Cell>
+                <Table.Cell>
                   <Header as="h4">{user.email}</Header>
+                </Table.Cell>
+                <Table.Cell>
+                  <Header as="h4">{user.no_of_trips}</Header>
                 </Table.Cell>
                 <Table.Cell>
                   <Button
@@ -164,7 +182,7 @@ export default function Home({ initialUsers }) {
               </Table.Row>
             ))}
           </Table.Body>
-        </Table> */}
+        </Table>
       </Container>
     </>
   );
