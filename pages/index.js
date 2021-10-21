@@ -11,29 +11,29 @@ import {
   Button,
   Icon,
 } from "semantic-ui-react";
-import prisma from "../lib/prisma";
 
-export async function getServerSideProps() {
-  const users = await prisma.user.findMany();
+/*export async function getServerSideProps() {
+  const users = await axios.get("/api/getUsers");
   return {
     props: { initialUsers: users },
   };
-}
+}*/
 
 const options = [
-  { key: "u", text: "USER", value: "USER" },
-  { key: "a", text: "ADMIN", value: "ADMIN" },
+  { key: "m", text: "MALE", value: "MALE" },
+  { key: "f", text: "FEMALE", value: "FEMALE" },
 ];
 
 export default function Home({ initialUsers }) {
   const [users, setUsers] = useState(initialUsers);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [role, setRole] = useState("");
+  const [identity_no, setIdentity] = useState("");
+  const [phone_no, setPhoneNo] = useState("");
+  const [gender, setGender] = useState("");
 
-  const handleChange = (e, { value }) => setRole(value);
+  const handleChange = (e, { value }) => setGender(value);
 
   return (
     <>
@@ -46,41 +46,43 @@ export default function Home({ initialUsers }) {
         />
       </Head>
       <Container style={{ margin: 20 }}>
-        <h3>Signup trial for prisma api</h3>
+        <h3>Signup trial for api</h3>
         <Form
           onSubmit={async () => {
             const body = {
-              firstName,
-              lastName,
-              role,
-              email,
-              avatar,
+              name: name,
+              age: parseInt(age),
+              identity_no: identity_no,
+              gender: gender,
+              phone_no: phone_no,
+              email: email,
             };
             axios.post("/api/createUser", { user: body }).then( res => {
               setUsers([...users, res.data]);
-              setFirstName("");
-              setLastName("");
+              setName("");
+              setAge("");
               setEmail("");
-              setAvatar("");
-              setRole(null);
+              setIdentity("");
+              setGender("");
+              setPhoneNo("");
             }).catch( err => console.error(err))
           }}
         >
           <Form.Group widths="equal">
             <Form.Input
               fluid
-              label="First Name"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              label="Name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <br />
             <Form.Input
               fluid
-              label="Last Name"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              label="Age"
+              placeholder="Age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
             />
             <Form.Input
               fluid
@@ -91,23 +93,30 @@ export default function Home({ initialUsers }) {
             />
             <Form.Input
               fluid
-              label="Avatar"
-              placeholder="Avatar"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
+              label="Identity No"
+              placeholder="Identity No"
+              value={identity_no}
+              onChange={(e) => setIdentity(e.target.value)}
+            />
+            <Form.Input
+              fluid
+              label="Phone No"
+              placeholder="Phone No"
+              value={phone_no}
+              onChange={(e) => setPhoneNo(e.target.value)}
             />
             <Form.Select
               fluid
-              label="Role"
-              placeholder="Role"
+              label="Gender"
+              placeholder="Gender"
               options={options}
-              value={role}
+              value={gender}
               onChange={handleChange}
             />
           </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
-        <Divider horizontal>Users</Divider>
+        {/* <Divider horizontal>Users</Divider>
 
         <Table celled collapsing>
           <Table.Header>
@@ -118,7 +127,7 @@ export default function Home({ initialUsers }) {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {users.map((user, ind) => (
+            {users?.map((user, ind) => (
               <Table.Row key={ind}>
                 <Table.Cell>
                   <Header as="h4" image>
@@ -155,7 +164,7 @@ export default function Home({ initialUsers }) {
               </Table.Row>
             ))}
           </Table.Body>
-        </Table>
+        </Table> */}
       </Container>
     </>
   );

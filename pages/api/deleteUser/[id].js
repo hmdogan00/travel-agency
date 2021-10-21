@@ -1,12 +1,10 @@
-import prisma from "../../../lib/prisma";
-
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
   if ( req.method !== 'DELETE' ) {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {id} = req.query;
+  /*let {id} = req.query;
   id = parseInt(id)
   if (!id){
     res.status(423).json({message: 'No id found!'})
@@ -20,5 +18,5 @@ export default async (req, res) => {
   }
   catch ( err ){
     res.status(200).json({ message: err, messageType: 'ERROR'})
-  }
+  }*/
 }
