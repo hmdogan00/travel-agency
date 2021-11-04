@@ -44,79 +44,8 @@ export default function Home() {
         />
       </Head>
       <Container style={{ margin: 20 }}>
-        <h3>Signup trial for api</h3>
-        <Form
-          onSubmit={async () => {
-            const body = {
-              name: name,
-              age: parseInt(age),
-              identity_no: identity_no,
-              gender: gender,
-              phone_no: phone_no,
-              email: email,
-            };
-            axios
-              .post("/api/createUser", { user: body })
-              .then((res) => {
-                setUsers([...users, res.data]);
-                setName("");
-                setAge("");
-                setEmail("");
-                setIdentity("");
-                setGender("");
-                setPhoneNo("");
-              })
-              .catch((err) => console.error(err));
-          }}
-        >
-          <Form.Group widths="equal">
-            <Form.Input
-              fluid
-              label="Name"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <br />
-            <Form.Input
-              fluid
-              label="Age"
-              placeholder="Age"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Identity No"
-              placeholder="Identity No"
-              value={identity_no}
-              onChange={(e) => setIdentity(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Phone No"
-              placeholder="Phone No"
-              value={phone_no}
-              onChange={(e) => setPhoneNo(e.target.value)}
-            />
-            <Form.Select
-              fluid
-              label="Gender"
-              placeholder="Gender"
-              options={options}
-              value={gender}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Button>Submit</Form.Button>
-        </Form>
+        <Button onClick={() => window.location.href="/signup"}>Sign Up</Button>
+        <Button onClick={() => window.location.href="/login"}>Log in</Button>
         <Divider horizontal>Customers</Divider>
 
         <Table celled unstackable>
@@ -148,7 +77,7 @@ export default function Home() {
                   <Header as="h4">{user.age}</Header>
                 </Table.Cell>
                 <Table.Cell>
-                  <Icon style={{marginLeft:"10px"}} size="large" name={user.gender === "MALE" ? "male" : "female"}></Icon>
+                  <Icon style={{marginLeft:"10px"}} size="large" name={user.gender === "Male" ? "male" : "female"}></Icon>
                 </Table.Cell>
                 <Table.Cell>
                   <Header as="h4">{user.phone_no}</Header>
