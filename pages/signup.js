@@ -23,10 +23,265 @@ export default function SignupPage() {
   const [phone_no, setPhoneNo] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
   const [role, setRole] = useState("");
+  console.log(role);
 
   const handleGenderChange = (e, { value }) => setGender(value);
-  const handleRoleChange = (e, { value }) => setRole(value);
+  const handleRoleChange = (value) => setRole(value);
+
+  const sendSignup = (body) => {
+    axios
+      .post("/api/createUser", { user: body })
+      .then((res) => {
+        setUsers([...users, res.data]);
+        setName("");
+        setAge("");
+        setEmail("");
+        setIdentity("");
+        setGender("");
+        setPhoneNo("");
+        setPassword("");
+        setRole("");
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const tabs = [
+    {
+      menuItem: "Customer",
+      render: () => (
+        <Tab.Pane>
+          <Form
+            onSubmit={async () => {
+              const body = {
+                name: name,
+                age: parseInt(age),
+                identity_no: identity_no,
+                gender: gender,
+                phone_no: phone_no,
+                email: email,
+                password: password,
+                role: role,
+              };
+              sendSignup(body);
+            }}
+          >
+            <Form.Group widths="equal">
+              <Form.Input
+                fluid
+                label="Name"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <br />
+              <Form.Input
+                fluid
+                label="Age"
+                placeholder="Age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Identity No"
+                placeholder="Identity No"
+                value={identity_no}
+                onChange={(e) => setIdentity(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Phone No"
+                placeholder="Phone No"
+                value={phone_no}
+                onChange={(e) => setPhoneNo(e.target.value)}
+              />
+              <Form.Select
+                fluid
+                label="Gender"
+                placeholder="Gender"
+                options={genderOptions}
+                value={gender}
+                onChange={handleGenderChange}
+              />
+              <Form.Select
+                fluid
+                label="Role"
+                placeholder="Role"
+                options={roleOptions}
+                value={role}
+                onChange={handleRoleChange}
+              />
+              <Form.Input
+                fluid
+                label="Password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Button>Submit</Form.Button>
+            <Button onClick={() => (window.location.href = "/")}>
+              Go Back
+            </Button>
+          </Form>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "Employee",
+      render: () => (
+        <Tab.Pane>
+          <Form
+            onSubmit={async () => {
+              const body = {
+                name: name,
+                identity_no: identity_no,
+                phone_no: phone_no,
+                email: email,
+                password: password,
+                role: role,
+              };
+              sendSignup(body);
+            }}
+          >
+            <Form.Group widths="equal">
+              <Form.Input
+                fluid
+                label="Name"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <br />
+              <Form.Input
+                fluid
+                label="Email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Identity No"
+                placeholder="Identity No"
+                value={identity_no}
+                onChange={(e) => setIdentity(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Phone No"
+                placeholder="Phone No"
+                value={phone_no}
+                onChange={(e) => setPhoneNo(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Button>Submit</Form.Button>
+            <Button onClick={() => (window.location.href = "/")}>
+              Go Back
+            </Button>
+          </Form>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "Guide",
+      render: () => (
+        <Tab.Pane>
+          <Form
+            onSubmit={async () => {
+              const body = {
+                name: name,
+                age: parseInt(age),
+                identity_no: identity_no,
+                gender: gender,
+                phone_no: phone_no,
+                email: email,
+                password: password,
+                location: location,
+                role: role,
+              };
+              sendSignup(body);
+            }}
+          >
+            <Form.Group widths="equal">
+              <Form.Input
+                fluid
+                label="Name"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <br />
+              <Form.Input
+                fluid
+                label="Location"
+                placeholder="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Identity No"
+                placeholder="Identity No"
+                value={identity_no}
+                onChange={(e) => setIdentity(e.target.value)}
+              />
+              <Form.Input
+                fluid
+                label="Phone No"
+                placeholder="Phone No"
+                value={phone_no}
+                onChange={(e) => setPhoneNo(e.target.value)}
+              />
+              <Form.Select
+                fluid
+                label="Gender"
+                placeholder="Gender"
+                options={genderOptions}
+                value={gender}
+                onChange={handleGenderChange}
+              />
+              <Form.Input
+                fluid
+                label="Password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Button>Submit</Form.Button>
+            <Button onClick={() => (window.location.href = "/")}>
+              Go Back
+            </Button>
+          </Form>
+        </Tab.Pane>
+      ),
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -38,98 +293,7 @@ export default function SignupPage() {
         />
       </Head>
       <Container style={{ margin: 20 }}>
-        <Form
-          onSubmit={async () => {
-            const body = {
-              name: name,
-              age: parseInt(age),
-              identity_no: identity_no,
-              gender: gender,
-              phone_no: phone_no,
-              email: email,
-              password: password,
-              role: role,
-            };
-            axios
-              .post("/api/createUser", { user: body })
-              .then((res) => {
-                setUsers([...users, res.data]);
-                setName("");
-                setAge("");
-                setEmail("");
-                setIdentity("");
-                setGender("");
-                setPhoneNo("");
-                setPassword("");
-                setRole("");
-              })
-              .catch((err) => console.error(err));
-          }}
-        >
-          <Form.Group widths="equal">
-            <Form.Input
-              fluid
-              label="Name"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <br />
-            <Form.Input
-              fluid
-              label="Age"
-              placeholder="Age"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Identity No"
-              placeholder="Identity No"
-              value={identity_no}
-              onChange={(e) => setIdentity(e.target.value)}
-            />
-            <Form.Input
-              fluid
-              label="Phone No"
-              placeholder="Phone No"
-              value={phone_no}
-              onChange={(e) => setPhoneNo(e.target.value)}
-            />
-            <Form.Select
-              fluid
-              label="Gender"
-              placeholder="Gender"
-              options={genderOptions}
-              value={gender}
-              onChange={handleGenderChange}
-            />
-            <Form.Select
-              fluid
-              label="Role"
-              placeholder="Role"
-              options={roleOptions}
-              value={role}
-              onChange={handleRoleChange}
-            />
-            <Form.Input
-              fluid
-              label="Password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Button>Submit</Form.Button>
-          <Button onClick={() => (window.location.href = "/")}>Go Back</Button>
-        </Form>
+        <Tab panes={tabs} onClick={e => handleRoleChange(e.target.innerHTML)}></Tab>
       </Container>
     </>
   );
