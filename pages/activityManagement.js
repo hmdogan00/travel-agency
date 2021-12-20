@@ -1,10 +1,12 @@
-import { Button, Card, Container, Form, Icon, Search, Table, TextArea } from "semantic-ui-react";
+import { Button, Card, Container, Form, Icon, Label, Search, Table, TextArea } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { useState, useEffect, useMemo } from "react";
 
 function ActivityManagement() {
   const [role, setRole] = useState();
   const [aTitle, setATitle] = useState('');
+  const [aDate, setADate] = useState('');
+  const [aLoc, setALoc] = useState('');
   const [aDesc, setADesc] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -59,6 +61,20 @@ function ActivityManagement() {
                     placeholder='Enter title of the activity'
                     value={aTitle}
                     onChange={(e) => setATitle(e.target.value)}
+                    required
+                  />
+                  <Form.Input
+                    label='Activity Date'
+                    placeholder='Enter date of the activity'
+                    value={aDate}
+                    onChange={(e) => setADate(e.target.value)}
+                  />
+                  <Form.Input
+                    label='Activity Location'
+                    placeholder='Enter location of the activity'
+                    value={aLoc}
+                    onChange={(e) => setALoc(e.target.value)}
+                    required
                   />
                   <Form.Field>
                     <label>Activity Description</label>
@@ -71,6 +87,41 @@ function ActivityManagement() {
                   </Form.Field>
                   <Form.Button>Submit</Form.Button>
                 </Form>
+              </Card.Content>
+            </Card>
+            <Card fluid color="red">
+              <Card.Content header='Requests Sent' />
+              <Card.Content>
+                <Table fixed color="red">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Tour Name</Table.HeaderCell>
+                      <Table.HeaderCell>Date</Table.HeaderCell>
+                      <Table.HeaderCell>Location</Table.HeaderCell>
+                      <Table.HeaderCell></Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>
+                        <Label color="yellow">Waiting</Label>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>
+                        <Label color="green">Approved</Label>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+
+                </Table>
               </Card.Content>
             </Card>
           </Container> :
