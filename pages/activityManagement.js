@@ -115,7 +115,7 @@ function ActivityManagement() {
                   </div>
                 </Card.Content>
                 <Card.Content>
-                  <Table celled fixed>
+                  <Table celled fixed color="red">
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell>Tour Name</Table.HeaderCell>
