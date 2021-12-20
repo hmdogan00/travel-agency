@@ -14,3 +14,28 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.login .mid-container-logo {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  margin-top: 5%;
+  width: 30%;
+  border-radius: 1%;
+  padding: 20px;
+}
+
+.login .mid-container-b {
+  margin: auto;
+  margin-top: 1%;
+  width: 30%;
+  border: 3px solid black;
+  border-radius: 1%;
+  padding: 20px;
+}
+
+.login .mid-container {
+  margin: auto;
+  width: 100%;
+  border-radius: 1%;
+}
