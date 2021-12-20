@@ -14,8 +14,8 @@ export default async (req, res) => {
   let answer;
   try {
     await db.query(`UPDATE Reservation
-                    SET is-cancelled='rejected'
-                    WHERE reservation-id = ${id}`, (err,result,fields) => {
+                    SET is_canceled='rejected'
+                    WHERE reservation_id = ${id}`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;
