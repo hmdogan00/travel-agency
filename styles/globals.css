@@ -44,3 +44,19 @@ a {
   width: 30%;
   margin: 7%;
 }
+
+.mr-1 {
+  margin-right: 10px;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.mr-3 {
+  margin-right: 30px;
+}
+
+.mr-4 {
+  margin-right: 40px;
+}
