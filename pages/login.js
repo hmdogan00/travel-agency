@@ -16,14 +16,6 @@ export default function LoginPage() {
   const [login, isLogin] = useState(0);
   const [loginCredentials, setLoginCredentials] = useState(null);
 
-  useEffect(() => {
-    if (login === 1) {
-      localStorage.setItem("email", email);
-      localStorage.setItem("role", role);
-      window.location.href = "/dashboard";
-    }
-  }, [login, role, email]);
-
   const handleRoleChange = (e, { value }) => setRole(value);
   return (
     <>
@@ -56,6 +48,9 @@ export default function LoginPage() {
                     setPassword("");
                     if (res.data.messageType === "SUCCESS") {
                       setLoginCredentials({ email: res.data.email });
+                      localStorage.setItem("email", email);
+                      localStorage.setItem("role", role);
+                      window.location.href = "/dashboard";
                       isLogin(1);
                     }
                     else if (res.status === 201) {

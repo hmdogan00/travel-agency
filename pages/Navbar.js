@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { Button, Menu } from 'semantic-ui-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Navbar({ activeType }) {
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log(localStorage.getItem('email'));
+      if (!localStorage.getItem("email")) {
+        window.location.href = "/";
+      }
+      setRole(localStorage.getItem("role"));
+    }
+  }, []);
+
   const handleItemClick = (e, name) => {
     window.location.href = `/${name}`;
   };
