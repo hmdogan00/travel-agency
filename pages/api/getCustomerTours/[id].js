@@ -1,10 +1,10 @@
-import db from "../../lib/db";
+import db from "../../../lib/db";
 export default async (req, res) => {
     if ( req.method !== 'GET' ) {
       res.status(400).json({message: 'Method Not Allowed'})
       return;
     }
-    let {id} = req.body;   
+    let {id} = req.query;   
     id = parseInt(id)
     if (!id){
       res.status(423).json({message: 'No id found!'})
