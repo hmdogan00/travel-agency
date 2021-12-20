@@ -8,12 +8,6 @@ const genderOptions = [
   { key: "f", text: "FEMALE", value: "FEMALE" },
 ];
 
-const roleOptions = [
-  { key: "c", text: "CUSTOMER", value: "CUSTOMER" },
-  { key: "e", text: "EMPLOYEE", value: "EMPLOYEE" },
-  { key: "g", text: "GUIDE", value: "GUIDE" },
-];
-
 export default function SignupPage() {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
@@ -24,7 +18,7 @@ export default function SignupPage() {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [location, setLocation] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Customer");
   console.log(role);
 
   const handleGenderChange = (e, { value }) => setGender(value);
@@ -62,9 +56,9 @@ export default function SignupPage() {
                 phone_no: phone_no,
                 email: email,
                 password: password,
-                role: role,
+                role: "Customer",
               };
-              sendSignup(body);
+              console.log(body);
             }}
           >
             <Form.Group widths="equal">
@@ -112,14 +106,6 @@ export default function SignupPage() {
                 value={gender}
                 onChange={handleGenderChange}
               />
-              <Form.Select
-                fluid
-                label="Role"
-                placeholder="Role"
-                options={roleOptions}
-                value={role}
-                onChange={handleRoleChange}
-              />
               <Form.Input
                 fluid
                 label="Password"
@@ -148,7 +134,7 @@ export default function SignupPage() {
                 phone_no: phone_no,
                 email: email,
                 password: password,
-                role: role,
+                role: "Employee",
               };
               sendSignup(body);
             }}
@@ -214,7 +200,7 @@ export default function SignupPage() {
                 email: email,
                 password: password,
                 location: location,
-                role: role,
+                role: "Guide",
               };
               sendSignup(body);
             }}

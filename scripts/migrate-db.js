@@ -50,7 +50,6 @@ sendQuery(`
 CREATE TABLE IF NOT EXISTS Employee(
   employee_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
-    role ENUM('MANAGER','STAFF'),
     identity_no INT NOT NULL,
     phone_no VARCHAR(50),
     email VARCHAR(50) UNIQUE,
