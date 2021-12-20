@@ -50,6 +50,7 @@ export default function LoginPage() {
                       setLoginCredentials({ email: res.data.email });
                       localStorage.setItem("email", email);
                       localStorage.setItem("role", role);
+                      localStorage.setItem("id", res.data.id);
                       window.location.href = "/dashboard";
                       isLogin(1);
                     }
