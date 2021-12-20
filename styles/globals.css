@@ -15,7 +15,7 @@ a {
   box-sizing: border-box;
 }
 
-.mid-container-logo {
+.login .mid-container-logo {
   display: flex;
   flex-direction: row;
   margin: auto;
@@ -25,7 +25,7 @@ a {
   padding: 20px;
 }
 
-.mid-container-b {
+.login .mid-container-b {
   margin: auto;
   margin-top: 1%;
   width: 30%;
@@ -34,7 +34,7 @@ a {
   padding: 20px;
 }
 
-.mid-container {
+.login .mid-container {
   margin: auto;
   width: 100%;
   border-radius: 1%;
