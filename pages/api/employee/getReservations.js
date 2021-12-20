@@ -16,12 +16,13 @@ export default async (req, res) => {
             res.end();
             return Promise.reject(err);
         }
-        res.status(200).json({result})
+        console.log(result)
+        res.status(200).json({ result });
         return Promise.resolve(res);
-      })
-    }
-    catch ( err ){
-      res.status(200).json({ message: err, messageType: 'ERROR'})
-      return;
-    }
+      }
+    );
+  } catch (err) {
+    res.status(200).json({ message: err, messageType: "ERROR" });
+    return;
   }
+};
