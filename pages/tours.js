@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 
-function tours() {
+function Tours() {
   return (
     <>
       <Navbar activeType="tours" />
@@ -9,4 +9,4 @@ function tours() {
   );
 }
 
-export default tours;
+export default Tours;

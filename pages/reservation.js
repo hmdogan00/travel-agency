@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 
-function reservation() {
+function Reservation() {
   return (
     <>
       <Navbar activeType="reservations" />
@@ -9,4 +9,4 @@ function reservation() {
   );
 }
 
-export default reservation;
+export default Reservation;
