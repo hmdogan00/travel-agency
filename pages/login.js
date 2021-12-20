@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Container, Form, Button, Image } from "semantic-ui-react";
 
 const roleOptions = [
-  { key: "c", text: "CUSTOMER", value: "CUSTOMER" },
-  { key: "e", text: "EMPLOYEE", value: "EMPLOYEE" },
-  { key: "g", text: "GUIDE", value: "GUIDE" },
+  { key: "c", text: "CUSTOMER", value: "Customer" },
+  { key: "e", text: "EMPLOYEE", value: "Employee" },
+  { key: "g", text: "GUIDE", value: "Guide" },
 ];
 
 export default function LoginPage() {
