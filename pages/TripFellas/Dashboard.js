@@ -4,6 +4,7 @@ function Dashboard() {
   return (
     <>
       <Navbar activeType="dashboard" />
+
     </>
   );
 }

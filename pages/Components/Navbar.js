@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 function Navbar({ activeType }) {
   const handleItemClick = (e, name) => {
-    setActiveItem(name);
+    window.location.href = `/${name}`;
   };
   const logout = () => { };
 

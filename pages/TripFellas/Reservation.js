@@ -3,7 +3,8 @@ import Navbar from "../Components/Navbar";
 function Reservation() {
   return (
     <>
-      <Navbar />
+      <Navbar activeType="reservations" />
+
     </>
   );
 }
