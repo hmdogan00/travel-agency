@@ -29,7 +29,7 @@ export default function LoginPage() {
       </Head>
       <Container className="login">
         <div className="mid-container-logo">
-          <Image alt="logo" src="/tp-logo.png" fluid />
+          <Image className="logo" alt="logo" src="/tp-logo.png" />
           <h1>TripFellas</h1>
         </div>
         <div className="mid-container-b">
