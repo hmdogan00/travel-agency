@@ -9,7 +9,8 @@ export default async (req, res) => {
     await db.query(
       `SELECT C.name as c_name, B.start_date, HR.hotel_room_no, H.name as h_name
                     FROM Customer C NATURAL JOIN book B, Hotel H NATURAL JOIN HotelRoom HR
-                    WHERE B.hotel_room_no = HR.hotel_room_no and B.hotel_id = HR.hotel_id and C.id = B.person_id`,
+                    WHERE B.hotel_room_no = HR.hotel_room_no and B.hotel_id = HR.hotel_id and C.id = B.person_id
+                    ORDER BY start_date DESC`,
       (err, result, fields) => {
         if (err) {
           res.statusCode = 401;
