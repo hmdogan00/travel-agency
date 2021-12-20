@@ -19,7 +19,6 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [location, setLocation] = useState("");
   const [role, setRole] = useState("Customer");
-  console.log(role);
 
   const handleGenderChange = (e, { value }) => setGender(value);
   const handleRoleChange = (value) => setRole(value);
@@ -58,7 +57,7 @@ export default function SignupPage() {
                 password: password,
                 role: "Customer",
               };
-              console.log(body);
+              sendSignup(body);
             }}
           >
             <Form.Group widths="equal">
