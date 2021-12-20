@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, Menu } from 'semantic-ui-react';
 import { useState } from 'react';
 
-function Navbar() {
-  const [activeItem, setActiveItem] = useState('dashboard');
-
-  const handleItemClick = (e, name) => setActiveItem(name);
+function Navbar({ activeType }) {
+  const handleItemClick = (e, name) => {
+    window.location.href = `/${name}`;
+  };
   const logout = () => { };
 
   return (
@@ -13,28 +13,28 @@ function Navbar() {
       <Menu.Item header>TripFellas</Menu.Item>
       <Menu.Item
         name='dashboard'
-        active={activeItem === 'dashboard'}
+        active={activeType === 'dashboard'}
         onClick={(e) => handleItemClick(e, 'dashboard')}
       >
         Dashboard
       </Menu.Item>
       <Menu.Item
         name='tours'
-        active={activeItem === 'tours'}
+        active={activeType === 'tours'}
         onClick={(e) => handleItemClick(e, 'tours')}
       >
         Tours
       </Menu.Item>
       <Menu.Item
         name='reservations'
-        active={activeItem === 'reservations'}
+        active={activeType === 'reservations'}
         onClick={(e) => handleItemClick(e, 'reservations')}
       >
         Reservations
       </Menu.Item>
       <Menu.Item
         name='activityManagement'
-        active={activeItem === 'activityManagement'}
+        active={activeType === 'activityManagement'}
         onClick={(e) => handleItemClick(e, 'activityManagement')}
       >
         Activity Management
