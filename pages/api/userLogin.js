@@ -6,7 +6,6 @@ export default async (req, res) => {
     return res.status(405).json({ message: "Method not allowed" });
   try {
     const { email, password, role } = req.body;
-    console.log(role)
     if (role === "CUSTOMER") {
       db.query(
         `SELECT * FROM Customer as C WHERE C.email = '${email}'
@@ -19,7 +18,7 @@ export default async (req, res) => {
               return res.status(200).json({ email: email, messageType:"SUCCESS" });
             }
             else{
-              return res.status(201).json({ message: "Wrong password!", messageType:"ERROR"})
+              return res.status(201).json({ message: "Wrong password!", messageType:"ERROR"});
             }
           }
         }

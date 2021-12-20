@@ -19,7 +19,7 @@ sendQuery(`CREATE TABLE IF NOT EXISTS ActivityUser(
   id_no INT UNIQUE NOT NULL,
   phone_no VARCHAR(15) UNIQUE NOT NULL,
   e_mail VARCHAR(50) UNIQUE NOT NULL,
-  password VARCHAR(50) NOT NULL
+  password VARCHAR(100) NOT NULL
   )`);
 
 sendQuery(`CREATE TABLE IF NOT EXISTS Customer(
@@ -31,7 +31,7 @@ sendQuery(`CREATE TABLE IF NOT EXISTS Customer(
     identity_no INT NOT NULL,
     phone_no VARCHAR(50),
     email VARCHAR(50) UNIQUE,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(100) NOT NULL
   )`);
 
 sendQuery(`CREATE TABLE IF NOT EXISTS Guide(
@@ -43,7 +43,7 @@ sendQuery(`CREATE TABLE IF NOT EXISTS Guide(
     identity_no INT NOT NULL,
     phone_no VARCHAR(50),
     email VARCHAR(50) UNIQUE,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(100) NOT NULL
   )`);
 
 sendQuery(`
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS Employee(
     identity_no INT NOT NULL,
     phone_no VARCHAR(50),
     email VARCHAR(50) UNIQUE,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(100) NOT NULL
   )`);
 
 sendQuery(`
