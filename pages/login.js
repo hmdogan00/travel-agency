@@ -1,6 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Form, Button, Image } from "semantic-ui-react";
 
 const roleOptions = [
@@ -15,6 +15,14 @@ export default function LoginPage() {
   const [role, setRole] = useState("");
   const [login, isLogin] = useState(0);
   const [loginCredentials, setLoginCredentials] = useState(null);
+  
+  useEffect(() => {
+    if (login === 1){
+      localStorage.setItem("email", email);
+      localStorage.setItem("role", role);
+      window.location.href = "/dashboard";
+    }
+  }, [login, role, email]);
 
   const handleRoleChange = (e, { value }) => setRole(value);
   return (
