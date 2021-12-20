@@ -25,7 +25,7 @@ function Navbar({ activeType }) {
   };
 
   return (
-    <Menu pointing secondary>
+    <Menu pointing secondary color="red">
       <Menu.Item header>TripFellas</Menu.Item>
       <Menu.Item
         name='dashboard'
