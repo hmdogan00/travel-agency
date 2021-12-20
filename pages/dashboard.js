@@ -8,7 +8,7 @@ function Dashboard() {
       if (localStorage.getItem("email")) {
         window.location.href = "/";
       }
-      setRole(localStorage.getItem('role'));
+      setRole(localStorage.getItem("role"));
     }
   }, []);
   return (
