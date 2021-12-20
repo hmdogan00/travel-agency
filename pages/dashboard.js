@@ -47,6 +47,13 @@ function Dashboard() {
         })
         .catch(console.error);
     }
+    else if ( role === "Guide" && !tourArr) {
+      axios.get("/api/guide/seeOffers")
+      .then((res) => {
+        setTourArr(res.data.result);
+      })
+      .catch(console.error);
+    }
   }, [tourArr, id, role]);
   return (
     <>
@@ -126,6 +133,54 @@ function Dashboard() {
           </Table>
         </div>
       )}
+      {role === "Guide" && ( <div style={{margin: "30px"}}>
+      <Table singleLine>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Tour Name</Table.HeaderCell>
+                <Table.HeaderCell>Start Date</Table.HeaderCell>
+                <Table.HeaderCell>End Date</Table.HeaderCell>
+                <Table.HeaderCell>Tour Location</Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {tourArr &&
+                tourArr.map((e) => {
+                  const [s_date, s_time] = getDateTime(e.start_date);
+                  const [e_date, e_time] = getDateTime(e.end_date);
+                  return (
+                    <Table.Row>
+                      <Table.Cell>{e.name}</Table.Cell>
+                      <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
+                      <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
+                      <Table.Cell>{e.location}</Table.Cell>
+                      <Table.Cell textAlign="right">
+                        <Button
+                          onClick={() => approveRes(e.reservation_id)}
+                          color="green"
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          onClick={() => declineRes(e.reservation_id)}
+                          color="red"
+                        >
+                          Decline
+                        </Button>
+                        <Button
+                          onClick={() => changeRes(e.reservation_id)}
+                          color="yellow"
+                        >
+                          Change
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+            </Table.Body>
+          </Table>
+      </div>)}
     </>
   );
 }

@@ -6,9 +6,9 @@ export default async (req, res) => {
     }
     let answer;
     try {
-      await db.query(`SELECT T.name, start_date, T.location
+      await db.query(`SELECT T.name, start_date, end_date, T.location
                     FROM Tour T
-                    WHERE T.person_id != null and is_accepted='waiting'
+                    WHERE T.person_id IS NOT null and is_accepted='waiting'
                     ORDER BY start_date DESC`, (err,result,fields) => {
         if (err) {  
             res.statusCode = 401;
