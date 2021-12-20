@@ -12,7 +12,7 @@ export default async (req, res) => {
     }
     let answer;
     try {
-      await db.query(`SELECT tour_id, name, start_date,end_date
+      await db.query(`SELECT tour_id, name, start_date,end_date,location
                     FROM Tour NATURAL JOIN (SELECT tour_id
                               FROM make NATURAL JOIN Reservation
                               WHERE make.person_id =${id}) as mRti
