@@ -6,9 +6,9 @@ export default async (req, res) => {
     }
     let answer;
     try {
-      await db.query(`SELECT C.name, B.start_date, HR.hotel_room_no, H.name
-                    FROM Customer C NATURAL JOIN book B, Hotel H NATURAL JOIN HotelRoom HR
-                    WHERE B.hotel_room_no = HR.hotel_room_no and B.hotel_id = HR.hotel_id 
+      await db.query(`SELECT T.name as t_name, T.location, C.name as c_name, R1.end_date, R1.start_date, R1.reservation_id
+      FROM ((Customer C INNER JOIN make M ON C.id = M.person_id) NATURAL JOIN Reservation R1), (Reservation R2 INNER JOIN Tour T ON R2.tour_id = T.tour_id)
+      WHERE R1.reservation_id = R2.reservation_id 
                     ORDER BY start_date DESC`, (err,result,fields) => {
         if (err) {  
             res.statusCode = 401;
