@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Menu } from 'semantic-ui-react';
+import { useState } from 'react';
 
 function Navbar() {
-  const [activeItem, setActiveItem] = useState();
+  const [activeItem, setActiveItem] = useState('dashboard');
 
   const handleItemClick = (e, name) => setActiveItem(name);
   const logout = () => { };
@@ -40,7 +41,7 @@ function Navbar() {
       </Menu.Item>
       <Menu.Menu position="right">
         <Menu.Item>
-          <Button warning onClick={logout}>Logout</Button>
+          <Button color='red' onClick={logout}>Logout</Button>
         </Menu.Item>
       </Menu.Menu>
     </Menu>
