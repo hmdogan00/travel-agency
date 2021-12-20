@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 
-function activityManagement() {
+function ActivityManagement() {
   return (
     <>
       <Navbar activeType="activityManagement" />
@@ -9,4 +9,4 @@ function activityManagement() {
   );
 }
 
-export default activityManagement;
+export default ActivityManagement;
