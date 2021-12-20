@@ -15,9 +15,9 @@ export default function LoginPage() {
   const [role, setRole] = useState("");
   const [login, isLogin] = useState(0);
   const [loginCredentials, setLoginCredentials] = useState(null);
-  
+
   useEffect(() => {
-    if (login === 1){
+    if (login === 1) {
       localStorage.setItem("email", email);
       localStorage.setItem("role", role);
       window.location.href = "/dashboard";
