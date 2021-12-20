@@ -60,21 +60,18 @@ export default function LoginPage() {
               <Form.Group widths="equal">
                 <div className="mid-container">
                   <Form.Input
-                    fluid
                     label="Email"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <Form.Input
-                    fluid
                     label="Password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <Form.Select
-                    fluid
                     label="Role"
                     placeholder="Role"
                     options={roleOptions}
