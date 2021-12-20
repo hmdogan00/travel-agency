@@ -6,7 +6,11 @@ function Navbar({ activeType }) {
   const handleItemClick = (e, name) => {
     window.location.href = `/${name}`;
   };
-  const logout = () => { };
+  const logout = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    window.location.href = '/';
+  };
 
   return (
     <Menu pointing secondary>
