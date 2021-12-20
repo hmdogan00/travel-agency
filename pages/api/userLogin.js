@@ -14,8 +14,9 @@ export default async (req, res) => {
           if (err) return res.status(401).json({ message: err });
           else {
             const validPassword = await bcrypt.compare(password, results[0].password);
+            console.log(results[0]);
             if ( validPassword ){
-              return res.status(200).json({ email: email, messageType:"SUCCESS" });
+              return res.status(200).json({ email: email, id: results[0].id, messageType:"SUCCESS" });
             }
             else{
               return res.status(201).json({ message: "Wrong password!", messageType:"ERROR"});

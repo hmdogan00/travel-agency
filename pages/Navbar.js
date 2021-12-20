@@ -7,7 +7,6 @@ function Navbar({ activeType }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log(localStorage.getItem('email'));
       if (!localStorage.getItem("email")) {
         window.location.href = "/";
       }
