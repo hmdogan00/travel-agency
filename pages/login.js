@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Container, Form, Button, Image } from "semantic-ui-react";
 
+import Navbar from "./Navbar";
+
 const roleOptions = [
   { key: "c", text: "CUSTOMER", value: "Customer" },
   { key: "e", text: "EMPLOYEE", value: "Employee" },
@@ -15,9 +17,9 @@ export default function LoginPage() {
   const [role, setRole] = useState("");
   const [login, isLogin] = useState(0);
   const [loginCredentials, setLoginCredentials] = useState(null);
-  
+
   useEffect(() => {
-    if (login === 1){
+    if (login === 1) {
       localStorage.setItem("email", email);
       localStorage.setItem("role", role);
       window.location.href = "/dashboard";
@@ -36,6 +38,7 @@ export default function LoginPage() {
         />
       </Head>
       <Container className="login">
+        <Navbar activeType="dashboard" />
         <div className="mid-container-logo">
           <Image className="logo" alt="logo" src="/tp-logo.png" />
           <h1>TripFellas</h1>
