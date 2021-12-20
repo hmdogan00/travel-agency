@@ -147,6 +147,7 @@ CREATE TABLE IF NOT EXISTS book(
   person_id INT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
+  is_accepted ENUM('accepted', 'waiting', 'rejected'),
   FOREIGN KEY(employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY(hotel_room_no) REFERENCES HotelRoom(hotel_room_no),
   FOREIGN KEY(hotel_id) REFERENCES HotelRoom(hotel_id),
