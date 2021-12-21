@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import {Card, Header, Table, Button, Form} from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
-import { getDateTime } from "./util";
+import { getDateTime, includesNoCase } from "./util";
 
 const approveRes = rId => axios.post("/api/employee/approveReservation", { id: rId }).then(res => console.log).catch(e => console.error);
 
@@ -23,29 +23,17 @@ function Dashboard() {
   const [searchLoc, setSearchLoc] = useState("");
 
   const searchData = useMemo(() => {
-    if (role === "Guide") {
-      return tourArr?.filter(item => {
-        if (searchTN !== "")
-          return item.name.toLowerCase().includes(searchTN.toLowerCase());
-        else if (searchDate !== "")
-          return item.start_date.toLowerCase().includes(searchDate.toLowerCase());
-        else if (searchLoc !== "")
-          return item.location.toLowerCase().includes(searchLoc.toLowerCase());
-        else return true;
-      });
-    } else if (role === "Employee") {
-      return tourArr?.filter(item => {
-        if (searchTN !== "")
-          return item.t_name.toLowerCase().includes(searchTN.toLowerCase());
-        else if (searchDate !== "")
-          return item.start_date.toLowerCase().includes(searchDate.toLowerCase());
-        else if (searchLoc !== "")
-          return item.location.toLowerCase().includes(searchLoc.toLowerCase());
-        else if (searchCN !== "")
-          return item.c_name.toLowerCase().includes(searchCN.toLowerCase());
-        else return true;
-      });
-    }
+    return tourArr?.filter(item => {
+      if (searchTN !== "")
+        return includesNoCase(item.t_name, searchTN);
+      else if (searchDate !== "")
+        return includesNoCase(item.start_date, searchDate);
+      else if (searchLoc !== "")
+        return includesNoCase(item.location, searchLoc);
+      else if (searchCN !== "")
+        return includesNoCase(item.c_name, searchCN);
+      else return true;
+    });
   }, [tourArr, searchTN, searchDate, searchLoc, searchCN]);
 
   const [state, dispatch] = useReducer(reducer, {
