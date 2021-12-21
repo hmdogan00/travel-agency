@@ -19,13 +19,13 @@ function Dashboard() {
   const [id, setId] = useState("");
   const [tourArr, setTourArr] = useState(null);
 
-  const approveRes = (rId) => {
-    axios.post('/api/employee/approveReservation', { id: rId } ).then(res => console.log).catch(e => console.error)
-  };
+  const approveRes = (rId) => axios.post('/api/employee/approveReservation', { id: rId } ).then(res => console.log).catch(e => console.error);
 
-  const declineRes = (rId) => {
-    axios.post('/api/employee/declineReservation', { id: rId } ).then(res => console.log).catch(e => console.error)
-  }
+  const approveResGuide = (tId) => axios.post('/api/guide/approveOffer', { id: tId }).then(res => console.log).catch(e =>console.error);
+
+  const declineRes = (rId) => axios.post('/api/employee/declineReservation', { id: rId } ).then(res => console.log).catch(e => console.error);
+
+  const declineResGuide = (tId) => axios.post('/api/guide/declineOffer', { id: tId }).then(res => console.log).catch(e =>console.error);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -157,19 +157,19 @@ function Dashboard() {
                       <Table.Cell>{e.location}</Table.Cell>
                       <Table.Cell textAlign="right">
                         <Button
-                          onClick={() => approveRes(e.reservation_id)}
+                          onClick={() => approveResGuide(e.tour_id)}
                           color="green"
                         >
                           Approve
                         </Button>
                         <Button
-                          onClick={() => declineRes(e.reservation_id)}
+                          onClick={() => declineResGuide(e.tour_id)}
                           color="red"
                         >
                           Decline
                         </Button>
                         <Button
-                          onClick={() => changeRes(e.reservation_id)}
+                          onClick={() => changeResGuide(e.tour_id)}
                           color="yellow"
                         >
                           Change
