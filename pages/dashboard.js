@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import {Card, Header, Table, Button, Form} from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
-import { getDateTime, includesNoCase } from "./util";
+import {getDateTime, includesNoCase} from "./util";
 
 const approveRes = rId => axios.post("/api/employee/approveReservation", { id: rId }).then(res => console.log).catch(e => console.error);
 
@@ -24,16 +24,13 @@ function Dashboard() {
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
-      if (searchTN !== "")
-        return includesNoCase(item.t_name, searchTN);
-      else if (searchDate !== ""){
+      if (searchTN !== "") return includesNoCase((role === "Employee" ? item.t_name : item.name), searchTN);
+      else if (searchDate !== "") {
         const [d, t] = getDateTime(item.start_date);
         return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
-      }
-      else if (searchLoc !== "")
+      } else if (searchLoc !== "")
         return includesNoCase(item.location, searchLoc);
-      else if (searchCN !== "")
-        return includesNoCase(item.c_name, searchCN);
+      else if (searchCN !== "") return includesNoCase(item.c_name, searchCN);
       else return true;
     });
   }, [tourArr, searchTN, searchDate, searchLoc, searchCN]);
@@ -112,8 +109,8 @@ function Dashboard() {
   return (
     <>
       <Navbar activeType="dashboard" />
-      {role === "Customer" && (
-        <div style={{ margin: "30px" }}>
+      {role === "Customer" ? (
+        <div style={{margin: "30px"}}>
           <Card.Group>
             {tourArr?.length === 0 && (
               <Header>You have no tour reservations!</Header>
@@ -134,21 +131,22 @@ function Dashboard() {
               })}
           </Card.Group>
         </div>
-      )}
-      {role === "Employee" && (
+      ) : (
         <div style={{margin: "30px"}}>
           <div style={{display: "flex", flexDirection: "row"}}>
-            <Form.Input
-              onChange={e => {
-                setSearchCN(e.target.value);
-                setSearchDate("");
-                setSearchLoc("");
-                setSearchTN("");
-              }}
-              value={searchCN}
-              placeholder="Search by Customer Name"
-              className="mr-4"
-            />
+            {role === "Employee" && (
+              <Form.Input
+                onChange={e => {
+                  setSearchCN(e.target.value);
+                  setSearchDate("");
+                  setSearchLoc("");
+                  setSearchTN("");
+                }}
+                value={searchCN}
+                placeholder="Search by Customer Name"
+                className="mr-4"
+              />
+            )}
             <Form.Input
               onChange={e => {
                 setSearchTN("");
@@ -182,180 +180,174 @@ function Dashboard() {
               placeholder="Search by Location"
             />
           </div>
-          <Table sortable singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell
-                  sorted={state.column === "name" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
-                >
-                  Name
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "start_date" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "start_date" })}
-                >
-                  Start Date
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "end_date" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "end_date" })}
-                >
-                  End Date
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "t_name" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "t_name" })}
-                >
-                  Tour Name
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "loc" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "loc" })}
-                >
-                  Tour Location
-                </Table.HeaderCell>
-                <Table.HeaderCell></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {state.data &&
-                state.data.map(e => {
-                  const [s_date, s_time] = getDateTime(e.start_date);
-                  const [e_date, e_time] = getDateTime(e.end_date);
-                  return (
-                    <Table.Row>
-                      <Table.Cell>{e.c_name}</Table.Cell>
-                      <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
-                      <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
-                      <Table.Cell>{e.t_name}</Table.Cell>
-                      <Table.Cell>{e.location}</Table.Cell>
-                      <Table.Cell textAlign="right">
-                        <Button
-                          onClick={() => approveRes(e.reservation_id)}
-                          color="green"
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          onClick={() => declineRes(e.reservation_id)}
-                          color="red"
-                        >
-                          Decline
-                        </Button>
-                        <Button
-                          onClick={() => changeRes(e.reservation_id)}
-                          color="yellow"
-                        >
-                          Change
-                        </Button>
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-        </div>
-      )}
-      {role === "Guide" && (
-        <div style={{margin: "30px"}}>
-          <div style={{display: "flex", flexDirection: "row"}}>
-            <Form.Input
-              onChange={e => {
-                setSearchTN(e.target.value);
-                setSearchDate("");
-                setSearchLoc("");
-              }}
-              value={searchTN}
-              placeholder="Search by Tour Name"
-              className="mr-4"
-            />
-            <Form.Input
-              onChange={e => {
-                setSearchTN("");
-                setSearchDate(e.target.value);
-                setSearchLoc("");
-              }}
-              value={searchDate}
-              placeholder="Search by Date"
-              className="mr-4"
-            />
-            <Form.Input
-              onChange={e => {
-                setSearchTN("");
-                setSearchDate("");
-                setSearchLoc(e.target.value);
-              }}
-              value={searchLoc}
-              placeholder="Search by Location"
-            />
-          </div>
-          <Table sortable singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell
-                  sorted={state.column === "name" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
-                >
-                  Tour Name
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "start_date" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "start_date" })}
-                >
-                  Start Date
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "end_date" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "end_date" })}
-                >
-                  End Date
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  sorted={state.column === "loc" ? state.direction : null}
-                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "loc" })}
-                >
-                  Tour Location
-                </Table.HeaderCell>
-                <Table.HeaderCell></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {state.data &&
-                state.data.map(e => {
-                  const [s_date, s_time] = getDateTime(e.start_date);
-                  const [e_date, e_time] = getDateTime(e.end_date);
-                  return (
-                    <Table.Row>
-                      <Table.Cell>{e.name}</Table.Cell>
-                      <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
-                      <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
-                      <Table.Cell>{e.location}</Table.Cell>
-                      <Table.Cell textAlign="right">
-                        <Button
-                          onClick={() => approveResGuide(e.tour_id)}
-                          color="green"
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          onClick={() => declineResGuide(e.tour_id)}
-                          color="red"
-                        >
-                          Decline
-                        </Button>
-                        <Button
-                          onClick={() => changeResGuide(e.tour_id)}
-                          color="yellow"
-                        >
-                          Change
-                        </Button>
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
+          {role === "Employee" ? (
+            <Table sortable singleLine>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell
+                    sorted={state.column === "name" ? state.direction : null}
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "name"})
+                    }
+                  >
+                    Name
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={
+                      state.column === "start_date" ? state.direction : null
+                    }
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "start_date"})
+                    }
+                  >
+                    Start Date
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={
+                      state.column === "end_date" ? state.direction : null
+                    }
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "end_date"})
+                    }
+                  >
+                    End Date
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={state.column === "t_name" ? state.direction : null}
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "t_name"})
+                    }
+                  >
+                    Tour Name
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={state.column === "loc" ? state.direction : null}
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "loc"})
+                    }
+                  >
+                    Tour Location
+                  </Table.HeaderCell>
+                  <Table.HeaderCell></Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {state.data &&
+                  state.data.map(e => {
+                    const [s_date, s_time] = getDateTime(e.start_date);
+                    const [e_date, e_time] = getDateTime(e.end_date);
+                    return (
+                      <Table.Row>
+                        <Table.Cell>{e.c_name}</Table.Cell>
+                        <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
+                        <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
+                        <Table.Cell>{e.t_name}</Table.Cell>
+                        <Table.Cell>{e.location}</Table.Cell>
+                        <Table.Cell textAlign="right">
+                          <Button
+                            onClick={() => approveRes(e.reservation_id)}
+                            color="green"
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            onClick={() => declineRes(e.reservation_id)}
+                            color="red"
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            onClick={() => changeRes(e.reservation_id)}
+                            color="yellow"
+                          >
+                            Change
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  })}
+              </Table.Body>
+            </Table>
+          ) : (
+            <Table sortable singleLine>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell
+                    sorted={state.column === "name" ? state.direction : null}
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "name"})
+                    }
+                  >
+                    Tour Name
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={
+                      state.column === "start_date" ? state.direction : null
+                    }
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "start_date"})
+                    }
+                  >
+                    Start Date
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={
+                      state.column === "end_date" ? state.direction : null
+                    }
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "end_date"})
+                    }
+                  >
+                    End Date
+                  </Table.HeaderCell>
+                  <Table.HeaderCell
+                    sorted={state.column === "loc" ? state.direction : null}
+                    onClick={() =>
+                      dispatch({type: "CHANGE_SORT", column: "loc"})
+                    }
+                  >
+                    Tour Location
+                  </Table.HeaderCell>
+                  <Table.HeaderCell></Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {state.data &&
+                  state.data.map(e => {
+                    const [s_date, s_time] = getDateTime(e.start_date);
+                    const [e_date, e_time] = getDateTime(e.end_date);
+                    return (
+                      <Table.Row>
+                        <Table.Cell>{e.name}</Table.Cell>
+                        <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
+                        <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
+                        <Table.Cell>{e.location}</Table.Cell>
+                        <Table.Cell textAlign="right">
+                          <Button
+                            onClick={() => approveResGuide(e.tour_id)}
+                            color="green"
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            onClick={() => declineResGuide(e.tour_id)}
+                            color="red"
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            onClick={() => changeResGuide(e.tour_id)}
+                            color="yellow"
+                          >
+                            Change
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  })}
+              </Table.Body>
+            </Table>
+          )}
         </div>
       )}
     </>
