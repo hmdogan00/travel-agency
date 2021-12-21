@@ -1,25 +1,49 @@
 import { useEffect, useState } from "react";
-import { Flag } from "semantic-ui-react";
+import { Card, Header } from "semantic-ui-react";
 import Navbar from "./Navbar";
+import { getDateTime } from "./util";
 
 function Tours() {
-  const [alist, setAList] = useState([]);
+  const [role, setRole] = useState("");
+  const [tourArr, setTourArr] = useState([
+    { name: "Anitkabir", location: "Ankara" },
+    { name: "Kapadokya", location: "Nigde" },
+    { name: "Alt Orman", location: "Sihirdar Vadisi" }
+  ]);
+
   useEffect(() => {
-    const arr = [];
-    for (var i = 0; i < 5000; i++) {
-      arr.push(i);
+    if (typeof window !== "undefined") {
+      setRole(localStorage.getItem("role"));
     }
-    setAList(arr);
-  }, [])
+  }, []);
 
   return (
     <>
       <Navbar activeType="tours" />
-      {
-        alist.map(() => {
-          return <Flag name='tr' />
-        })
-      }
+      {role === "Customer" && (
+        <div style={{ margin: "30px" }}>
+          <Card.Group itemsPerRow={4}>
+            {tourArr?.length === 0 && (
+              <Header>There are no tours for reservation.</Header>
+            )}
+            {tourArr &&
+              tourArr.map((e, i) => {
+                //const [startDate, startTime] = getDateTime(e.start_date);
+                //const [endDate, endTime] = getDateTime(e.end_date);
+                return (
+                  <Card
+                    key={`card-${i}`}
+                    color="red"
+                    header={e.name}
+                    meta={e.location}
+                    //description={`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`}
+                    description="Dasdsadad"
+                  />
+                );
+              })}
+          </Card.Group>
+        </div>
+      )}
     </>
   );
 }
