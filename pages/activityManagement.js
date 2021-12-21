@@ -1,6 +1,6 @@
 import { Button, Card, Container, Form, Icon, Label, Search, Table, TextArea } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useReducer } from "react";
 
 function ActivityManagement() {
   const [role, setRole] = useState();
@@ -31,6 +31,39 @@ function ActivityManagement() {
     },
     [list, searchTN, searchDate, searchLoc]
   );
+
+  const [state, dispatch] = useReducer(reducer, {
+    column: null,
+    data: searchList,
+    direction: null,
+  });
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "CHANGE_SORT":
+        if (state.column === action.column) {
+          return {
+            ...state,
+            data: state.data.slice().reverse(),
+            direction:
+              state.direction === "ascending" ? "descending" : "ascending",
+          };
+        }
+
+        return {
+          column: action.column,
+          data: _.sortBy(state.data, [action.column]),
+          direction: "ascending",
+        };
+      case "UPDATE_DATA":
+        return {
+          ...state,
+          data: searchList,
+        };
+      default:
+        throw new Error();
+    }
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -166,7 +199,7 @@ function ActivityManagement() {
                   </div>
                 </Card.Content>
                 <Card.Content>
-                  <Table celled fixed color="red">
+                  <Table sortable celled fixed color="red">
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell>Tour Name</Table.HeaderCell>
