@@ -1,27 +1,17 @@
-import {useEffect, useReducer, useState} from "react";
+import { useEffect, useReducer, useState } from "react";
 import Navbar from "./Navbar";
-import {Card, Header, Table, Button} from "semantic-ui-react";
+import { Card, Header, Table, Button } from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
+import { getDateTime } from "./util";
 
-/**
- * Converts a database date object with format yyyy-mm-ddThh:mm:ss.msmsmsZ to two strings with format yyyy.mm.dd and hh:mm
- * @param {String} date
- * @returns an array with two strings said as above.
- */
-const getDateTime = date => {
-  const D = date.split("T")[0].replaceAll("-", ".");
-  const T = date.split("T")[1].substring(0, 5);
-  return [D, T];
-};
+const approveRes = rId => axios.post("/api/employee/approveReservation", { id: rId }).then(res => console.log).catch(e => console.error);
 
-const approveRes = rId => axios.post("/api/employee/approveReservation", {id: rId}).then(res => console.log).catch(e => console.error);
+const approveResGuide = tId => axios.post("/api/guide/approveOffer", { id: tId }).then(res => console.log).catch(e => console.error);
 
-const approveResGuide = tId => axios.post("/api/guide/approveOffer", {id: tId}).then(res => console.log).catch(e => console.error);
+const declineRes = rId => axios.post("/api/employee/declineReservation", { id: rId }).then(res => console.log).catch(e => console.error);
 
-const declineRes = rId => axios.post("/api/employee/declineReservation", {id: rId}).then(res => console.log).catch(e => console.error);
-
-const declineResGuide = tId => axios.post("/api/guide/declineOffer", {id: tId}).then(res => console.log).catch(e => console.error);
+const declineResGuide = tId => axios.post("/api/guide/declineOffer", { id: tId }).then(res => console.log).catch(e => console.error);
 
 function Dashboard() {
   const [role, setRole] = useState("");
@@ -70,7 +60,7 @@ function Dashboard() {
         .get(`/api/getCustomerTours/${id}`)
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({type:"UPDATE_DATA"});
+          dispatch({ type: "UPDATE_DATA" });
         })
         .catch(console.error);
     } else if (role === "Employee" && !tourArr) {
@@ -78,7 +68,7 @@ function Dashboard() {
         .get("/api/employee/getReservations")
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({type:"UPDATE_DATA"});
+          dispatch({ type: "UPDATE_DATA" });
         })
         .catch(console.error);
     } else if (role === "Guide" && !tourArr) {
@@ -86,7 +76,7 @@ function Dashboard() {
         .get("/api/guide/seeOffers")
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({type:"UPDATE_DATA"});
+          dispatch({ type: "UPDATE_DATA" });
         })
         .catch(console.error);
     }
@@ -95,7 +85,7 @@ function Dashboard() {
     <>
       <Navbar activeType="dashboard" />
       {role === "Customer" && (
-        <div style={{margin: "30px"}}>
+        <div style={{ margin: "30px" }}>
           <Card.Group>
             {tourArr?.length === 0 && (
               <Header>You have no tour reservations!</Header>
@@ -118,37 +108,37 @@ function Dashboard() {
         </div>
       )}
       {role === "Employee" && (
-        <div style={{margin: "30px"}}>
+        <div style={{ margin: "30px" }}>
           <Table sortable singleLine>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell
                   sorted={state.column === "name" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"name"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
                 >
                   Name
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "start_date" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"start_date"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "start_date" })}
                 >
                   Start Date
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "end_date" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"end_date"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "end_date" })}
                 >
                   End Date
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "t_name" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"t_name"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "t_name" })}
                 >
                   Tour Name
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "loc" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"loc"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "loc" })}
                 >
                   Tour Location
                 </Table.HeaderCell>
@@ -195,31 +185,31 @@ function Dashboard() {
         </div>
       )}
       {role === "Guide" && (
-        <div style={{margin: "30px"}}>
+        <div style={{ margin: "30px" }}>
           <Table sortable singleLine>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell
                   sorted={state.column === "name" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"name"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
                 >
                   Tour Name
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "start_date" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"start_date"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "start_date" })}
                 >
                   Start Date
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "end_date" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"end_date"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "end_date" })}
                 >
                   End Date
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   sorted={state.column === "loc" ? state.direction : null}
-                  onClick={() => dispatch( {type: "CHANGE_SORT", column:"loc"})}
+                  onClick={() => dispatch({ type: "CHANGE_SORT", column: "loc" })}
                 >
                   Tour Location
                 </Table.HeaderCell>
