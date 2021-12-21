@@ -26,8 +26,10 @@ function Dashboard() {
     return tourArr?.filter(item => {
       if (searchTN !== "")
         return includesNoCase(item.t_name, searchTN);
-      else if (searchDate !== "")
-        return includesNoCase(item.start_date, searchDate);
+      else if (searchDate !== ""){
+        const [d, t] = getDateTime(item.start_date);
+        return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
+      }
       else if (searchLoc !== "")
         return includesNoCase(item.location, searchLoc);
       else if (searchCN !== "")
@@ -107,9 +109,6 @@ function Dashboard() {
     dispatch({type: "UPDATE_DATA", data: searchData});
   }, [searchData]);
 
-  console.log(tourArr);
-  console.log(searchData);
-  console.log(state.data);
   return (
     <>
       <Navbar activeType="dashboard" />

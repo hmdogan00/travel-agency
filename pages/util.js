@@ -5,8 +5,9 @@
  */
 export const getDateTime = date => {
   const D = date.split("T")[0].replaceAll("-", ".");
+  const [y,m,d] = D.split(".");
   const T = date.split("T")[1].substring(0, 5);
-  return [D, T];
+  return [`${d}.${m}.${y}`, T];
 };
 
 /**
