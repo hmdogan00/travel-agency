@@ -1,6 +1,6 @@
-import { useEffect, useReducer, useState } from "react";
+import {useEffect, useReducer, useState, useMemo} from "react";
 import Navbar from "./Navbar";
-import { Card, Header, Table, Button } from "semantic-ui-react";
+import {Card, Header, Table, Button, Form} from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
 import { getDateTime } from "./util";
@@ -17,9 +17,40 @@ function Dashboard() {
   const [role, setRole] = useState("");
   const [id, setId] = useState("");
   const [tourArr, setTourArr] = useState(null);
+  const [searchCN, setSearchCN] = useState("");
+  const [searchTN, setSearchTN] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [searchLoc, setSearchLoc] = useState("");
+
+  const searchData = useMemo(() => {
+    if (role === "Guide") {
+      return tourArr?.filter(item => {
+        if (searchTN !== "")
+          return item.name.toLowerCase().includes(searchTN.toLowerCase());
+        else if (searchDate !== "")
+          return item.start_date.toLowerCase().includes(searchDate.toLowerCase());
+        else if (searchLoc !== "")
+          return item.location.toLowerCase().includes(searchLoc.toLowerCase());
+        else return true;
+      });
+    } else if (role === "Employee") {
+      return tourArr?.filter(item => {
+        if (searchTN !== "")
+          return item.t_name.toLowerCase().includes(searchTN.toLowerCase());
+        else if (searchDate !== "")
+          return item.start_date.toLowerCase().includes(searchDate.toLowerCase());
+        else if (searchLoc !== "")
+          return item.location.toLowerCase().includes(searchLoc.toLowerCase());
+        else if (searchCN !== "")
+          return item.c_name.toLowerCase().includes(searchCN.toLowerCase());
+        else return true;
+      });
+    }
+  }, [tourArr, searchTN, searchDate, searchLoc, searchCN]);
+
   const [state, dispatch] = useReducer(reducer, {
     column: null,
-    data: tourArr,
+    data: searchData,
     direction: null,
   });
 
@@ -43,13 +74,14 @@ function Dashboard() {
       case "UPDATE_DATA":
         return {
           ...state,
-          data: tourArr,
+          data: action.data,
         };
       default:
         throw new Error();
     }
   }
 
+  // takes effect in initialization
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(localStorage.getItem("role"));
@@ -60,7 +92,7 @@ function Dashboard() {
         .get(`/api/getCustomerTours/${id}`)
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({ type: "UPDATE_DATA" });
+          dispatch({type: "UPDATE_DATA", data: searchData});
         })
         .catch(console.error);
     } else if (role === "Employee" && !tourArr) {
@@ -68,7 +100,7 @@ function Dashboard() {
         .get("/api/employee/getReservations")
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({ type: "UPDATE_DATA" });
+          dispatch({type: "UPDATE_DATA", data: searchData});
         })
         .catch(console.error);
     } else if (role === "Guide" && !tourArr) {
@@ -76,11 +108,20 @@ function Dashboard() {
         .get("/api/guide/seeOffers")
         .then(res => {
           setTourArr(res.data.result);
-          dispatch({ type: "UPDATE_DATA" });
+          dispatch({type: "UPDATE_DATA", data: searchData});
         })
         .catch(console.error);
     }
   }, [tourArr, id, role]);
+
+  // takes effect with search
+  useEffect(() => {
+    dispatch({type: "UPDATE_DATA", data: searchData});
+  }, [searchData]);
+
+  console.log(tourArr);
+  console.log(searchData);
+  console.log(state.data);
   return (
     <>
       <Navbar activeType="dashboard" />
@@ -108,7 +149,52 @@ function Dashboard() {
         </div>
       )}
       {role === "Employee" && (
-        <div style={{ margin: "30px" }}>
+        <div style={{margin: "30px"}}>
+          <div style={{display: "flex", flexDirection: "row"}}>
+            <Form.Input
+              onChange={e => {
+                setSearchCN(e.target.value);
+                setSearchDate("");
+                setSearchLoc("");
+                setSearchTN("");
+              }}
+              value={searchCN}
+              placeholder="Search by Customer Name"
+              className="mr-4"
+            />
+            <Form.Input
+              onChange={e => {
+                setSearchTN("");
+                setSearchDate(e.target.value);
+                setSearchLoc("");
+                setSearchCN("");
+              }}
+              value={searchDate}
+              placeholder="Search by Date"
+              className="mr-4"
+            />
+            <Form.Input
+              onChange={e => {
+                setSearchTN(e.target.value);
+                setSearchDate("");
+                setSearchLoc("");
+                setSearchCN("");
+              }}
+              value={searchTN}
+              placeholder="Search by Tour Name"
+              className="mr-4"
+            />
+            <Form.Input
+              onChange={e => {
+                setSearchTN("");
+                setSearchDate("");
+                setSearchLoc(e.target.value);
+                setSearchCN("");
+              }}
+              value={searchLoc}
+              placeholder="Search by Location"
+            />
+          </div>
           <Table sortable singleLine>
             <Table.Header>
               <Table.Row>
@@ -185,7 +271,38 @@ function Dashboard() {
         </div>
       )}
       {role === "Guide" && (
-        <div style={{ margin: "30px" }}>
+        <div style={{margin: "30px"}}>
+          <div style={{display: "flex", flexDirection: "row"}}>
+            <Form.Input
+              onChange={e => {
+                setSearchTN(e.target.value);
+                setSearchDate("");
+                setSearchLoc("");
+              }}
+              value={searchTN}
+              placeholder="Search by Tour Name"
+              className="mr-4"
+            />
+            <Form.Input
+              onChange={e => {
+                setSearchTN("");
+                setSearchDate(e.target.value);
+                setSearchLoc("");
+              }}
+              value={searchDate}
+              placeholder="Search by Date"
+              className="mr-4"
+            />
+            <Form.Input
+              onChange={e => {
+                setSearchTN("");
+                setSearchDate("");
+                setSearchLoc(e.target.value);
+              }}
+              value={searchLoc}
+              placeholder="Search by Location"
+            />
+          </div>
           <Table sortable singleLine>
             <Table.Header>
               <Table.Row>
