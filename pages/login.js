@@ -89,9 +89,9 @@ export default function LoginPage() {
             </Form>
           </Container>
           {login === 1 && loginCredentials !== null && (
-            <h4 style={{ color: 'green' }}>{`Login is successful with email ${loginCredentials.email}`}</h4>
+            <h4 style={{ color: 'green' }}>Login successful! Redirecting...</h4>
           )}
-          {login === 2 && <h4 style={{ color: 'red' }}>Düzgün şifre gir aq</h4>}
+          {login === 2 && <h4 style={{ color: 'red' }}>Check your email and password please!</h4>}
         </div>
       </Container>
     </>
