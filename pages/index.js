@@ -11,7 +11,8 @@ import {
   Button,
   Icon,
   TableRow,
-  TextArea
+  TextArea,
+  Checkbox
 } from "semantic-ui-react";
 
 const options = [
@@ -114,36 +115,36 @@ export default function Home() {
           </Table.Body>
         </Table>
         <h1>TODO:</h1>
-        <p style={{width: "%100", height: "%80"}}>1. Book a tour (by a customer)<br/>
-&emsp;a. List all available tours and apply filters. (date, place, type, etc.)<br/>
-&emsp;b. Select a tour and select the desired start date.<br/>
-&emsp;c. Indicate the number of people for booking.<br/>
-&emsp;d. List all available activities of the selected tour.<br/>&emsp;
-&emsp;i. Extra activities cost additional money, therefore select the desired one for
+        <p style={{width: "%100", height: "%80"}}><Checkbox disabled></Checkbox>1. Book a tour (by a customer)<br/>&emsp;
+<Checkbox disabled></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
+<Checkbox disabled></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
+<Checkbox disabled checked></Checkbox>c. Indicate the number of people for booking.<br/>&emsp;
+<Checkbox disabled></Checkbox>d. List all available activities of the selected tour.<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>i. Extra activities cost additional money, therefore select the desired one for
 each guest.<br/>&emsp;
-e. Make the payment accordingly.<br/>&emsp;
-f. Give feedback about the tour and the guide. (comment and rate)<br/>
-2. Reservation management (by an employee and a customer)<br/>&emsp;
-a. Hotel reservation<br/>&emsp;&emsp;
-i. List all available hotels and select the desired one. (apply filters like stars,
+<Checkbox disabled checked></Checkbox>e. Make the payment accordingly.<br/>&emsp;
+<Checkbox disabled></Checkbox>f. Give feedback about the tour and the guide. (comment and rate)<br/>
+<Checkbox disabled></Checkbox>2. Reservation management (by an employee and a customer)<br/>&emsp;
+<Checkbox disabled></Checkbox>a. Hotel reservation<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>i. List all available hotels and select the desired one. (apply filters like stars,
 city, etc.)<br/>&emsp;&emsp;
-ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
-iii. If a customer makes the reservation, approve or decline it. If declined,
+<Checkbox disabled></Checkbox>ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>iii. If a customer makes the reservation, approve or decline it. If declined,
 state the reason. (employee)<br/>&emsp;
-b. Tour reservation<br/>&emsp;&emsp;
-i. Make a tour reservation for a customer.<br/>&emsp;&emsp;
-ii. Approve or decline tour reservations made by customers themselves. If
+<Checkbox disabled></Checkbox>b. Tour reservation<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>i. Make a tour reservation for a customer.<br/>&emsp;&emsp;
+<Checkbox disabled checked></Checkbox>ii. Approve or decline tour reservations made by customers themselves. If
 declined, state the reason.<br/>&emsp;
-c. Update a hotel/tour reservation detail<br/>&emsp;&emsp;
-i. Customers cannot update themselves.<br/>&emsp;&emsp;
-ii. Employees can update any detail about the reservation.<br/>
-3. Tour guiding (by an employee and a guide)<br/>&emsp;
-a. List all tours without an assigned guide. (employee)<br/>&emsp;
-b. Select a tour and assign an available guide. (employee)<br/>&emsp;
-c. List all available assigned tours. (guide)<br/>&emsp;
-d. Select a tour and accept or decline to guide. (guide)<br/>&emsp;&emsp;
-i. If declined, state the reason.<br/>&emsp;
-e. If accepted, give feedback about the tour. (guide)</p>
+<Checkbox disabled></Checkbox>c. Update a hotel/tour reservation detail<br/>&emsp;&emsp;
+<Checkbox disabled checked></Checkbox>i. Customers cannot update themselves.<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>ii. Employees can update any detail about the reservation.<br/>
+<Checkbox disabled></Checkbox>3. Tour guiding (by an employee and a guide)<br/>&emsp;
+<Checkbox disabled></Checkbox>a. List all tours without an assigned guide. (employee)<br/>&emsp;
+<Checkbox disabled></Checkbox>b. Select a tour and assign an available guide. (employee)<br/>&emsp;
+<Checkbox disabled></Checkbox>c. List all available assigned tours. (guide)<br/>&emsp;
+<Checkbox disabled checked></Checkbox>d. Select a tour and accept or decline to guide. (guide)<br/>&emsp;&emsp;
+<Checkbox disabled></Checkbox>i. If declined, state the reason.<br/>&emsp;
+<Checkbox disabled></Checkbox>e. If accepted, give feedback about the tour. (guide)</p>
       </Container>
     </>
   );
