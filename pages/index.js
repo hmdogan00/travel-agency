@@ -114,8 +114,8 @@ export default function Home() {
           </Table.Body>
         </Table>
         <h1>TODO:</h1>
-        <p style={{width: "%100", height: "%80"}}>1. Book a tour (by a customer) (DESIGN REPORT) <br/>
-&emsp; a. List all available tours and apply filters. (date, place, type, etc.)<br/>
+        <p style={{width: "%100", height: "%80"}}>1. Book a tour (by a customer)<br/>
+&emsp;a. List all available tours and apply filters. (date, place, type, etc.)<br/>
 &emsp;b. Select a tour and select the desired start date.<br/>
 &emsp;c. Indicate the number of people for booking.<br/>
 &emsp;d. List all available activities of the selected tour.<br/>&emsp;
