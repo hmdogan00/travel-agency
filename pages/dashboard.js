@@ -133,6 +133,8 @@ function Dashboard() {
         </div>
       ) : (
         <div style={{ margin: "30px" }}>
+        <Header>{role === "Employee" ? "Latest Reservations" : "Latest Reservation Offers"}</Header>
+        <br></br>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {role === "Employee" && (
               <Form.Input
@@ -181,7 +183,7 @@ function Dashboard() {
             />
           </div>
           {role === "Employee" ? (
-            <Table sortable singleLine fixed>
+            <Table sortable singleLine>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell
