@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo, useReducer } from "react";
 function ActivityManagement() {
   const [role, setRole] = useState();
   const [aTitle, setATitle] = useState('');
-  const [aDate, setADate] = useState('');
+  const [aType, setAType] = useState('');
   const [aLoc, setALoc] = useState('');
   const [aDesc, setADesc] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -13,7 +13,7 @@ function ActivityManagement() {
 
   const [list, setList] = useState();
   const [searchTN, setSearchTN] = useState('');
-  const [searchDate, setSearchDate] = useState('');
+  const [searchType, setSearchType] = useState('');
   const [searchLoc, setSearchLoc] = useState('');
 
   const searchList = useMemo(
@@ -21,15 +21,15 @@ function ActivityManagement() {
       list?.filter((item) => {
         if (searchTN !== "")
           return item.toLowerCase().includes(searchTN.toLowerCase());
-        else if (searchDate !== "")
-          return String(item.userId).toLowerCase().includes(searchDate);
+        else if (searchType !== "")
+          return String(item.userId).toLowerCase().includes(searchType);
         else if (searchLoc !== "")
           return item.groupName.toLowerCase().includes(searchLoc.toLowerCase());
         else
           return true;
       });
     },
-    [list, searchTN, searchDate, searchLoc]
+    [list, searchTN, searchType, searchLoc]
   );
 
   const [state, dispatch] = useReducer(reducer, {
@@ -97,10 +97,10 @@ function ActivityManagement() {
                     required
                   />
                   <Form.Input
-                    label='Activity Date'
-                    placeholder='Enter date of the activity'
-                    value={aDate}
-                    onChange={(e) => setADate(e.target.value)}
+                    label='Activity Type'
+                    placeholder='Enter type of the activity'
+                    value={aType}
+                    onChange={(e) => setAType(e.target.value)}
                   />
                   <Form.Input
                     label='Activity Location'
@@ -129,7 +129,7 @@ function ActivityManagement() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Tour Name</Table.HeaderCell>
-                      <Table.HeaderCell>Date</Table.HeaderCell>
+                      <Table.HeaderCell>Type</Table.HeaderCell>
                       <Table.HeaderCell>Location</Table.HeaderCell>
                       <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
@@ -168,33 +168,36 @@ function ActivityManagement() {
                       loading={loading}
                       onChange={(e) => {
                         setSearchTN(e.target.value);
-                        setSearchDate("");
+                        setSearchType("");
                         setSearchLoc("");
                       }}
                       value={searchTN}
                       placeholder='Search by Tour Name'
                       className='mr-4'
+                      icon="search"
                     />
                     <Form.Input
                       loading={loading}
                       onChange={(e) => {
                         setSearchTN("");
-                        setSearchDate(e.target.value);
+                        setSearchType(e.target.value);
                         setSearchLoc("");
                       }}
-                      value={searchDate}
-                      placeholder='Search by Date'
+                      value={searchType}
+                      placeholder='Search by Type'
                       className='mr-4'
+                      icon="search"
                     />
                     <Form.Input
                       loading={loading}
                       onChange={(e) => {
                         setSearchTN("");
-                        setSearchDate("");
+                        setSearchType("");
                         setSearchLoc(e.target.value);
                       }}
                       value={searchLoc}
                       placeholder='Search by Location'
+                      icon="search"
                     />
                   </div>
                 </Card.Content>
@@ -203,7 +206,7 @@ function ActivityManagement() {
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell>Tour Name</Table.HeaderCell>
-                        <Table.HeaderCell>Date</Table.HeaderCell>
+                        <Table.HeaderCell>Type</Table.HeaderCell>
                         <Table.HeaderCell>Location</Table.HeaderCell>
                         <Table.HeaderCell>Requested By</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
