@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Dropdown, Form, Header, Icon, Input, Label, List, Modal } from "semantic-ui-react";
+import { Button, Card, Dropdown, Form, Header, Input, Label, List, Modal } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { getDateTime } from "./util";
 
@@ -35,6 +35,17 @@ function Tours() {
                 );
               })}
           </Card.Group>
+        </div>
+      )}
+      {role === "Employee" && (
+        <div style={{ margin: "30px" }}>
+          {tourArr?.length === 0 && (
+            <Header>There are no tours for reservation.</Header>
+          )}
+          {tourArr &&
+            tourArr.map((e, i) => {
+
+            })}
         </div>
       )}
     </>
@@ -123,7 +134,7 @@ function ReservationModal({ state, setState, tour }) {
           positive
         />
       </Modal.Actions>
-      <PaymentModal state={payModalOpen} setState={setPayModalOpen} tour={tour} />
+      <PaymentModal state={payModalOpen} setState={setPayModalOpen} tour={tour} setState2={setState} />
     </Modal>
   );
 }
@@ -156,7 +167,7 @@ const years = [
   { key: '2030', value: '2030', text: '2030' }
 ];
 
-function PaymentModal({ state, setState, tour }) {
+function PaymentModal({ state, setState, tour, setState2 }) {
   const [nameOnCard, setNameOnCard] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [month, setMonth] = useState('');
@@ -196,7 +207,7 @@ function PaymentModal({ state, setState, tour }) {
             />
             <Form.Input
               label='CARD NUMBER'
-              value={cardNumber}
+              value={cardNumber.substring(0, 16)}
               onChange={(e) => setCardNumber(e.target.value)}
             />
             <Form.Group>
@@ -225,7 +236,7 @@ function PaymentModal({ state, setState, tour }) {
               <Form.Field width={5}>
                 <label>CCV</label>
                 <Form.Input
-                  value={ccv}
+                  value={ccv.substring(0, 3)}
                   onChange={(e) => setCcv(e.target.value)}
                 />
               </Form.Field>
@@ -241,7 +252,7 @@ function PaymentModal({ state, setState, tour }) {
           content="Pay"
           labelPosition='right'
           icon='payment'
-          onClick={() => console.log("payment")}
+          onClick={() => { setState = (false); setState2(false) }}
           positive
         />
       </Modal.Actions>
