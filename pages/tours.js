@@ -311,7 +311,6 @@ function AddNewTourModal({ state, setState }) {
 
   const [tempDate, setTempDate] = useState('');
   const today = new Date().toISOString().split('T')[0];
-  console.log(today)
 
   const addDate = () => setDatesArr((lastDates) => [...lastDates, tempDate]);
   const deleteDate = (date) => setDatesArr((lastDates) => lastDates.filter(e => e !== date));
