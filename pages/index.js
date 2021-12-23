@@ -11,6 +11,7 @@ import {
   Button,
   Icon,
   TableRow,
+  TextArea
 } from "semantic-ui-react";
 
 const options = [
@@ -112,6 +113,37 @@ export default function Home() {
             ))}
           </Table.Body>
         </Table>
+        <h1>TODO:</h1>
+        <p style={{width: "%100", height: "%80"}}>1. Book a tour (by a customer) (DESIGN REPORT) <br/>
+&emsp; a. List all available tours and apply filters. (date, place, type, etc.)<br/>
+&emsp;b. Select a tour and select the desired start date.<br/>
+&emsp;c. Indicate the number of people for booking.<br/>
+&emsp;d. List all available activities of the selected tour.<br/>&emsp;
+&emsp;i. Extra activities cost additional money, therefore select the desired one for
+each guest.<br/>&emsp;
+e. Make the payment accordingly.<br/>&emsp;
+f. Give feedback about the tour and the guide. (comment and rate)<br/>
+2. Reservation management (by an employee and a customer)<br/>&emsp;
+a. Hotel reservation<br/>&emsp;&emsp;
+i. List all available hotels and select the desired one. (apply filters like stars,
+city, etc.)<br/>&emsp;&emsp;
+ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
+iii. If a customer makes the reservation, approve or decline it. If declined,
+state the reason. (employee)<br/>&emsp;
+b. Tour reservation<br/>&emsp;&emsp;
+i. Make a tour reservation for a customer.<br/>&emsp;&emsp;
+ii. Approve or decline tour reservations made by customers themselves. If
+declined, state the reason.<br/>&emsp;
+c. Update a hotel/tour reservation detail<br/>&emsp;&emsp;
+i. Customers cannot update themselves.<br/>&emsp;&emsp;
+ii. Employees can update any detail about the reservation.<br/>
+3. Tour guiding (by an employee and a guide)<br/>&emsp;
+a. List all tours without an assigned guide. (employee)<br/>&emsp;
+b. Select a tour and assign an available guide. (employee)<br/>&emsp;
+c. List all available assigned tours. (guide)<br/>&emsp;
+d. Select a tour and accept or decline to guide. (guide)<br/>&emsp;&emsp;
+i. If declined, state the reason.<br/>&emsp;
+e. If accepted, give feedback about the tour. (guide)</p>
       </Container>
     </>
   );
