@@ -174,6 +174,7 @@ function ActivityManagement() {
                       value={searchTN}
                       placeholder='Search by Tour Name'
                       className='mr-4'
+                      icon="search"
                     />
                     <Form.Input
                       loading={loading}
@@ -185,6 +186,7 @@ function ActivityManagement() {
                       value={searchType}
                       placeholder='Search by Type'
                       className='mr-4'
+                      icon="search"
                     />
                     <Form.Input
                       loading={loading}
@@ -195,6 +197,7 @@ function ActivityManagement() {
                       }}
                       value={searchLoc}
                       placeholder='Search by Location'
+                      icon="search"
                     />
                   </div>
                 </Card.Content>
