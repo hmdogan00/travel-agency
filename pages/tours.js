@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Dropdown, Form, Header, Input, Label, List, Modal } from "semantic-ui-react";
+import { Button, Card, Dropdown, Form, Header, Input, Label, List, Modal, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { getDateTime } from "./util";
 
@@ -10,6 +10,7 @@ function Tours() {
     { name: "Kapadokya", location: "Nigde", desc: "gujiasfnk dhs asdjf" },
     { name: "Alt Orman", location: "Sihirdar Vadisi", desc: " gafdfhadbnf hj bdj bfjh abfsd" }
   ]);
+  const [openAddNewTour, setOpenAddNewTour] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -28,8 +29,6 @@ function Tours() {
             )}
             {tourArr &&
               tourArr.map((e, i) => {
-                //const [startDate, startTime] = getDateTime(e.start_date);
-                //const [endDate, endTime] = getDateTime(e.end_date);
                 return (
                   <TourCard tour={e} key={`tourCard-${i}`} />
                 );
@@ -42,10 +41,54 @@ function Tours() {
           {tourArr?.length === 0 && (
             <Header>There are no tours for reservation.</Header>
           )}
-          {tourArr &&
-            tourArr.map((e, i) => {
+          {tourArr && (
+            <>
+              <Header floated="left">
+                Active Tours
+              </Header>
+              <Header floated="right">
+                <Button
+                  content="Add New Tour"
+                  color="blue"
+                  onClick={() => setOpenAddNewTour(true)}
+                />
+              </Header>
+              <Table celled color="red">
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>ID</Table.HeaderCell>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Location</Table.HeaderCell>
+                    <Table.HeaderCell>Price</Table.HeaderCell>
+                    <Table.HeaderCell>Dates</Table.HeaderCell>
+                    <Table.HeaderCell>Capacity</Table.HeaderCell>
+                    <Table.HeaderCell>Type</Table.HeaderCell>
+                    <Table.HeaderCell>Company</Table.HeaderCell>
+                    <Table.HeaderCell>Rating</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
 
-            })}
+                <Table.Body>
+                  {tourArr.map((e, i) => {
+                    return (<Table.Row>
+                      <Table.Cell>{i}</Table.Cell>
+                      <Table.Cell>{e.name}</Table.Cell>
+                      <Table.Cell>{e.location}</Table.Cell>
+                      <Table.Cell>{ }</Table.Cell>
+                      <Table.Cell>
+                        <Dropdown />
+                      </Table.Cell>
+                      <Table.Cell>{ }</Table.Cell>
+                      <Table.Cell>{ }</Table.Cell>
+                      <Table.Cell>{ }</Table.Cell>
+                      <Table.Cell>{ }</Table.Cell>
+                    </Table.Row>);
+                  })}
+                </Table.Body>
+              </Table>
+              <AddNewTourModal state={openAddNewTour} setState={setOpenAddNewTour} />
+            </>
+          )}
         </div>
       )}
     </>
@@ -56,10 +99,7 @@ function TourCard({ tour }) {
   const [readMore, setReadMore] = useState(false);
   const [resModalOpen, setResModalOpen] = useState(false);
   return (
-    <Card
-      color="red"
-    //description={`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`}
-    >
+    <Card color="red">
       <Card.Content>
         <Card.Header>
           {tour.name}
@@ -252,7 +292,141 @@ function PaymentModal({ state, setState, tour, setState2 }) {
           content="Pay"
           labelPosition='right'
           icon='payment'
-          onClick={() => { setState = (false); setState2(false) }}
+          onClick={() => { setState(false); setState2(false) }}
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
+  );
+}
+
+function AddNewTourModal({ state, setState }) {
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [price, setPrice] = useState('');
+  const [datesArr, setDatesArr] = useState([]);
+  const [capacity, setCapacity] = useState('');
+  const [type, setType] = useState('');
+  const [company, setCompany] = useState('');
+
+  const [tempDate, setTempDate] = useState('');
+  const today = new Date().toISOString().split('T')[0];
+  console.log(today)
+
+  const addDate = () => setDatesArr((lastDates) => [...lastDates, tempDate]);
+  const deleteDate = (date) => setDatesArr((lastDates) => lastDates.filter(e => e !== date));
+
+  const cancelAddTour = () => {
+    setName('');
+    setLocation('');
+    setPrice('');
+    setDatesArr([]);
+    setCapacity('');
+    setType('');
+    setCompany('');
+    setTempDate('');
+    setState(false);
+  }
+
+  return (
+    <Modal
+      onClose={() => setState(false)}
+      onOpen={() => setState(true)}
+      closeOnDimmerClick={false}
+      open={state}
+      size="large"
+    >
+      <Modal.Header>Add New Tour</Modal.Header>
+      <Modal.Content>
+        <Modal.Description>
+          <Header>New Tour Informations</Header>
+          <Form>
+            <Form.Group>
+              <Form.Input
+                label='Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                width={8}
+              />
+              <Form.Input
+                label='Location'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                width={8}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Input
+                label='Price'
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                width={4}
+                type="number"
+              />
+              <Form.Input
+                label='Capacity'
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)}
+                width={4}
+                type="number"
+              />
+              <Form.Input
+                label='Type'
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                width={4}
+              />
+              <Form.Input
+                label='Company'
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                width={4}
+              />
+            </Form.Group>
+            <Form.Group inline>
+              <Form.Input
+                label='Dates'
+                value={tempDate}
+                onChange={(e) => setTempDate(e.target.value)}
+                width={4}
+                type="date"
+                min={today}
+              />
+              <Button
+                color="blue"
+                circular
+                icon="plus"
+                onClick={addDate}
+              />
+            </Form.Group>
+          </Form>
+          <List>
+            {datesArr?.map(date => {
+              return (
+                <List.Item>
+                  <Button
+                    content={date}
+                    color="red"
+                    icon="minus"
+                    circular
+                    size="mini"
+                    onClick={() => deleteDate(date)}
+                  />
+                </List.Item>
+              );
+            })}
+          </List>
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='red' onClick={() => cancelAddTour()}>
+          Cancel
+        </Button>
+        <Button
+          content="Add Tour"
+          labelPosition='right'
+          icon='add square'
+          onClick={() => console.log("lol")}
           positive
         />
       </Modal.Actions>
