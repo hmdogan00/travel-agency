@@ -1,20 +1,32 @@
-import db from "../../lib/db";
+import db from "../../../lib/db";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method not allowed" });
   try {
-    const { activity } = req.body;
+    let { activity } = req.body;
+    let { id } = req.body;
+    id = parseInt(id);
     let result;
-      db.query(
-        `INSERT INTO tripFellas.ActivtyIdea (name, type, location, description) 
-    VALUES ('${activity.name}', '${activity.type}', ${activity.location}, '${activity.description}')
+    let answer;
+    db.query(
+      `INSERT INTO ActivityIdea (name, type, location, description) 
+    VALUES ('${activity.name}', '${activity.type}', '${activity.location}', '${activity.description}')
     `,
-        (err, results, fields) => {
-          if (err) result = res.status(401).json({ message: err });
-          else result = res.status(200).json({ res: results });
-        }
-      );
+      (err, results, fields) => {
+        if (err) result = res.status(401).json({ message: err });
+      }
+    );
+    db.query(`SELECT LAST_INSERT_ID() as act_id`, (err, results) => { 
+      if (err) return res.status(401).json({message:err})
+      console.log(results);
+      const actId = results[0].act_id;
+      db.query(`INSERT INTO create_activity (act_idea_id, person_id) 
+      VALUES ('${actId}', '${id}')`, (err, results, fields) => {
+        if (err) answer = res.status(401).json({ message: err });
+        else answer = res.status(200).json({ res: results });
+      })
+    })
     return result;
   } catch (err) {
     console.log(err);
