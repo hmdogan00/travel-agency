@@ -127,7 +127,8 @@ CREATE TABLE IF NOT EXISTS ActivityIdea(
   act_idea_id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
   type VARCHAR(10),
-  location VARCHAR(50))`);
+  location VARCHAR(50),
+  description VARCHAR(300))`);
 
 sendQuery(`
 CREATE TABLE IF NOT EXISTS make(
