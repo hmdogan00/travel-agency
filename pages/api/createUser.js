@@ -8,17 +8,7 @@ export default async (req, res) => {
     const { user } = req.body;
     let result;
     const pass = await bcrypt.hash(user.password, 10);
-    if (user.role === "Customer") {
-      db.query(
-        `INSERT INTO tripFellas.Customer (name, gender, age, identity_no, phone_no, email, password) 
-    VALUES ('${user.name}', '${user.gender}', ${user.age}, '${user.identity_no}', '${user.phone_no}', '${user.email}', '${pass}')
-    `,
-        (err, results, fields) => {
-          if (err) result = res.status(401).json({ message: err });
-          else result = res.status(200).json({ res: results });
-        }
-      );
-    } else if (user.role === "Employee") {
+    if (user.role === "Employee") {
       db.query(
         `INSERT INTO tripFellas.Employee (name, email, identity_no, phone_no, password) 
       VALUES ('${user.name}', '${user.email}', '${user.identity_no}', '${user.phone_no}', '${pass}')
@@ -28,16 +18,38 @@ export default async (req, res) => {
           else result = res.status(200).json({ res: results });
         }
       );
-    } else if (user.role === "Guide") {
+    } 
+    else {
       db.query(
-        `INSERT INTO tripFellas.Guide (name, location, email, identity_no, phone_no, gender, password) 
-        VALUES ('${user.name}', '${user.location}', '${user.email}','${user.identity_no}', '${user.phone_no}','${user.gender}', '${pass}')
-        `,
+        `INSERT INTO ActivityUser (name, role) 
+    VALUES ('${user.name}', '${user.role}')
+    `,
         (err, results, fields) => {
-          if (err) result = res.status(401).json({ message: err });
-          else result = res.status(200).json({ res: results });
+          if (err) return res.status(401).json({ message: err });
+          db.query(`SELECT LAST_INSERT_ID() as user_id`, (err, results) => { 
+            if (err) return res.status(401).json({message:err})
+            console.log(results);
+            const userID = results[0].user_id;
+            if (user.role === "Customer") {
+              db.query(`INSERT INTO tripFellas.Customer (id, name, gender, age, identity_no, phone_no, email, password) 
+              VALUES ('${userID}','${user.name}', '${user.gender}', ${user.age}, '${user.identity_no}', '${user.phone_no}', '${user.email}', '${pass}')
+              `, (err, results, fields) => {
+                if (err) result = res.status(401).json({ message: err });
+                else result = res.status(200).json({ res: results });
+              })
+          }
+          else if (user.role === "Guide") {
+              db.query(`INSERT INTO tripFellas.Guide (guide_id, name, location, email, identity_no, phone_no, gender, password) 
+              VALUES ('${userID}','${user.name}', '${user.location}', '${user.email}','${user.identity_no}', '${user.phone_no}','${user.gender}', '${pass}')
+              `, (err, results, fields) => {
+                if (err) result = res.status(401).json({ message: err });
+                else result = res.status(200).json({ res: results });
+              })
+          }
         }
       );
+    }
+    );
     }
     return result;
   } catch (err) {
