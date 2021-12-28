@@ -292,6 +292,7 @@ function ReservationModal({ state, setState, tour }) {
         setState={setPayModalOpen}
         tour={tour}
         setState2={setState}
+        resPerson={resPerson}
       />
     </Modal>
   );
@@ -325,12 +326,18 @@ const years = [
   { key: "2030", value: "2030", text: "2030" },
 ];
 
-function PaymentModal({ state, setState, tour, setState2 }) {
+function PaymentModal({ state, setState, tour, setState2, resPerson }) {
   const [nameOnCard, setNameOnCard] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [ccv, setCcv] = useState("");
+  const [startDate, startTime] = getDateTime(tour.start_date)
+  const [endDate, endTime] = getDateTime(tour.end_date)
+
+  const makeReservation = () => {
+    axios.post(`/`).then(alert).catch(alert)
+  }
 
   return (
     <Modal
@@ -340,22 +347,22 @@ function PaymentModal({ state, setState, tour, setState2 }) {
       open={state}
       size="tiny"
     >
-      <Modal.Header>Pay for {tour.name} Tour</Modal.Header>
+      <Modal.Header>Pay for {tour.name}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Purchase Summary</Header>
           <List bulleted>
             <List.Item>Tour name: {tour.name}</List.Item>
             <List.Item>Tour location: {tour.location}</List.Item>
-            <List.Item>Tour date: .date.</List.Item>
-            <List.Item>Total price: .price.</List.Item>
+            <List.Item>Tour date: {`${startDate}(${startTime}) : ${endDate}(${endTime})`}</List.Item>
+            <List.Item>One person price: {tour.price}</List.Item>
           </List>
         </Modal.Description>
         <br />
         <Modal.Description>
           <Header>
             Payment Information
-            <Label size="large">TOTAL PRICE: .PRICE.</Label>
+            <Label size="large">TOTAL PRICE: {resPerson * tour.price}</Label>
           </Header>
           <Form>
             <Form.Input
@@ -413,6 +420,7 @@ function PaymentModal({ state, setState, tour, setState2 }) {
           onClick={() => {
             setState(false);
             setState2(false);
+            makeReservation();
           }}
           positive
         />
