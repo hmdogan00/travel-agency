@@ -142,7 +142,7 @@ export default function Home() {
           <Checkbox disabled></Checkbox>3. Tour guiding (by an employee and a guide)<br/>&emsp;
           <Checkbox disabled></Checkbox>a. List all tours without an assigned guide. (employee)<br/>&emsp;
           <Checkbox disabled></Checkbox>b. Select a tour and assign an available guide. (employee)<br/>&emsp;
-          <Checkbox disabled></Checkbox>c. List all available assigned tours. (guide)<br/>&emsp;
+          <Checkbox disabled checked></Checkbox>c. List all available assigned tours. (guide)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>d. Select a tour and accept or decline to guide. (guide)<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>i. If declined, state the reason.<br/>&emsp;
           <Checkbox disabled></Checkbox>e. If accepted, give feedback about the tour. (guide)
