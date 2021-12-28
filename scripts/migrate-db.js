@@ -124,7 +124,8 @@ CREATE TABLE IF NOT EXISTS ActivityIdea(
   name VARCHAR(50) NOT NULL,
   type VARCHAR(10),
   location VARCHAR(50),
-  description VARCHAR(300))`);
+  description VARCHAR(300),
+  is_accepted ENUM('accepted', 'waiting', 'rejected') DEFAULT 'waiting')`);
 
 sendQuery(`
 CREATE TABLE IF NOT EXISTS make(
@@ -183,7 +184,6 @@ sendQuery(`
     FOREIGN KEY(employee_id) REFERENCES Employee(employee_id),
     act_idea_id INT NOT NULL, 
     FOREIGN KEY(act_idea_id) REFERENCES ActivityIdea(act_idea_id),
-    is_accepted ENUM('accepted', 'waiting', 'rejected'),
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     price FLOAT NOT NULL,
