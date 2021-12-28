@@ -16,6 +16,34 @@ import {
 import Navbar from "./Navbar";
 import { getDateTime, makeRatingString, includesNoCase } from "./util";
 
+const months = [
+  { key: "1", value: "1", text: "1" },
+  { key: "2", value: "2", text: "2" },
+  { key: "3", value: "3", text: "3" },
+  { key: "4", value: "4", text: "4" },
+  { key: "5", value: "5", text: "5" },
+  { key: "6", value: "6", text: "6" },
+  { key: "7", value: "7", text: "7" },
+  { key: "8", value: "8", text: "8" },
+  { key: "9", value: "9", text: "9" },
+  { key: "10", value: "10", text: "10" },
+  { key: "11", value: "11", text: "11" },
+  { key: "12", value: "12", text: "12" },
+];
+
+const years = [
+  { key: "2021", value: "2021", text: "2021" },
+  { key: "2022", value: "2022", text: "2022" },
+  { key: "2023", value: "2023", text: "2023" },
+  { key: "2024", value: "2024", text: "2024" },
+  { key: "2025", value: "2025", text: "2025" },
+  { key: "2026", value: "2026", text: "2026" },
+  { key: "2027", value: "2027", text: "2027" },
+  { key: "2028", value: "2028", text: "2028" },
+  { key: "2029", value: "2029", text: "2029" },
+  { key: "2030", value: "2030", text: "2030" },
+];
+
 function Tours() {
   const [role, setRole] = useState("");
   const [tourArr, setTourArr] = useState([]);
@@ -250,7 +278,8 @@ function TourCard({ tour }) {
 function ReservationModal({ state, setState, tour }) {
   const [payModalOpen, setPayModalOpen] = useState(false);
   const [resPerson, setResPerson] = useState("");
-
+  const [wantedDate, setWantedDate] = useState("");
+  const [wantedEndDate, setWantedEndDate] = useState("");
   return (
     <Modal
       onClose={() => setState(false)}
@@ -264,7 +293,21 @@ function ReservationModal({ state, setState, tour }) {
           <Header>Reservation Information</Header>
           <Form>
             <Form.Field>
-              <label>Number of People for Reservation:</label>
+              <label>Select the desired start date for the tour:</label>
+              <Input
+                type="date"
+                placeholder="Enter start date"
+                defaultValue={wantedDate}
+                onChange={e => setWantedDate(e.target.value)}
+              />
+              <label>Select the desired end date for the tour:</label>
+              <Input
+                type="date"
+                placeholder="Enter end date"
+                defaultValue={wantedEndDate}
+                onChange={e => setWantedEndDate(e.target.value)}
+              />
+              <label>Number of people for reservation:</label>
               <Input
                 type="number"
                 placeholder="How many people are you reserving for?"
@@ -293,40 +336,14 @@ function ReservationModal({ state, setState, tour }) {
         tour={tour}
         setState2={setState}
         resPerson={resPerson}
+        wantedDate={wantedDate}
+        wantedEndDate={wantedEndDate}
       />
     </Modal>
   );
 }
 
-const months = [
-  { key: "1", value: "1", text: "1" },
-  { key: "2", value: "2", text: "2" },
-  { key: "3", value: "3", text: "3" },
-  { key: "4", value: "4", text: "4" },
-  { key: "5", value: "5", text: "5" },
-  { key: "6", value: "6", text: "6" },
-  { key: "7", value: "7", text: "7" },
-  { key: "8", value: "8", text: "8" },
-  { key: "9", value: "9", text: "9" },
-  { key: "10", value: "10", text: "10" },
-  { key: "11", value: "11", text: "11" },
-  { key: "12", value: "12", text: "12" },
-];
-
-const years = [
-  { key: "2021", value: "2021", text: "2021" },
-  { key: "2022", value: "2022", text: "2022" },
-  { key: "2023", value: "2023", text: "2023" },
-  { key: "2024", value: "2024", text: "2024" },
-  { key: "2025", value: "2025", text: "2025" },
-  { key: "2026", value: "2026", text: "2026" },
-  { key: "2027", value: "2027", text: "2027" },
-  { key: "2028", value: "2028", text: "2028" },
-  { key: "2029", value: "2029", text: "2029" },
-  { key: "2030", value: "2030", text: "2030" },
-];
-
-function PaymentModal({ state, setState, tour, setState2, resPerson }) {
+function PaymentModal({ state, setState, tour, setState2, resPerson, wantedDate, wantedEndDate }) {
   const [nameOnCard, setNameOnCard] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [month, setMonth] = useState("");
@@ -336,7 +353,16 @@ function PaymentModal({ state, setState, tour, setState2, resPerson }) {
   const [endDate, endTime] = getDateTime(tour.end_date)
 
   const makeReservation = () => {
-    axios.post(`/`).then(alert).catch(alert)
+    const body = {
+      reservation: {
+        start: wantedDate,
+        end: wantedEndDate,
+        resNumber: resPerson,
+        tourId: tour.tour_id
+      },
+      id: localStorage.getItem('id')
+    }
+    axios.post(`/api/customer/makeReservation`, body).then(alert).catch(alert)
   }
 
   return (
