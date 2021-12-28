@@ -19,3 +19,15 @@ export const getDateTime = date => {
 export const includesNoCase = (s1, s2) => {
   return s1.toLowerCase().includes(s2.toLowerCase());
 }
+
+/**
+ * Makes a float number a rating string over 10.
+ * Example: 0.8 => 8/10
+ * @param {Float} f float to be converted
+ */
+export const makeRatingString = (f) => {
+  if ( f < 0 || f > 1 ){
+    throw new Error("Rating is wrong!");
+  }
+  return `${f * 10}/10`;
+}
