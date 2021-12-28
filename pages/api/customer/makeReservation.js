@@ -1,5 +1,5 @@
 import db from "../../../lib/db";
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default async (req, res) => {
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method not allowed" });

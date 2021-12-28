@@ -39,7 +39,8 @@ sendQuery(`CREATE TABLE IF NOT EXISTS Guide(
     identity_no INT NOT NULL,
     phone_no VARCHAR(50),
     email VARCHAR(50) UNIQUE,
-    password VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL,
+    ratingCount INT DEFAULT 0 NOT NULL
   )`);
 
 sendQuery(`
@@ -67,7 +68,7 @@ CREATE TABLE IF NOT EXISTS Tour(
   person_id INT,
   is_accepted ENUM('accepted', 'waiting', 'rejected'),
   comment VARCHAR(500),
-  rate FLOAT,
+  ratingCount INT DEFAULT 0 NOT NULL,
   FOREIGN KEY(person_id) REFERENCES Guide(guide_id)
   )`);
 
@@ -203,6 +204,6 @@ sendQuery(`
     tour_rate FLOAT NOT NULL,
     guide_comment VARCHAR(500),
     guide_rate FLOAT NOT NULL,
-    PRIMARY KEY(tour_id, G_person_id))`);
+    PRIMARY KEY(tour_id, G_person_id, C_person_id))`);
 
 db.end();

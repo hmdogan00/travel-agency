@@ -1,17 +1,33 @@
 import { useEffect, useReducer, useState, useMemo } from "react";
 import Navbar from "./Navbar";
-import { Card, Header, Table, Button, Form } from "semantic-ui-react";
+import { Card, Header, Table, Button, Form, Icon } from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
-import { getDateTime, includesNoCase } from "../util";
+import { getDateTime, includesNoCase, parseDateString } from "../util";
 
-const approveRes = rId => axios.post("/api/employee/approveReservation", { id: rId }).then(res => console.log).catch(e => console.error);
+const approveRes = rId =>
+  axios
+    .post("/api/employee/approveReservation", { id: rId })
+    .then(res => console.log)
+    .catch(e => console.error);
 
-const approveResGuide = tId => axios.post("/api/guide/approveOffer", { id: tId }).then(res => console.log).catch(e => console.error);
+const approveResGuide = tId =>
+  axios
+    .post("/api/guide/approveOffer", { id: tId })
+    .then(res => console.log)
+    .catch(e => console.error);
 
-const declineRes = rId => axios.post("/api/employee/declineReservation", { id: rId }).then(res => console.log).catch(e => console.error);
+const declineRes = rId =>
+  axios
+    .post("/api/employee/declineReservation", { id: rId })
+    .then(res => console.log)
+    .catch(e => console.error);
 
-const declineResGuide = tId => axios.post("/api/guide/declineOffer", { id: tId }).then(res => console.log).catch(e => console.error);
+const declineResGuide = tId =>
+  axios
+    .post("/api/guide/declineOffer", { id: tId })
+    .then(res => console.log)
+    .catch(e => console.error);
 
 function Dashboard() {
   const [role, setRole] = useState("");
@@ -24,7 +40,11 @@ function Dashboard() {
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
-      if (searchTN !== "") return includesNoCase((role === "Employee" ? item.t_name : item.name), searchTN);
+      if (searchTN !== "")
+        return includesNoCase(
+          role === "Employee" ? item.t_name : item.name,
+          searchTN
+        );
       else if (searchDate !== "") {
         const [d, t] = getDateTime(item.start_date);
         return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
@@ -119,21 +139,30 @@ function Dashboard() {
               tourArr.map((e, i) => {
                 const [startDate, startTime] = getDateTime(e.start_date);
                 const [endDate, endTime] = getDateTime(e.end_date);
+                const now = new Date();
+                const then = parseDateString(e.end_date);
                 return (
-                  <Card
-                    key={`card-${i}`}
-                    color="red"
-                    header={e.name}
-                    meta={e.location}
-                    description={`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`}
-                  />
+                  <Card key={`card-${i}`} color="red">
+                    <Card.Content header={e.name} meta={e.location} description=
+                      {`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`}/>
+                    { now > then &&
+                      <Card.Content extra>
+                        <Button color="yellow" onClick={() => window.location.href = `/tours/${e.tour_id}`}>
+                          <Icon name="comment alternate"/>Review</Button>
+                      </Card.Content>
+                    }
+                  </Card>
                 );
               })}
           </Card.Group>
         </div>
       ) : (
         <div style={{ margin: "30px" }}>
-          <Header>{role === "Employee" ? "Latest Reservations" : "Latest Reservation Offers"}</Header>
+          <Header>
+            {role === "Employee"
+              ? "Latest Reservations"
+              : "Latest Reservation Offers"}
+          </Header>
           <br></br>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {role === "Employee" && (

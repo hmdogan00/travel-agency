@@ -65,3 +65,9 @@ a {
   height: 230px;
   overflow-y: scroll;
 }
+
+.tour-review-finish-btn{
+  margin: 0 46% 0 46%;
+  width: 9%;
+  align-self: center;
+}
