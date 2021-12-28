@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import { Card, Header, Table, Button, Form } from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
-import { getDateTime, includesNoCase } from "./util";
+import { getDateTime, includesNoCase } from "../util";
 
 const approveRes = rId => axios.post("/api/employee/approveReservation", { id: rId }).then(res => console.log).catch(e => console.error);
 
@@ -133,8 +133,8 @@ function Dashboard() {
         </div>
       ) : (
         <div style={{ margin: "30px" }}>
-        <Header>{role === "Employee" ? "Latest Reservations" : "Latest Reservation Offers"}</Header>
-        <br></br>
+          <Header>{role === "Employee" ? "Latest Reservations" : "Latest Reservation Offers"}</Header>
+          <br></br>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {role === "Employee" && (
               <Form.Input

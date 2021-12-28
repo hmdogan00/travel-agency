@@ -22,14 +22,6 @@ const options = [
 
 export default function Home() {
   const [users, setUsers] = useState([]);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [email, setEmail] = useState("");
-  const [identity_no, setIdentity] = useState("");
-  const [phone_no, setPhoneNo] = useState("");
-  const [gender, setGender] = useState("");
-
-  const handleChange = (e, { value }) => setGender(value);
 
   useEffect(() => {
     axios.get("/api/getUsers").then((res) => setUsers(res.data.results));
@@ -118,7 +110,7 @@ export default function Home() {
         <p style={{width: "%100", height: "%80"}}>
           <Checkbox disabled></Checkbox>1. Book a tour (by a customer)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
-          <Checkbox disabled></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
+          <Checkbox disabled checked></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>c. Indicate the number of people for booking.<br/>&emsp;
           <Checkbox disabled></Checkbox>d. List all available activities of the selected tour.<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>i. Extra activities cost additional money, therefore select the desired one for
