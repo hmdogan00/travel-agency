@@ -1,4 +1,4 @@
-import {getDateTime, makeRatingString} from "../util.js"
+import { getDateTime, makeRatingString } from "../../util.js"
 import { useState } from "react";
 import { Card, Button, Grid } from "semantic-ui-react";
 import ReservationModal from "./ReservationModal.js";
