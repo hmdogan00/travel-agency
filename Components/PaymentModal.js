@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { getDateTime } from "../util";
-import { Modal, Form, Header, List, Dropdown, Button, Label } from "semantic-ui-react";
+import {
+  Modal,
+  Form,
+  Header,
+  List,
+  Dropdown,
+  Button,
+  Label,
+} from "semantic-ui-react";
 import axios from "axios";
 
 const months = [
@@ -31,14 +39,24 @@ const years = [
   { key: "2030", value: "2030", text: "2030" },
 ];
 
-function PaymentModal({ state, setState, tour, setState2, resPerson, wantedDate, wantedEndDate }) {
+function PaymentModal({
+  state,
+  setState,
+  tour,
+  setState2,
+  resPerson,
+  wantedDate,
+  wantedEndDate,
+  activityArr,
+  activityChecks,
+}) {
   const [nameOnCard, setNameOnCard] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [ccv, setCcv] = useState("");
-  const [startDate, startTime] = getDateTime(tour.start_date)
-  const [endDate, endTime] = getDateTime(tour.end_date)
+  const [startDate, startTime] = getDateTime(tour.start_date);
+  const [endDate, endTime] = getDateTime(tour.end_date);
 
   const makeReservation = () => {
     const body = {
@@ -46,12 +64,20 @@ function PaymentModal({ state, setState, tour, setState2, resPerson, wantedDate,
         start: wantedDate,
         end: wantedEndDate,
         resNumber: resPerson,
-        tourId: tour.tour_id
+        tourId: tour.tour_id,
       },
-      id: localStorage.getItem('id')
-    }
-    axios.post(`/api/customer/makeReservation`, body).then(alert).catch(alert)
-  }
+      id: localStorage.getItem("id"),
+    };
+    axios.post(`/api/customer/makeReservation`, body).then(alert).catch(alert);
+  };
+
+  const getTotalPrice = () => {
+    let sum = 0;
+    activityArr.forEach((a, i) => {
+      if (activityChecks[i]) sum += a.price;
+    });
+    return tour.price * resPerson + sum;
+  };
 
   return (
     <Modal
@@ -68,16 +94,23 @@ function PaymentModal({ state, setState, tour, setState2, resPerson, wantedDate,
           <List bulleted>
             <List.Item>Tour name: {tour.name}</List.Item>
             <List.Item>Tour location: {tour.location}</List.Item>
-            <List.Item>Tour date: {`${startDate}(${startTime}) : ${endDate}(${endTime})`}</List.Item>
+            <List.Item>
+              Tour date: {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+            </List.Item>
             <List.Item>One person price: {tour.price}</List.Item>
+            <List.Item>
+              Total reservation price: {tour.price * resPerson}
+            </List.Item>
+            {activityArr.map((a, i) => {
+              if (activityChecks[i])
+                return <List.Item>{`${a.name}: ${a.price}`}</List.Item>;
+            })}
           </List>
+          <Label size="large">TOTAL PRICE: {getTotalPrice()}</Label>
         </Modal.Description>
         <br />
         <Modal.Description>
-          <Header>
-            Payment Information
-            <Label size="large">TOTAL PRICE: {resPerson * tour.price}</Label>
-          </Header>
+          <Header>Payment Information</Header>
           <Form>
             <Form.Input
               label="NAME ON CARD"

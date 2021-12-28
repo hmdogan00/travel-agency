@@ -112,8 +112,8 @@ export default function Home() {
           <Checkbox disabled checked></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>c. Indicate the number of people for booking.<br/>&emsp;
-          <Checkbox disabled></Checkbox>d. List all available activities of the selected tour.<br/>&emsp;&emsp;
-          <Checkbox disabled></Checkbox>i. Extra activities cost additional money, therefore select the desired one for
+          <Checkbox disabled checked></Checkbox>d. List all available activities of the selected tour.<br/>&emsp;&emsp;
+          <Checkbox disabled checked></Checkbox>i. Extra activities cost additional money, therefore select the desired one for
           each guest.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>e. Make the payment accordingly.<br/>&emsp;
           <Checkbox disabled></Checkbox>f. Give feedback about the tour and the guide. (comment and rate)<br/>

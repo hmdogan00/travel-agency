@@ -60,3 +60,8 @@ a {
 .mr-4 {
   margin-right: 40px;
 }
+
+.scrollable {
+  height: 230px;
+  overflow-y: scroll;
+}
