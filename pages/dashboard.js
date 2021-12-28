@@ -21,7 +21,6 @@ function Dashboard() {
   const [searchTN, setSearchTN] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
-  console.log(id)
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {

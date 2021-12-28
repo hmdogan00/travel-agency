@@ -117,7 +117,7 @@ export default function Home() {
         <h1>TODO:</h1>
         <p style={{width: "%100", height: "%80"}}>
           <Checkbox disabled></Checkbox>1. Book a tour (by a customer)<br/>&emsp;
-          <Checkbox disabled></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
+          <Checkbox disabled checked></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
           <Checkbox disabled></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>c. Indicate the number of people for booking.<br/>&emsp;
           <Checkbox disabled></Checkbox>d. List all available activities of the selected tour.<br/>&emsp;&emsp;
