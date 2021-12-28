@@ -15,15 +15,11 @@ db.connect();
 sendQuery(`CREATE TABLE IF NOT EXISTS ActivityUser(
   person_id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
-  gender ENUM('Male', 'Female'),
-  id_no INT UNIQUE NOT NULL,
-  phone_no VARCHAR(15) UNIQUE NOT NULL,
-  e_mail VARCHAR(50) UNIQUE NOT NULL,
-  password VARCHAR(100) NOT NULL
+  role ENUM('Customer', 'Guide')
   )`);
 
 sendQuery(`CREATE TABLE IF NOT EXISTS Customer(
-  id INT PRIMARY KEY AUTO_INCREMENT,
+  id INT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     gender ENUM('Male','Female'),
     age INT NOT NULL,
@@ -35,7 +31,7 @@ sendQuery(`CREATE TABLE IF NOT EXISTS Customer(
   )`);
 
 sendQuery(`CREATE TABLE IF NOT EXISTS Guide(
-  guide_id INT PRIMARY KEY AUTO_INCREMENT,
+  guide_id INT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     gender ENUM('Male','Female'),
     location VARCHAR(50) NOT NULL,
