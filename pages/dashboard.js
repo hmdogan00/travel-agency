@@ -21,6 +21,7 @@ function Dashboard() {
   const [searchTN, setSearchTN] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
+  console.log(id)
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
@@ -90,9 +91,9 @@ function Dashboard() {
           dispatch({ type: "UPDATE_DATA", data: searchData });
         })
         .catch(console.error);
-    } else if (role === "Guide" && !tourArr) {
+    } else if (role === "Guide" && !tourArr && id) {
       axios
-        .get("/api/guide/seeOffers")
+        .get(`/api/guide/seeOffers/${id}`)
         .then(res => {
           setTourArr(res.data.result);
           dispatch({ type: "UPDATE_DATA", data: searchData });

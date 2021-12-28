@@ -1,14 +1,15 @@
-import db from "../../../lib/db";
+import db from "../../../../lib/db";
 export default async (req, res) => {
     if ( req.method !== 'GET' ) {
       res.status(400).json({message: 'Method Not Allowed'})
       return;
     }
+    let { id } = req.query;
     let answer;
     try {
       await db.query(`SELECT T.name, start_date, end_date, T.location, tour_id
                     FROM Tour T
-                    WHERE T.person_id IS NOT null and is_accepted='waiting'
+                    WHERE T.person_id IS NOT null and is_accepted='waiting' and T.person_id=${id}
                     ORDER BY start_date DESC`, (err,result,fields) => {
         if (err) {  
             res.statusCode = 401;
