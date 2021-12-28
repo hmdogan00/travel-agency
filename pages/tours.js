@@ -1,18 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
-import {
-  Button,
-  Card,
-  Dropdown,
-  Form,
-  Grid,
-  Header,
-  Input,
-  Label,
-  List,
-  Modal,
-  Table,
-} from "semantic-ui-react";
+import { Button, Card, Form, Header, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { getDateTime, makeRatingString, includesNoCase } from "../util";
 import TourCard from "../Components/Tours/TourCard.js"
