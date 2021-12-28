@@ -108,7 +108,7 @@ export default function Home() {
         </Table>
         <h1>TODO:</h1>
         <p style={{width: "%100", height: "%80"}}>
-          <Checkbox disabled></Checkbox>1. Book a tour (by a customer)<br/>&emsp;
+          <Checkbox disabled checked></Checkbox>1. Book a tour (by a customer)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>a. List all available tours and apply filters. (date, place, type, etc.)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>b. Select a tour and select the desired start date.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>c. Indicate the number of people for booking.<br/>&emsp;
@@ -116,7 +116,7 @@ export default function Home() {
           <Checkbox disabled checked></Checkbox>i. Extra activities cost additional money, therefore select the desired one for
           each guest.<br/>&emsp;
           <Checkbox disabled checked></Checkbox>e. Make the payment accordingly.<br/>&emsp;
-          <Checkbox disabled></Checkbox>f. Give feedback about the tour and the guide. (comment and rate)<br/>
+          <Checkbox disabled checked></Checkbox>f. Give feedback about the tour and the guide. (comment and rate)<br/>
           <Checkbox disabled></Checkbox>2. Reservation management (by an employee and a customer)<br/>&emsp;
           <Checkbox disabled></Checkbox>a. Hotel reservation<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>i. List all available hotels and select the desired one. (apply filters like stars,
