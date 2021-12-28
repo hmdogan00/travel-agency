@@ -15,8 +15,8 @@ import {
 } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { getDateTime, makeRatingString, includesNoCase } from "../util";
-import TourCard from "../Components/TourCard.js"
-import AddNewTourModal from "../Components/AddNewTourModal.js"
+import TourCard from "../Components/Tours/TourCard.js"
+import AddNewTourModal from "../Components/Tours/AddNewTourModal.js"
 
 const Tours = () => {
   const [role, setRole] = useState("");
@@ -49,7 +49,7 @@ const Tours = () => {
     if (typeof window !== "undefined") {
       setRole(localStorage.getItem("role"));
     }
-    if ( tourArr.length === 0) {
+    if (tourArr.length === 0) {
       axios
         .get("/api/getAllTours")
         .then(res => setTourArr([...res.data.results]));
@@ -59,59 +59,59 @@ const Tours = () => {
   return (
     <>
       <Navbar activeType="tours" />
-          <div style={{ display: "flex", flexDirection: "row", margin:"30px" }}>
-            <Form.Input
-              loading={loading}
-              onChange={e => {
-                setSearchN(e.target.value);
-                setSearchDate("");
-                setSearchLoc("");
-                setSearchType("");
-              }}
-              value={searchN}
-              placeholder="Search by Tour Name"
-              className="mr-4"
-              icon="search"
-            />
-            <Form.Input
-              loading={loading}
-              onChange={e => {
-                setSearchN("");
-                setSearchType(e.target.value);
-                setSearchLoc("");
-                setSearchDate("");
-              }}
-              value={searchType}
-              placeholder="Search by Type"
-              className="mr-4"
-              icon="search"
-            />
-            <Form.Input
-              loading={loading}
-              onChange={e => {
-                setSearchN("");
-                setSearchType("");
-                setSearchLoc(e.target.value);
-                setSearchDate("");
-              }}
-              value={searchLoc}
-              placeholder="Search by Location"
-              className="mr-4"
-              icon="search"
-            />
-            <Form.Input
-              loading={loading}
-              onChange={e => {
-                setSearchN("");
-                setSearchType("");
-                setSearchLoc("");
-                setSearchDate(e.target.value);
-              }}
-              value={searchDate}
-              placeholder="Search by Date"
-              icon="search"
-            />
-          </div>
+      <div style={{ display: "flex", flexDirection: "row", margin: "30px" }}>
+        <Form.Input
+          loading={loading}
+          onChange={e => {
+            setSearchN(e.target.value);
+            setSearchDate("");
+            setSearchLoc("");
+            setSearchType("");
+          }}
+          value={searchN}
+          placeholder="Search by Tour Name"
+          className="mr-4"
+          icon="search"
+        />
+        <Form.Input
+          loading={loading}
+          onChange={e => {
+            setSearchN("");
+            setSearchType(e.target.value);
+            setSearchLoc("");
+            setSearchDate("");
+          }}
+          value={searchType}
+          placeholder="Search by Type"
+          className="mr-4"
+          icon="search"
+        />
+        <Form.Input
+          loading={loading}
+          onChange={e => {
+            setSearchN("");
+            setSearchType("");
+            setSearchLoc(e.target.value);
+            setSearchDate("");
+          }}
+          value={searchLoc}
+          placeholder="Search by Location"
+          className="mr-4"
+          icon="search"
+        />
+        <Form.Input
+          loading={loading}
+          onChange={e => {
+            setSearchN("");
+            setSearchType("");
+            setSearchLoc("");
+            setSearchDate(e.target.value);
+          }}
+          value={searchDate}
+          placeholder="Search by Date"
+          icon="search"
+        />
+      </div>
       {role === "Customer" && (
         <div style={{ margin: "30px" }}>
           <Card.Group itemsPerRow={4}>
