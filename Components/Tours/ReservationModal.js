@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Modal, Header, Form, Input, Button, Checkbox, Table, Label } from "semantic-ui-react";
 import PaymentModal from "./PaymentModal.js";
 import axios from "axios";
-import { getDateTime } from "../util.js";
+import { getDateTime } from "../../util.js";
 
 function ReservationModal({ state, setState, tour }) {
   const [payModalOpen, setPayModalOpen] = useState(false);
