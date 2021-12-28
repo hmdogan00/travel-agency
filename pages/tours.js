@@ -1,12 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Button,
   Card,
   Dropdown,
   Form,
   Grid,
-  GridColumn,
   Header,
   Input,
   Label,
@@ -15,16 +14,40 @@ import {
   Table,
 } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import { getDateTime, makeRatingString } from "./util";
+import { getDateTime, makeRatingString, includesNoCase } from "./util";
 
 function Tours() {
   const [role, setRole] = useState("");
   const [tourArr, setTourArr] = useState([]);
   const [openAddNewTour, setOpenAddNewTour] = useState(false);
+  const [searchN, setSearchN] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [searchLoc, setSearchLoc] = useState("");
+  const [searchType, setSearchType] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const searchData = useMemo(() => {
+    return tourArr?.filter(item => {
+      if (searchN !== "")
+        return includesNoCase(
+          role === "Employee" ? item.t_name : item.name,
+          searchN
+        );
+      else if (searchDate !== "") {
+        const [d, t] = getDateTime(item.start_date);
+        return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
+      } else if (searchLoc !== "")
+        return includesNoCase(item.location, searchLoc);
+      else if (searchType !== "") return includesNoCase(item.type, searchType);
+      else return true;
+    });
+  }, [tourArr, searchN, searchDate, searchLoc, searchType]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(localStorage.getItem("role"));
+    }
+    if (tourArr.length === 0) {
       axios
         .get("/api/getAllTours")
         .then(res => setTourArr([...res.data.results]));
@@ -34,14 +57,67 @@ function Tours() {
   return (
     <>
       <Navbar activeType="tours" />
+          <div style={{ display: "flex", flexDirection: "row", margin:"30px" }}>
+            <Form.Input
+              loading={loading}
+              onChange={e => {
+                setSearchN(e.target.value);
+                setSearchDate("");
+                setSearchLoc("");
+                setSearchType("");
+              }}
+              value={searchN}
+              placeholder="Search by Tour Name"
+              className="mr-4"
+              icon="search"
+            />
+            <Form.Input
+              loading={loading}
+              onChange={e => {
+                setSearchN("");
+                setSearchType(e.target.value);
+                setSearchLoc("");
+                setSearchDate("");
+              }}
+              value={searchType}
+              placeholder="Search by Type"
+              className="mr-4"
+              icon="search"
+            />
+            <Form.Input
+              loading={loading}
+              onChange={e => {
+                setSearchN("");
+                setSearchType("");
+                setSearchLoc(e.target.value);
+                setSearchDate("");
+              }}
+              value={searchLoc}
+              placeholder="Search by Location"
+              className="mr-4"
+              icon="search"
+            />
+            <Form.Input
+              loading={loading}
+              onChange={e => {
+                setSearchN("");
+                setSearchType("");
+                setSearchLoc("");
+                setSearchDate(e.target.value);
+              }}
+              value={searchDate}
+              placeholder="Search by Date"
+              icon="search"
+            />
+          </div>
       {role === "Customer" && (
         <div style={{ margin: "30px" }}>
           <Card.Group itemsPerRow={4}>
-            {tourArr?.length === 0 && (
+            {searchData?.length === 0 && (
               <Header>There are no tours for reservation.</Header>
             )}
-            {tourArr &&
-              tourArr.map((e, i) => {
+            {searchData &&
+              searchData.map((e, i) => {
                 return <TourCard tour={e} key={`tourCard-${i}`} />;
               })}
           </Card.Group>
@@ -79,19 +155,21 @@ function Tours() {
 
                 <Table.Body>
                   {tourArr.map((e, i) => {
+                    const [startDate, startTime] = getDateTime(e.start_date);
+                    const [endDate, endTime] = getDateTime(e.end_date);
                     return (
                       <Table.Row>
                         <Table.Cell>{i}</Table.Cell>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
-                        <Table.Cell>{}</Table.Cell>
+                        <Table.Cell>{e.price}</Table.Cell>
                         <Table.Cell>
-                          <Dropdown />
+                          {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
                         </Table.Cell>
-                        <Table.Cell>{}</Table.Cell>
-                        <Table.Cell>{}</Table.Cell>
-                        <Table.Cell>{}</Table.Cell>
-                        <Table.Cell>{}</Table.Cell>
+                        <Table.Cell>{e.capacity}</Table.Cell>
+                        <Table.Cell>{e.type}</Table.Cell>
+                        <Table.Cell>{e.company}</Table.Cell>
+                        <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
                       </Table.Row>
                     );
                   })}
@@ -139,13 +217,13 @@ function TourCard({ tour }) {
         <Card.Meta>{tour.location}</Card.Meta>
         <Card.Description>
           <Grid>
-            {readMore
-              ? tour.desc.map((e, i) => {
-                  return <Grid.Column style={{paddingBottom : "0 !important"}} width={15}>{e}</Grid.Column>;
-                })
-              : <Grid.Column width={15}>
-                {`${tour.desc[0]}...`}
-              </Grid.Column>}
+            {readMore ? (
+              tour.desc.map((e, i) => {
+                return <Grid.Column width={16}>{e}</Grid.Column>;
+              })
+            ) : (
+              <Grid.Column width={15}>{`${tour.desc[0]}...`}</Grid.Column>
+            )}
             <Grid.Column width={15}>
               <Button
                 content={readMore ? "Show Less" : "Show More"}
@@ -180,7 +258,7 @@ function ReservationModal({ state, setState, tour }) {
       closeOnDimmerClick={false}
       open={state}
     >
-      <Modal.Header>Reservation for {tour.name} Tour</Modal.Header>
+      <Modal.Header>Reservation for {tour.name}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Reservation Information</Header>
