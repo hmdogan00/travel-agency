@@ -3,7 +3,7 @@ import db from "../../../lib/db";
 export default (req, res) => {
   if ( req.method !== "GET" ) return Promise.reject("Invalid method");
   try {
-    db.query("SELECT * FROM Hotel WHERE occupancy_rate < 1", function (err, results, fields) {
+    db.query("SELECT * FROM Hotel", function (err, results, fields) {
       if (err) {
         res.statusCode = 401;
         res.json({ message: err });
