@@ -131,6 +131,7 @@ function ActivityManagement() {
                       <Table.HeaderCell>Tour Name</Table.HeaderCell>
                       <Table.HeaderCell>Type</Table.HeaderCell>
                       <Table.HeaderCell>Location</Table.HeaderCell>
+                      <Table.HeaderCell>Description</Table.HeaderCell>
                       <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
