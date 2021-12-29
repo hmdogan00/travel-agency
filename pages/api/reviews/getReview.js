@@ -25,12 +25,12 @@ export default async (req, res) => {
         return;
       }
       if ( result.length === 0 ) {
-        res.status(200).json({bash: true})
+        res.status(200).json({isReviewed: false})
         return;
       }
       else{
           const answer = {
-              bash: false,
+              isReviewed: true,
               review: result
           }
           res.status(200).json(answer)
