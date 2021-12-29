@@ -41,11 +41,11 @@ function Navbar({ activeType }) {
         Tours
       </Menu.Item>
       <Menu.Item
-        name='reservations'
-        active={activeType === 'reservations'}
-        onClick={(e) => handleItemClick(e, 'reservations')}
+        name='hotels'
+        active={activeType === 'hotels'}
+        onClick={(e) => handleItemClick(e, 'hotels')}
       >
-        Reservations
+        Hotels
       </Menu.Item>
       <Menu.Item
         name='activityManagement'
