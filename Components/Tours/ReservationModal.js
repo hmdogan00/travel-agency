@@ -20,7 +20,6 @@ function ReservationModal({ state, setState, tour }) {
       if (i === index) arr.push(!e)
       else arr.push(e)
     })
-    console.log(arr)
     setActivityChecks(arr);
   }
 
