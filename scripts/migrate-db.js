@@ -190,7 +190,7 @@ sendQuery(`
     price FLOAT NOT NULL,
     duration VARCHAR(50),
     age_restriction INT,
-    PRIMARY KEY(tour_id, employee_id))`);
+    PRIMARY KEY(tour_id, employee_id, act_idea_id))`);
 
 sendQuery(`
   CREATE TABLE IF NOT EXISTS review(
