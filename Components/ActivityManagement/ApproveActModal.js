@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Checkbox, Form, Header, Modal, Table } from "semantic-ui-react";
-import getDateTime from '../../util.js';
+import { getDateTime } from '../../util.js';
 
 function ApproveActOpen({ state, closeModal, actIdea }) {
   const [name, setName] = useState("");
@@ -131,15 +131,16 @@ function ApproveActOpen({ state, closeModal, actIdea }) {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell></Table.HeaderCell>
-                      <Table.HeaderCell>Activity Name</Table.HeaderCell>
+                      <Table.HeaderCell>Tour Name</Table.HeaderCell>
                       <Table.HeaderCell>Start Time</Table.HeaderCell>
-                      <Table.HeaderCell>Duration</Table.HeaderCell>
+                      <Table.HeaderCell>End Time</Table.HeaderCell>
                       <Table.HeaderCell>Location</Table.HeaderCell>
-                      <Table.HeaderCell>Price</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
                     {allTours && allTours.map((a, i) => {
+                      const [d, t] = getDateTime(a.start_date);
+                      const [d1, t1] = getDateTime(a.end_date);
                       return (
                         <Table.Row key={`tr-${i}`}>
                           <Table.Cell>
@@ -151,9 +152,9 @@ function ApproveActOpen({ state, closeModal, actIdea }) {
                             />
                           </Table.Cell>
                           <Table.Cell> {a.name} </Table.Cell>
-                          <Table.Cell> {a.duration} </Table.Cell>
+                          <Table.Cell> {`${d}(${t})`} </Table.Cell>
+                          <Table.Cell> {`${d1}(${t1})`}</Table.Cell>
                           <Table.Cell> {a.location} </Table.Cell>
-                          <Table.Cell> {a.price} </Table.Cell>
                         </Table.Row>
                       )
                     })}
