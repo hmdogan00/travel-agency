@@ -24,6 +24,8 @@ const ReviewPage = () => {
   const [guideComment, setGuideComment] = useState("");
   const [tourRating, setTourRating] = useState({ rating: 0, maxRating: 10 });
   const [guideRating, setGuideRating] = useState({ rating: 0, maxRating: 10 });
+  const [isReviewed, setIsReviewed] = useState(false);
+  const [reviews, setReviews] = useState(null);
 
   const handleTourRate = (e, { rating, maxRating }) =>
     setTourRating({ rating, maxRating });
@@ -35,6 +37,25 @@ const ReviewPage = () => {
       axios.get(`/api/getDetailedTour?id=${id}`).then(res => {
         setTour(res.data.results.tour);
         setGuide(res.data.results.guide);
+        const body = {
+          tour_id: res.data.results.tour.tour_id,
+          G_person_id: res.data.results.guide.guide_id,
+          C_person_id: localStorage.getItem("id"),
+        };
+        axios.post(`/api/reviews/getReview`, body).then(res => {
+          setIsReviewed(res.data.isReviewed);
+          if (res.data.isReviewed) {
+            setReviews(res.data.review[0]);
+            setGuideRating({
+              ...guideRating,
+              rating: res.data.review[0].guide_rate * 10,
+            });
+            setTourRating({
+              ...tourRating,
+              rating: res.data.review[0].tour_rate * 10,
+            });
+          }
+        });
       });
     }
   }, [tour, id, guide]);
@@ -43,7 +64,7 @@ const ReviewPage = () => {
     const body = {
       tourId: id,
       guideId: guide.guide_id,
-      customerId: localStorage.getItem('id'),
+      customerId: localStorage.getItem("id"),
       tourComment: tourComment,
       tourRate: tourRating.rating / tourRating.maxRating,
       guideComment: guideComment,
@@ -51,22 +72,24 @@ const ReviewPage = () => {
       tourOldRate: tour.rating,
       tourRateCnt: tour.ratingCount,
       guideOldRate: guide.rating,
-      guideRateCnt: guide.ratingCount
-    }
-    axios.post(`/api/makeReview`, body).then(console.log).catch(console.log)
+      guideRateCnt: guide.ratingCount,
+    };
+    axios.post(`/api/makeReview`, body).then(console.log).catch(console.log);
   };
 
   return (
     <>
       <Navbar activeType="dashboard" />
-      <div style={{
-        display:"flex",
-        flexDirection:"column",
-        alignContent:"center"
-      }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignContent: "center",
+        }}
+      >
         <div
           style={{
-            margin: "10% 15%",
+            margin: "3% 15% 3%",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -74,7 +97,7 @@ const ReviewPage = () => {
           {tour && guide ? (
             <>
               <div style={{ width: "100%", marginRight: "110px" }}>
-                <Header as={"h2"} textAlign="center">
+                <Header as={"h2"} dividing textAlign="center">
                   Tour Details
                 </Header>
                 <List relaxed celled verticalAlign="center" divided size="big">
@@ -96,7 +119,7 @@ const ReviewPage = () => {
                 </List>
               </div>
               <div style={{ width: "100%", marginLeft: "110px" }}>
-                <Header as={"h2"} textAlign="center">
+                <Header as={"h2"} dividing textAlign="center">
                   Guide Details
                 </Header>
                 <List relaxed celled verticalAlign="center" divided size="big">
@@ -125,8 +148,8 @@ const ReviewPage = () => {
             </Dimmer>
           )}
         </div>
-        <Header as={"h2"} textAlign="center">
-          Review
+        <Header as={"h2"} dividing textAlign="center">
+          {isReviewed ? "Your review" : "Review"}
         </Header>
         <div
           style={{
@@ -138,17 +161,31 @@ const ReviewPage = () => {
           <div style={{ width: "100%", marginRight: "110px" }}>
             <Form>
               <label>What is your comment about the tour?</label>
-              <TextArea
-                rows={4}
-                value={tourComment}
-                onChange={e => setTourComment(e.target.value)}
-              ></TextArea>
+              {isReviewed ? (
+                <textarea
+                  readOnly
+                  rows={4}
+                  value={isReviewed && reviews ? reviews.tour_comment : ""}
+                ></textarea>
+              ) : (
+                <TextArea
+                  rows={4}
+                  value={tourComment}
+                  onChange={e => setTourComment(e.target.value)}
+                ></TextArea>
+              )}
             </Form>
             <br />
             <label>How would you rate the tour?</label>
             <br />
             <br />
-            <Rating size="massive" maxRating={10} onRate={handleTourRate} />
+            <Rating
+              disabled={isReviewed}
+              size="massive"
+              rating={tourRating.rating}
+              maxRating={10}
+              onRate={handleTourRate}
+            />
             <p
               style={{ fontSize: "18px", margin: "5px 50% 0 40%" }}
             >{`${tourRating.rating}/${tourRating.maxRating}`}</p>
@@ -156,29 +193,45 @@ const ReviewPage = () => {
           <div style={{ width: "100%", marginLeft: "110px" }}>
             <Form>
               <label>What is your comment about the guide?</label>
-              <TextArea
-                rows={4}
-                value={guideComment}
-                onChange={e => setGuideComment(e.target.value)}
-              ></TextArea>
+              {isReviewed ? (
+                <textarea
+                  readOnly
+                  rows={4}
+                  value={isReviewed && reviews ? reviews.guide_comment : ""}
+                ></textarea>
+              ) : (
+                <TextArea
+                  rows={4}
+                  value={guideComment}
+                  onChange={e => setGuideComment(e.target.value)}
+                ></TextArea>
+              )}
             </Form>
             <br />
             <label>How would you rate the guide?</label>
             <br />
             <br />
-            <Rating size="massive" maxRating={10} onRate={handleGuideRate} />
+            <Rating
+              disabled={isReviewed}
+              size="massive"
+              rating={guideRating.rating}
+              maxRating={10}
+              onRate={handleGuideRate}
+            />
             <p
               style={{ fontSize: "18px", margin: "5px 50% 0 40%" }}
             >{`${guideRating.rating}/${guideRating.maxRating}`}</p>
           </div>
         </div>
-        <Button
-          className="tour-review-finish-btn"
-          color="green"
-          onClick={makeReview}
-        >
-          Finish Review
-        </Button>
+        {!isReviewed && (
+          <Button
+            className="tour-review-finish-btn"
+            color="green"
+            onClick={makeReview}
+          >
+            Finish Review
+          </Button>
+        )}
       </div>
     </>
   );
