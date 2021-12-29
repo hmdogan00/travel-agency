@@ -20,19 +20,18 @@ function ActivityManagement() {
   var [approveActOpen, setApproveActOpen] = useState(false);
   var [selectedIdea, setSelectedIdea] = useState(null);
 
-  const searchList = useMemo(
-    () => {
-      list?.filter((item) => {
-        if (searchTN !== "")
-          return item.toLowerCase().includes(searchTN.toLowerCase());
-        else if (searchType !== "")
-          return String(item.userId).toLowerCase().includes(searchType);
-        else if (searchLoc !== "")
-          return item.groupName.toLowerCase().includes(searchLoc.toLowerCase());
-        else
-          return true;
-      });
-    },
+  const searchList = useMemo(() => {
+    return list?.filter((item) => {
+      if (searchTN !== "")
+        return item.name.toLowerCase().includes(searchTN.toLowerCase());
+      else if (searchType !== "")
+        return item.type.toLowerCase().includes(searchType);
+      else if (searchLoc !== "")
+        return item.location.toLowerCase().includes(searchLoc.toLowerCase());
+      else
+        return true;
+    });
+  },
     [list, searchTN, searchType, searchLoc]
   );
 
@@ -262,7 +261,7 @@ function ActivityManagement() {
 
                     <Table.Body>
                       {
-                        list && list.map((e, i) => {
+                        searchList && searchList.map((e, i) => {
                           return <Table.Row>
                             <Table.Cell>{e.name}</Table.Cell>
                             <Table.Cell>{e.type}</Table.Cell>
