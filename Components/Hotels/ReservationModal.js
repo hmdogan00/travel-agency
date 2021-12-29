@@ -17,7 +17,7 @@ function ReservationModal({ state, setState, hotel }) {
       closeOnDimmerClick={false}
       open={state}
     >
-      <Modal.Header>Reservation for {tour.name}</Modal.Header>
+      <Modal.Header>Reservation for {hotel.name}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Reservation Information</Header>

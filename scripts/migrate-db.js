@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS book(
   FOREIGN KEY(hotel_room_no) REFERENCES HotelRoom(hotel_room_no),
   FOREIGN KEY(hotel_id) REFERENCES HotelRoom(hotel_id),
   FOREIGN KEY(person_id) REFERENCES Customer(id),
-  PRIMARY KEY(employee_id, hotel_room_no, hotel_id))`);
+  PRIMARY KEY(employee_id, hotel_room_no, hotel_id,start_date,end_date))`);
 
 sendQuery(`
 CREATE TABLE IF NOT EXISTS update_res(

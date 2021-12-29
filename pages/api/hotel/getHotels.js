@@ -8,7 +8,7 @@ export default (req, res) => {
         res.statusCode = 401;
         res.json({ message: err });
         res.end();
-        return Promise.reject(err);
+        return res;
       }
       res.status(200).json({ results: results});
       return Promise.resolve(res);

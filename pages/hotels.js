@@ -2,10 +2,12 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Card, Form, Header } from "semantic-ui-react";
 import Navbar from "./Navbar";
+import HotelCard from "../Components/Hotels/HotelCard.js"
 
 function Hotel() {
   const [role, setRole] = useState("");
-  const [tourArr, setTourArr] = useState([]);
+  const [hotelArr, setHotelArr] = useState([]);
+  console.log(hotelArr)
   const [openAddNewTour, setOpenAddNewTour] = useState(false);
   const [searchN, setSearchN] = useState("");
   const [searchDate, setSearchDate] = useState("");
@@ -14,7 +16,7 @@ function Hotel() {
   const [loading, setLoading] = useState(false);
 
   const searchData = useMemo(() => {
-    return tourArr?.filter(item => {
+    return hotelArr?.filter(item => {
       if (searchN !== "")
         return includesNoCase(
           role === "Employee" ? item.t_name : item.name,
@@ -28,16 +30,16 @@ function Hotel() {
       else if (searchType !== "") return includesNoCase(item.type, searchType);
       else return true;
     });
-  }, [tourArr, searchN, searchDate, searchLoc, searchType]);
+  }, [hotelArr, searchN, searchDate, searchLoc, searchType]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(localStorage.getItem("role"));
     }
-    if (tourArr.length === 0) {
+    if (hotelArr.length === 0) {
       axios
-        .get("/api/getAllTours")
-        .then(res => setTourArr([...res.data.results]));
+        .get("/api/hotel/getHotels")
+        .then(res => setHotelArr([...res.data.results]));
     }
   }, []);
 
@@ -101,21 +103,20 @@ function Hotel() {
         <div style={{ margin: "30px" }}>
           <Card.Group itemsPerRow={4}>
             {searchData?.length === 0 && (
-              <Header>There are no tours for reservation.</Header>
+              <Header>There are no hotels for reservation.</Header>
             )}
-            {/* {searchData &&
-              searchData.map((e, i) => {
-                return <TourCard tour={e} key={`tourCard-${i}`} />;
-              })} */}
+            {searchData && searchData.map((e, i) => {
+                return <HotelCard hotel={e} key={`hotelCard-${i}`} />;
+              })}
           </Card.Group>
         </div>
       )}
       {role === "Employee" && (
         <div style={{ margin: "30px" }}>
-          {tourArr?.length === 0 && (
+          {hotelArr?.length === 0 && (
             <Header>There are no tours for reservation.</Header>
           )}
-          {tourArr && (
+          {hotelArr && (
             <>
               <Header floated="left">Active Tours</Header>
               <Header floated="right">
@@ -141,7 +142,7 @@ function Hotel() {
                 </Table.Header>
 
                 <Table.Body>
-                  {tourArr.map((e, i) => {
+                  {hotelArr.map((e, i) => {
                     const [startDate, startTime] = getDateTime(e.start_date);
                     const [endDate, endTime] = getDateTime(e.end_date);
                     return (
