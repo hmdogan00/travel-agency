@@ -144,11 +144,11 @@ function Dashboard() {
                 return (
                   <Card key={`card-${i}`} color="red">
                     <Card.Content header={e.name} meta={e.location} description=
-                      {`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`}/>
-                    { now > then &&
+                      {`Start Date: ${startDate} Start Time: ${startTime} End Date: ${endDate} End Time: ${endTime}`} />
+                    {now > then &&
                       <Card.Content extra>
                         <Button color="yellow" onClick={() => window.location.href = `/tours/${e.tour_id}`}>
-                          <Icon name="comment alternate"/>Review</Button>
+                          <Icon name="comment alternate" />Review</Button>
                       </Card.Content>
                     }
                   </Card>
@@ -174,8 +174,9 @@ function Dashboard() {
                   setSearchTN("");
                 }}
                 value={searchCN}
-                placeholder="Search by Customer Name"
+                placeholder="Search by Customer"
                 className="mr-4"
+                icon="search"
               />
             )}
             <Form.Input
@@ -188,6 +189,7 @@ function Dashboard() {
               value={searchDate}
               placeholder="Search by Date"
               className="mr-4"
+              icon="search"
             />
             <Form.Input
               onChange={e => {
@@ -199,6 +201,7 @@ function Dashboard() {
               value={searchTN}
               placeholder="Search by Tour Name"
               className="mr-4"
+              icon="search"
             />
             <Form.Input
               onChange={e => {
@@ -209,6 +212,7 @@ function Dashboard() {
               }}
               value={searchLoc}
               placeholder="Search by Location"
+              icon="search"
             />
           </div>
           {role === "Employee" ? (
