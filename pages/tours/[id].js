@@ -60,6 +60,10 @@ const ReviewPage = () => {
     }
   }, [tour, id, guide]);
 
+  const goBack = () => {
+    window.location.href = '/dashboard';
+  }
+
   const makeReview = () => {
     const body = {
       tourId: id,
@@ -80,6 +84,14 @@ const ReviewPage = () => {
   return (
     <>
       <Navbar activeType="dashboard" />
+      <Button
+        style={{ marginLeft: "20px" }}
+        negative
+        content="Back"
+        icon="left arrow"
+        circular
+        onClick={goBack}
+      />
       <div
         style={{
           display: "flex",
