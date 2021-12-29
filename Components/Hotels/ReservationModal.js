@@ -2,13 +2,22 @@ import { useState, useEffect } from "react";
 import { Modal, Header, Form, Input, Button, Checkbox, Table, Label } from "semantic-ui-react";
 //import PaymentModal from "./PaymentModal.js";
 import axios from "axios";
-import { getDateTime } from "../../util.js";
+import { getDateTime, includesNoCase } from "../../util.js";
 
 function ReservationModal({ state, setState, hotel }) {
   const [payModalOpen, setPayModalOpen] = useState(false);
   const [resPerson, setResPerson] = useState("");
   const [wantedDate, setWantedDate] = useState("");
   const [wantedEndDate, setWantedEndDate] = useState("");
+  const [isRoomSearched, setIsRoomSearched] = useState(false);
+  const [roomList, setRoomList] = useState();
+
+  const getRooms = () => {
+    axios.get(`/api/hotel/getAvailableRooms?hotel_id=${hotel.hotel_id}&size=${resPerson}&st=${wantedDate}&en=${wantedEndDate}`).then(res => {
+      setIsRoomSearched(true);
+      setRoomList(res.data.results)
+    })
+  }
 
   return (
     <Modal
@@ -53,7 +62,14 @@ function ReservationModal({ state, setState, hotel }) {
                 onChange={e => setResPerson(e.target.value)}
               />
             </Form.Field>
+            <Button color="green" onClick={getRooms}>Get Available Rooms</Button>
           </Form>
+          {isRoomSearched && 
+            <Table>
+            {roomList?.map(room => {
+
+          })}
+          </Table>}
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>

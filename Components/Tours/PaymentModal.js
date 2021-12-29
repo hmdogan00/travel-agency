@@ -32,6 +32,7 @@ const years = [
 ];
 
 function PaymentModal({
+  role,
   state,
   setState,
   tour,
@@ -39,6 +40,7 @@ function PaymentModal({
   resPerson,
   wantedDate,
   wantedEndDate,
+  identityNo,
   activityArr,
   activityChecks,
 }) {
@@ -57,16 +59,17 @@ function PaymentModal({
         end: wantedEndDate,
         resNumber: resPerson,
         tourId: tour.tour_id,
+        identity: identityNo
       },
       id: localStorage.getItem("id"),
     };
-    axios.post(`/api/customer/makeReservation`, body).then(alert).catch(alert);
+    axios.post(role === 'Customer' ? `/api/customer/makeReservation` : `/api/employee/makeCustomerReservation`, body).then(alert).catch(alert);
   };
 
   const getTotalPrice = () => {
     let sum = 0;
-    activityArr.forEach((a, i) => {
-      if (activityChecks[i]) sum += a.price;
+    activityArr?.forEach((a, i) => {
+      if (activityChecks && activityChecks[i]) sum += a.price;
     });
     return tour.price * resPerson + sum;
   };
@@ -93,8 +96,8 @@ function PaymentModal({
             <List.Item>
               Total reservation price: {tour.price * resPerson}
             </List.Item>
-            {activityArr.map((a, i) => {
-              if (activityChecks[i])
+            {activityArr?.map((a, i) => {
+              if (activityChecks && activityChecks[i])
                 return <List.Item>{`${a.name}: ${a.price}`}</List.Item>;
             })}
           </List>

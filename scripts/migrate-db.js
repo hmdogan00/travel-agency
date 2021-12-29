@@ -114,7 +114,6 @@ CREATE TABLE IF NOT EXISTS HotelRoom(
   room_price FLOAT NOT NULL,
   mini_bar_prices FLOAT,
   has_cleaned BIT,
-  is_empty BIT,
   hotel_id INT NOT NULL,
   FOREIGN KEY(hotel_id) REFERENCES Hotel(hotel_id),
   PRIMARY KEY(hotel_room_no, hotel_id))`);

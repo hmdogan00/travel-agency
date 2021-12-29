@@ -3,8 +3,9 @@ import { useEffect, useState, useMemo } from "react";
 import { Button, Card, Form, Header, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { getDateTime, makeRatingString, includesNoCase } from "../util";
-import TourCard from "../Components/Tours/TourCard.js"
-import AddNewTourModal from "../Components/Tours/AddNewTourModal.js"
+import TourCard from "../Components/Tours/TourCard.js";
+import AddNewTourModal from "../Components/Tours/AddNewTourModal.js";
+import ReservationModal from "../Components/Tours/ReservationModal";
 
 const Tours = () => {
   const [role, setRole] = useState("");
@@ -15,6 +16,7 @@ const Tours = () => {
   const [searchLoc, setSearchLoc] = useState("");
   const [searchType, setSearchType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resModalOpen, setResModalOpen] = useState(false);
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
@@ -140,6 +142,7 @@ const Tours = () => {
                     <Table.HeaderCell>Type</Table.HeaderCell>
                     <Table.HeaderCell>Company</Table.HeaderCell>
                     <Table.HeaderCell>Rating</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
@@ -148,19 +151,31 @@ const Tours = () => {
                     const [startDate, startTime] = getDateTime(e.start_date);
                     const [endDate, endTime] = getDateTime(e.end_date);
                     return (
-                      <Table.Row>
-                        <Table.Cell>{i}</Table.Cell>
-                        <Table.Cell>{e.name}</Table.Cell>
-                        <Table.Cell>{e.location}</Table.Cell>
-                        <Table.Cell>{e.price}</Table.Cell>
-                        <Table.Cell>
-                          {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
-                        </Table.Cell>
-                        <Table.Cell>{e.capacity}</Table.Cell>
-                        <Table.Cell>{e.type}</Table.Cell>
-                        <Table.Cell>{e.company}</Table.Cell>
-                        <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
-                      </Table.Row>
+                      <>
+                        <Table.Row>
+                          <Table.Cell>{i}</Table.Cell>
+                          <Table.Cell>{e.name}</Table.Cell>
+                          <Table.Cell>{e.location}</Table.Cell>
+                          <Table.Cell>{e.price}</Table.Cell>
+                          <Table.Cell>
+                            {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+                          </Table.Cell>
+                          <Table.Cell>{e.capacity}</Table.Cell>
+                          <Table.Cell>{e.type}</Table.Cell>
+                          <Table.Cell>{e.company}</Table.Cell>
+                          <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
+                          <Table.Cell>
+                            <Button onClick={() => setResModalOpen(true)}>
+                              Make Reservation
+                            </Button>
+                            <ReservationModal
+                              state={resModalOpen}
+                              setState={setResModalOpen}
+                              tour={e}
+                            />
+                          </Table.Cell>
+                        </Table.Row>
+                      </>
                     );
                   })}
                 </Table.Body>
@@ -175,6 +190,6 @@ const Tours = () => {
       )}
     </>
   );
-}
+};
 
 export default Tours;
