@@ -24,7 +24,6 @@ export default async (req, res) => {
         res.status(400).json({message: err})
         return;
       }
-      console.log(result);
       if ( result.length === 0 ) {
         res.status(200).json({bash: true})
         return;
