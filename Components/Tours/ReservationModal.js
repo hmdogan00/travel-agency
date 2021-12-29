@@ -25,7 +25,7 @@ function ReservationModal({ state, setState, tour }) {
   }
 
   useEffect(() => {
-    if ( window.location !== undefined ) setRole(localStorage.getItem('role'))
+    if (window.location !== undefined) setRole(localStorage.getItem('role'))
   }, [])
 
   useEffect(() => {
@@ -93,31 +93,32 @@ function ReservationModal({ state, setState, tour }) {
             </Form.Field>}
             <Form.Field className='reservation-form-field'>
               <label>Choose activities:</label>
-              <div className="scrollable"><Table>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell></Table.HeaderCell>
-                    <Table.HeaderCell>Activity Name</Table.HeaderCell>
-                    <Table.HeaderCell>Start Time</Table.HeaderCell>
-                    <Table.HeaderCell>Duration</Table.HeaderCell>
-                    <Table.HeaderCell>Location</Table.HeaderCell>
-                    <Table.HeaderCell>Price</Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {activityArr && activityChecks && activityArr.map((a, i) => {
-                    const [d, t] = getDateTime(a.start_date)
-                    return <Table.Row key={`tr-${i}`} onClick={() => clickCheckbox(i)}>
-                      <Table.Cell> <Checkbox checked={activityChecks[i]} /> </Table.Cell>
-                      <Table.Cell> {a.name} </Table.Cell>
-                      <Table.Cell> {`${d}(${t})`} </Table.Cell>
-                      <Table.Cell> {a.duration} </Table.Cell>
-                      <Table.Cell> {a.location} </Table.Cell>
-                      <Table.Cell> {a.price} </Table.Cell>
+              <div className="scrollable">
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell></Table.HeaderCell>
+                      <Table.HeaderCell>Activity Name</Table.HeaderCell>
+                      <Table.HeaderCell>Start Time</Table.HeaderCell>
+                      <Table.HeaderCell>Duration</Table.HeaderCell>
+                      <Table.HeaderCell>Location</Table.HeaderCell>
+                      <Table.HeaderCell>Price</Table.HeaderCell>
                     </Table.Row>
-                  })}
-                </Table.Body>
-              </Table>
+                  </Table.Header>
+                  <Table.Body>
+                    {activityArr && activityArr.map((a, i) => {
+                      const [d, t] = getDateTime(a.start_date)
+                      return <Table.Row key={`tr-${i}`} onClick={() => clickCheckbox(i)}>
+                        <Table.Cell> <Checkbox checked={activityChecks[i]} /> </Table.Cell>
+                        <Table.Cell> {a.name} </Table.Cell>
+                        <Table.Cell> {`${d}(${t})`} </Table.Cell>
+                        <Table.Cell> {a.duration} </Table.Cell>
+                        <Table.Cell> {a.location} </Table.Cell>
+                        <Table.Cell> {a.price} </Table.Cell>
+                      </Table.Row>
+                    })}
+                  </Table.Body>
+                </Table>
               </div>
             </Form.Field>
           </Form>
