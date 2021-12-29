@@ -1,7 +1,8 @@
-import { Button, Card, Container, Form, Icon, Label, Search, Table, TextArea } from "semantic-ui-react";
+import { Button, Card, Container, Form, Label, Table, TextArea } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { useState, useEffect, useMemo, useReducer } from "react";
 import axios from "axios";
+import ApproveActModal from "../Components/ActivityManagement/ApproveActModal";
 
 function ActivityManagement() {
   const [role, setRole] = useState();
@@ -9,13 +10,15 @@ function ActivityManagement() {
   const [aType, setAType] = useState('');
   const [aLoc, setALoc] = useState('');
   const [aDesc, setADesc] = useState('');
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [list, setList] = useState([]);
   const [searchTN, setSearchTN] = useState('');
   const [searchType, setSearchType] = useState('');
   const [searchLoc, setSearchLoc] = useState('');
+
+  var [approveActOpen, setApproveActOpen] = useState(false);
+  var [selectedIdea, setSelectedIdea] = useState(null);
 
   const searchList = useMemo(
     () => {
@@ -68,9 +71,19 @@ function ActivityManagement() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setRole(localStorage.getItem('role'));
-      if ( list && list.length === 0 ){
-        axios.get(`/api/customer/offeredActivities?id=${localStorage.getItem('id')}`).then(res => setList(res.data.result))
+      const role = localStorage.getItem('role');
+      setRole(role);
+      if (list && list.length === 0) {
+        if (role === 'Customer' && role === 'Guido') {
+          axios
+            .get(`/api/customer/offeredActivities?id=${localStorage.getItem('id')}`)
+            .then(res => setList(res.data.result));
+        }
+        else {
+          axios
+            .get(`/api/employee/getActivityIdeas`)
+            .then(res => setList(res.data.result));
+        }
       }
     }
   }, []);
@@ -85,9 +98,33 @@ function ActivityManagement() {
       },
       id: localStorage.getItem('id')
     };
-    axios.post(`/api/customer/createActivity`, body).then(res => {
-      res.status === 200 ? setSubmitSuccess(!submitSuccess) : null;
-    })
+    axios
+      .post(`/api/customer/createActivity`, body)
+      .then(res => {
+        res.status === 200 ? alert(res.statusText) : null;
+      })
+  };
+
+  const declineActivityIdea = id => {
+    const body = {
+      id: id
+    }
+    axios
+      .post(`/api/employee/declineActivityIdea`, body)
+      .then(res => {
+        res.status === 200 ? alert(res.statusText) : null;
+      });
+    window.location.reload();
+  };
+
+  const expandModal = idea => {
+    setSelectedIdea(idea);
+    setApproveActOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedIdea(null);
+    setApproveActOpen(false);
   };
 
   return (
@@ -148,16 +185,16 @@ function ActivityManagement() {
                   </Table.Header>
 
                   <Table.Body>
-                    {list && list.map((e,i) => {
+                    {list && list.map((e, i) => {
                       return <Table.Row>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.type}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
                         <Table.Cell>{e.description}</Table.Cell>
                         <Table.Cell>
-                          { e.is_accepted === 'waiting' && <Label color="yellow">Waiting</Label> }
-                          { e.is_accepted === 'accepted' && <Label color="green">Accepted</Label> }
-                          { e.is_accepted === 'rejected' && <Label color="red">Declined</Label> }
+                          {e.is_accepted === 'waiting' && <Label color="yellow">Waiting</Label>}
+                          {e.is_accepted === 'accepted' && <Label color="green">Accepted</Label>}
+                          {e.is_accepted === 'rejected' && <Label color="red">Declined</Label>}
                         </Table.Cell>
                       </Table.Row>
                     })}
@@ -211,50 +248,44 @@ function ActivityManagement() {
                   </div>
                 </Card.Content>
                 <Card.Content>
-                  <Table sortable celled fixed color="red">
+                  <Table sortable celled color="red">
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell>Tour Name</Table.HeaderCell>
                         <Table.HeaderCell>Type</Table.HeaderCell>
                         <Table.HeaderCell>Location</Table.HeaderCell>
+                        <Table.HeaderCell>Description</Table.HeaderCell>
                         <Table.HeaderCell>Requested By</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                       </Table.Row>
                     </Table.Header>
 
                     <Table.Body>
-                      <Table.Row>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>
-                          <Button color="green">Approve</Button>
-                          <Button color="red">Decline</Button>
-                        </Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>
-                          <Button color="green">Approve</Button>
-                          <Button color="red">Decline</Button>
-                        </Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>Cell</Table.Cell>
-                        <Table.Cell>
-                          <Button color="green">Approve</Button>
-                          <Button color="red">Decline</Button>
-                        </Table.Cell>
-                      </Table.Row>
+                      {
+                        list && list.map((e, i) => {
+                          return <Table.Row>
+                            <Table.Cell>{e.name}</Table.Cell>
+                            <Table.Cell>{e.type}</Table.Cell>
+                            <Table.Cell>{e.location}</Table.Cell>
+                            <Table.Cell>{e.description}</Table.Cell>
+                            <Table.Cell>{e.role}</Table.Cell>
+                            <Table.Cell>
+                              <Button
+                                color="green"
+                                onClick={() => expandModal(e)}>
+                                Approve
+                              </Button>
+                              <Button
+                                color="red"
+                                onClick={() => declineActivityIdea(e.act_idea_id)}
+                              >
+                                Decline
+                              </Button>
+                            </Table.Cell>
+                          </Table.Row>
+                        })}
+                      <ApproveActModal state={approveActOpen} closeModal={closeModal} actIdea={selectedIdea} />
                     </Table.Body>
-
                   </Table>
                 </Card.Content>
               </Card>
