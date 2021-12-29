@@ -71,3 +71,8 @@ a {
   width: 9%;
   align-self: center;
 }
+
+.activity-requests{
+  overflow-y: scroll;
+  height: 385px;
+}

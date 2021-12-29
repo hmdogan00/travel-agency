@@ -1,6 +1,7 @@
 import { Button, Card, Container, Form, Icon, Label, Search, Table, TextArea } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import { useState, useEffect, useMemo, useReducer } from "react";
+import axios from "axios";
 
 function ActivityManagement() {
   const [role, setRole] = useState();
@@ -11,7 +12,7 @@ function ActivityManagement() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [list, setList] = useState();
+  const [list, setList] = useState([]);
   const [searchTN, setSearchTN] = useState('');
   const [searchType, setSearchType] = useState('');
   const [searchLoc, setSearchLoc] = useState('');
@@ -68,15 +69,25 @@ function ActivityManagement() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(localStorage.getItem('role'));
+      if ( list && list.length === 0 ){
+        axios.get(`/api/customer/offeredActivities?id=${localStorage.getItem('id')}`).then(res => setList(res.data.result))
+      }
     }
   }, []);
 
   const submitForm = () => {
-    const data = {
-      aTitle: aTitle,
-      aDesc: aDesc
+    const body = {
+      activity: {
+        name: aTitle,
+        type: aType,
+        location: aLoc,
+        description: aDesc
+      },
+      id: localStorage.getItem('id')
     };
-    setSubmitSuccess(!submitSuccess);
+    axios.post(`/api/customer/createActivity`, body).then(res => {
+      res.status === 200 ? setSubmitSuccess(!submitSuccess) : null;
+    })
   };
 
   return (
@@ -88,7 +99,7 @@ function ActivityManagement() {
             <Card fluid color="red">
               <Card.Content header='Activity Request Form' />
               <Card.Content>
-                <Form onSubmit={submitForm}>
+                <Form>
                   <Form.Input
                     label='Activity Title'
                     placeholder='Enter title of the activity'
@@ -118,13 +129,13 @@ function ActivityManagement() {
                       onChange={(e) => setADesc(e.target.value)}
                     />
                   </Form.Field>
-                  <Form.Button>Submit</Form.Button>
+                  <Button onClick={submitForm}>Submit</Button>
                 </Form>
               </Card.Content>
             </Card>
             <Card fluid color="red">
               <Card.Content header='Requests Sent' />
-              <Card.Content>
+              <Card.Content className="activity-requests">
                 <Table fixed color="red">
                   <Table.Header>
                     <Table.Row>
@@ -137,22 +148,19 @@ function ActivityManagement() {
                   </Table.Header>
 
                   <Table.Body>
-                    <Table.Row>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>
-                        <Label color="yellow">Waiting</Label>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>
-                        <Label color="green">Approved</Label>
-                      </Table.Cell>
-                    </Table.Row>
+                    {list && list.map((e,i) => {
+                      return <Table.Row>
+                        <Table.Cell>{e.name}</Table.Cell>
+                        <Table.Cell>{e.type}</Table.Cell>
+                        <Table.Cell>{e.location}</Table.Cell>
+                        <Table.Cell>{e.description}</Table.Cell>
+                        <Table.Cell>
+                          { e.is_accepted === 'waiting' && <Label color="yellow">Waiting</Label> }
+                          { e.is_accepted === 'accepted' && <Label color="green">Accepted</Label> }
+                          { e.is_accepted === 'rejected' && <Label color="red">Declined</Label> }
+                        </Table.Cell>
+                      </Table.Row>
+                    })}
                   </Table.Body>
 
                 </Table>
