@@ -73,7 +73,7 @@ function ActivityManagement() {
       const role = localStorage.getItem('role');
       setRole(role);
       if (list && list.length === 0) {
-        if (role === 'Customer' && role === 'Guido') {
+        if (role === 'Customer' || role === 'Guide') {
           axios
             .get(`/api/customer/offeredActivities?id=${localStorage.getItem('id')}`)
             .then(res => setList(res.data.result));

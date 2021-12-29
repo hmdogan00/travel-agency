@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Checkbox,
 } from "semantic-ui-react";
 //import PaymentModal from "./PaymentModal.js";
 import axios from "axios";
@@ -113,6 +114,7 @@ function ReservationModal({ state, setState, hotel }) {
             <Table>
               <Table.Header>
                 <Table.Row>
+                  <Table.HeaderCell></Table.HeaderCell>
                   <Table.HeaderCell>Room No</Table.HeaderCell>
                   <Table.HeaderCell>Floor</Table.HeaderCell>
                   <Table.HeaderCell>Price</Table.HeaderCell>
@@ -124,6 +126,7 @@ function ReservationModal({ state, setState, hotel }) {
                   if (!isRoomSearched) return;
                   return (
                     <TableRow>
+                      <TableCell><Checkbox/></TableCell>
                       <TableCell>{room.hotel_room_no}</TableCell>
                       <TableCell>{room.room_floor}</TableCell>
                       <TableCell>{room.room_price}</TableCell>
