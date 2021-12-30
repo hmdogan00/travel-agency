@@ -5,17 +5,11 @@ export default async (req, res) => {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {tour_id} = req.body;
-  tour_id = parseInt(tour_id);
-  let {G_person_id} = req.body;
-  G_person_id = parseInt(G_person_id);
-  let {C_person_id} = req.body;
-  C_person_id = parseInt(C_person_id);
+  let {tour_id, G_person_id, C_person_id} = req.body;
   if (!tour_id || !G_person_id || !C_person_id) {
     res.status(423).json({message: 'No id found!'})
     return;
   }
-  let answer;
   try {
     await db.query(`SELECT tour_comment, tour_rate, guide_comment, guide_rate
                     FROM review
