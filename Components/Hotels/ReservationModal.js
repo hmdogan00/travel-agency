@@ -11,10 +11,10 @@ import {
   TableCell,
   TableRow,
   Checkbox,
+  Label
 } from "semantic-ui-react";
 //import PaymentModal from "./PaymentModal.js";
 import axios from "axios";
-import { getDateTime, includesNoCase } from "../../util.js";
 
 function ReservationModal({ state, setState, hotel }) {
   const [payModalOpen, setPayModalOpen] = useState(false);
@@ -23,20 +23,35 @@ function ReservationModal({ state, setState, hotel }) {
   const [wantedEndDate, setWantedEndDate] = useState("");
   const [isRoomSearched, setIsRoomSearched] = useState(false);
   const [roomList, setRoomList] = useState();
+  const [roomSelectionArray, setRoomSelectionArray] = useState();
+  const today = new Date().toISOString().split("T")[0];
 
   const getRooms = () => {
-    setRoomList(latestArr => latestArr = []);
+    setRoomList(latestArr => (latestArr = []));
+    setRoomSelectionArray(latestArr => (latestArr = []));
     resPersons.forEach(e => {
       axios
         .get(
           `/api/hotel/getAvailableRooms?hotel_id=${hotel.hotel_id}&size=${e}&st=${wantedDate}&en=${wantedEndDate}`
         )
         .then(res => {
-          setRoomList(latestArr => latestArr = [...latestArr,...res.data.results]);
+          setRoomList(
+            latestArr => (latestArr = [...latestArr, res.data.results])
+          );
+          setRoomSelectionArray(latestArr => (latestArr = [...latestArr, 0]))
         });
     });
     setIsRoomSearched(true);
   };
+
+  const handleCheckboxSelection = (index, value) => {
+    setRoomSelectionArray(latestArr => {
+      return latestArr = latestArr.map((roomSelection, i) => {
+        if ( i === index ) return value;
+        else return roomSelection;
+      })
+    })
+  }
 
   const handleResPerson = (value, index) => {
     const arr = [];
@@ -73,6 +88,7 @@ function ReservationModal({ state, setState, hotel }) {
                 type="date"
                 placeholder="Enter start date"
                 defaultValue={wantedDate}
+                min={today}
                 onChange={e => setWantedDate(e.target.value)}
               />
             </Form.Field>
@@ -82,6 +98,7 @@ function ReservationModal({ state, setState, hotel }) {
                 type="date"
                 placeholder="Enter end date"
                 defaultValue={wantedEndDate}
+                min={today}
                 onChange={e => setWantedEndDate(e.target.value)}
               />
             </Form.Field>
@@ -110,33 +127,42 @@ function ReservationModal({ state, setState, hotel }) {
               Get Available Rooms
             </Button>
           </Form>
-          {roomList && isRoomSearched && (
-            <Table>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell></Table.HeaderCell>
-                  <Table.HeaderCell>Room No</Table.HeaderCell>
-                  <Table.HeaderCell>Floor</Table.HeaderCell>
-                  <Table.HeaderCell>Price</Table.HeaderCell>
-                  <Table.HeaderCell>Size</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <TableBody>
-                {roomList?.map(room => {
-                  if (!isRoomSearched) return;
-                  return (
-                    <TableRow>
-                      <TableCell><Checkbox/></TableCell>
-                      <TableCell>{room.hotel_room_no}</TableCell>
-                      <TableCell>{room.room_floor}</TableCell>
-                      <TableCell>{room.room_price}</TableCell>
-                      <TableCell>{room.room_size}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
+          {roomList &&
+            isRoomSearched &&
+            roomList?.map((rooms, i) => {
+              return (
+                <>{ i === 0 && <br/> }
+                  <Label>Selection for room {i + 1}</Label>
+                  <Table>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell>Room No</Table.HeaderCell>
+                        <Table.HeaderCell>Floor</Table.HeaderCell>
+                        <Table.HeaderCell>Price</Table.HeaderCell>
+                        <Table.HeaderCell>Size</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <TableBody>
+                      {roomSelectionArray && rooms?.map((room, roomIndex) => {
+                        if (!isRoomSearched) return;
+                        return (
+                          <TableRow>
+                            <TableCell>
+                              <Checkbox name={`radio-button-${i}`} radio checked={roomSelectionArray[i] === roomIndex} value={i} onChange={(e, {value}) => handleCheckboxSelection(value, roomIndex)}/>
+                            </TableCell>
+                            <TableCell>{room.hotel_room_no}</TableCell>
+                            <TableCell>{room.room_floor}</TableCell>
+                            <TableCell>{room.room_price}</TableCell>
+                            <TableCell>{room.room_size}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </>
+              );
+            })}
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
