@@ -14,7 +14,6 @@ export default async (req, res) => {
         const resId = results.insertId;
         db.query(`SELECT C.id as cid FROM Customer C WHERE C.identity_no = ${reservation.identity}`, (err, results, fields) => {
           if (err) return res.status(401).json({message:err})
-          console.log(results);
           const customerId = results[0].cid;
           db.query(
             `INSERT INTO make VALUES (${id}, ${resId}, ${customerId})`, (err, results, fields) => {
