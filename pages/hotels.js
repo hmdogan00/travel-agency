@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { Card, Form, Header, Label, Rating } from "semantic-ui-react";
+import { Button, Card, Form, Header, Rating, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import HotelCard from "../Components/Hotels/HotelCard.js";
-import { includesNoCase } from "../util";
+import { getDateTime, includesNoCase } from "../util";
 
 function Hotel() {
   const [role, setRole] = useState("");
@@ -29,12 +29,13 @@ function Hotel() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setRole(localStorage.getItem("role"));
-    }
-    if (hotelArr.length === 0) {
-      axios
-        .get("/api/hotel/getHotels")
-        .then(res => setHotelArr([...res.data.results]));
+      const role = localStorage.getItem("role");
+      setRole(role);
+      if (hotelArr.length === 0) {
+        axios
+          .get("/api/hotel/getHotels")
+          .then(res => { setHotelArr([...res.data.results]); console.log([...res.data.results]) });
+      }
     }
   }, []);
 
@@ -62,14 +63,14 @@ function Hotel() {
           className="mr-4"
           icon="search"
         />
-        <label style={{marginTop:'8px'}}>Minimum rating:</label>
-        <div style={{display:'flex', flexDirection:'column'}}>
+        <label style={{ marginTop: '8px' }}>Minimum rating:</label>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Rating
             rating={ratingFilter.rating}
             maxRating={10}
             onRate={handleRateChange}
           ></Rating>
-          <label style={{alignSelf:'center'}}>{`${ratingFilter.rating}/10`}</label>
+          <label style={{ alignSelf: 'center' }}>{`${ratingFilter.rating}/10`}</label>
         </div>
       </div>
       {role === "Customer" && (
@@ -92,55 +93,52 @@ function Hotel() {
           )}
           {hotelArr && (
             <>
-              <Header floated="left">Active Tours</Header>
+              <Header floated="left">Active Hotels</Header>
               <Header floated="right">
                 <Button
-                  content="Add New Tour"
+                  content="Add New Hotel"
                   color="blue"
                   onClick={() => setOpenAddNewTour(true)}
                 />
               </Header>
-              <Table celled color="red">
+              <Table celled fixed color="red">
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>ID</Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Location</Table.HeaderCell>
-                    <Table.HeaderCell>Price</Table.HeaderCell>
-                    <Table.HeaderCell>Dates</Table.HeaderCell>
-                    <Table.HeaderCell>Capacity</Table.HeaderCell>
-                    <Table.HeaderCell>Type</Table.HeaderCell>
-                    <Table.HeaderCell>Company</Table.HeaderCell>
+                    <Table.HeaderCell>Number Of Empty Rooms</Table.HeaderCell>
+                    <Table.HeaderCell>Number Of Total Rooms</Table.HeaderCell>
+                    <Table.HeaderCell>Hotel Phone</Table.HeaderCell>
                     <Table.HeaderCell>Rating</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
                   {hotelArr.map((e, i) => {
-                    const [startDate, startTime] = getDateTime(e.start_date);
-                    const [endDate, endTime] = getDateTime(e.end_date);
                     return (
-                      <Table.Row>
-                        <Table.Cell>{i}</Table.Cell>
+                      <Table.Row key={`hotelRow-${i}`}>
+                        <Table.Cell>{i + 1}</Table.Cell>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
-                        <Table.Cell>{e.price}</Table.Cell>
+                        <Table.Cell>{e.no_of_empty_room}</Table.Cell>
+                        <Table.Cell>{e.no_of_total_room}</Table.Cell>
+                        <Table.Cell>{e.phone_no}</Table.Cell>
+                        <Table.Cell>{e.rating}</Table.Cell>
                         <Table.Cell>
-                          {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+                          <Button
+                            content="Show/Make Reservations"
+                            color="blue"
+                            size="tiny"
+                            onClick={() => window.location.href = `/hotels/${e.hotel_id}`}
+                          />
                         </Table.Cell>
-                        <Table.Cell>{e.capacity}</Table.Cell>
-                        <Table.Cell>{e.type}</Table.Cell>
-                        <Table.Cell>{e.company}</Table.Cell>
-                        <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
                       </Table.Row>
                     );
                   })}
                 </Table.Body>
               </Table>
-              {/* <AddNewTourModal
-                state={openAddNewTour}
-                setState={setOpenAddNewTour}
-              /> */}
             </>
           )}
         </div>
