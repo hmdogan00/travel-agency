@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Modal,
   Header,
@@ -15,6 +15,7 @@ import {
 } from "semantic-ui-react";
 //import PaymentModal from "./PaymentModal.js";
 import axios from "axios";
+import PaymentModal from "./PaymentModal";
 
 function ReservationModal({ state, setState, hotel }) {
   const [payModalOpen, setPayModalOpen] = useState(false);
@@ -24,6 +25,7 @@ function ReservationModal({ state, setState, hotel }) {
   const [isRoomSearched, setIsRoomSearched] = useState(false);
   const [roomList, setRoomList] = useState();
   const [roomSelectionArray, setRoomSelectionArray] = useState();
+  const [selectedRooms, setSelectedRooms] = useState()
   const today = new Date().toISOString().split("T")[0];
 
   const getRooms = () => {
@@ -51,6 +53,7 @@ function ReservationModal({ state, setState, hotel }) {
         else return roomSelection;
       })
     })
+    getRoomInformations();
   }
 
   const handleResPerson = (value, index) => {
@@ -61,6 +64,14 @@ function ReservationModal({ state, setState, hotel }) {
     });
     setResPersons(arr);
   };
+
+  const getRoomInformations = () => {
+    const tmp = []
+    roomList.forEach((rooms, i) => {
+      tmp.push( rooms[roomSelectionArray[i]] );
+    })
+    setSelectedRooms(latest => latest = tmp)
+  }
 
   const addRoom = () => {
     setResPersons([...resPersons, "0"]);
@@ -170,22 +181,20 @@ function ReservationModal({ state, setState, hotel }) {
           Cancel
         </Button>
         <Button
-          content="Make Reservation"
+          content="Go to Payment"
           labelPosition="right"
-          icon="bed"
-          onClick={() => setPayModalOpen(true)}
+          icon="payment"
+          onClick={() => {setPayModalOpen(true)}}
           positive
         />
       </Modal.Actions>
-      {/* <PaymentModal
+      {selectedRooms && selectedRooms.length !== 0 && <PaymentModal
         state={payModalOpen}
         setState={setPayModalOpen}
         hotel={hotel}
         setState2={setState}
-        resPerson={resPerson}
-        wantedDate={wantedDate}
-        wantedEndDate={wantedEndDate}
-      /> */}
+        selectedRooms={selectedRooms}
+      />}
     </Modal>
   );
 }
