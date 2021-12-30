@@ -66,6 +66,10 @@ const HotelResPage = () => {
     }
   }
 
+  const goBack = () => {
+    window.location.href = '/hotels';
+  }
+
   // takes effect in initialization
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -79,9 +83,15 @@ const HotelResPage = () => {
       axios
         .post(`/api/hotel/getHotelBookRequests?id=${id}`, body)
         .then(res => {
-          setHotelArr(res.data.results);
-          console.log(res.data.results);
-          dispatch({ type: "UPDATE_DATA", data: searchData });
+          const tempArr = res.data.results;
+          if (tempArr.length !== 0) {
+            setHotelArr(res.data.results);
+            dispatch({ type: "UPDATE_DATA", data: searchData });
+          }
+          else {
+            goBack();
+            alert("There are no reservation for this hotel!");
+          }
         })
         .catch(console.error);
     }
@@ -95,9 +105,17 @@ const HotelResPage = () => {
   return (
     <>
       <Navbar activeType="hotels" />
+      <Button
+        style={{ marginLeft: "20px" }}
+        negative
+        content="Back"
+        icon="left arrow"
+        circular
+        onClick={goBack}
+      />
       <div style={{ margin: "30px" }}>
         <Header>
-          Latest Hotel Reservations for {hotelArr && hotelArr[0].name}
+          Latest Hotel Reservations {hotelArr && ('for ' + hotelArr[0].name)}
         </Header>
         <br></br>
         <div style={{ display: "flex", flexDirection: "row" }}>

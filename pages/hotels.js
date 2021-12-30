@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { Button, Card, Form, Header, Rating, Table } from "semantic-ui-react";
+import { Button, Card, Form, Header, Label, Rating, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import HotelCard from "../Components/Hotels/HotelCard.js";
 import { getDateTime, includesNoCase } from "../util";
@@ -49,7 +49,7 @@ function Hotel() {
             setSearchN(e.target.value);
           }}
           value={searchN}
-          placeholder="Search by Tour Name"
+          placeholder="Search by Hotel Name"
           className="mr-4"
           icon="search"
         />
@@ -63,14 +63,14 @@ function Hotel() {
           className="mr-4"
           icon="search"
         />
-        <label style={{ marginTop: '8px' }}>Minimum rating:</label>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <label style={{ marginTop: '8px', fontWeight: 'bold' }}>Minimum rating:</label>
+        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '3px', marginLeft: '5px' }}>
           <Rating
             rating={ratingFilter.rating}
             maxRating={10}
             onRate={handleRateChange}
-          ></Rating>
-          <label style={{ alignSelf: 'center' }}>{`${ratingFilter.rating}/10`}</label>
+          />
+          <Label style={{ alignSelf: 'center', marginTop: '3px' }}>{`${ratingFilter.rating}/10`}</Label>
         </div>
       </div>
       {role === "Customer" && (
@@ -88,10 +88,10 @@ function Hotel() {
       )}
       {role === "Employee" && (
         <div style={{ margin: "30px" }}>
-          {hotelArr?.length === 0 && (
+          {searchData?.length === 0 && (
             <Header>There are no tours for reservation.</Header>
           )}
-          {hotelArr && (
+          {searchData && (
             <>
               <Header floated="left">Active Hotels</Header>
               <Header floated="right">
@@ -116,7 +116,7 @@ function Hotel() {
                 </Table.Header>
 
                 <Table.Body>
-                  {hotelArr.map((e, i) => {
+                  {searchData.map((e, i) => {
                     return (
                       <Table.Row key={`hotelRow-${i}`}>
                         <Table.Cell>{i + 1}</Table.Cell>
