@@ -51,7 +51,6 @@ export default async (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err);
     return res.status(402).json({ message: err });
   }
 };

@@ -18,6 +18,5 @@ export default (req, res) => {
       })
     });
   } catch (e) {
-    console.log(e);
   }
 };

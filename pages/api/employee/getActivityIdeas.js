@@ -11,7 +11,6 @@ export default async (req, res) => {
                 res.end();
                 return Promise.reject(err);
             }
-            console.log(result)
             res.status(200).json({ result });
             return Promise.resolve(res);
         });

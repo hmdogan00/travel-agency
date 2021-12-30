@@ -9,7 +9,6 @@ export default (req, res) => {
         res.status(401).json({ message: err }).res.end();
         return Promise.reject(err);
       }
-      console.log(results)
       const originalActivities = []
       originalActivities.push(...results)
       return db.query(`SELECT * FROM ActivityIdea NATURAL JOIN accepted WHERE is_accepted='accepted' and tour_id=${id}`, function (err, results, fields) {
@@ -19,7 +18,6 @@ export default (req, res) => {
       })
     });
   } catch (e) {
-    console.log(e);
     return Promise.reject(e);
   }
 };

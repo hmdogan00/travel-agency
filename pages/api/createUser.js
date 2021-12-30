@@ -28,7 +28,6 @@ export default async (req, res) => {
           if (err) return res.status(401).json({ message: err });
           db.query(`SELECT LAST_INSERT_ID() as user_id`, (err, results) => { 
             if (err) return res.status(401).json({message:err})
-            console.log(results);
             const userID = results[0].user_id;
             if (user.role === "Customer") {
               db.query(`INSERT INTO tripFellas.Customer (id, name, gender, age, identity_no, phone_no, email, password) 
@@ -53,7 +52,6 @@ export default async (req, res) => {
     }
     return result;
   } catch (err) {
-    console.log(err);
     return res.status(402).json({ message: err });
   }
 };
