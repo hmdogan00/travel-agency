@@ -194,6 +194,8 @@ function ReservationModal({ state, setState, hotel }) {
         hotel={hotel}
         setState2={setState}
         selectedRooms={selectedRooms}
+        start={wantedDate}
+        end={wantedEndDate}
       />}
     </Modal>
   );

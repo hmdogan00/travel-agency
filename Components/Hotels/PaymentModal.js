@@ -39,15 +39,25 @@ const years = [
   { key: "2030", value: "2030", text: "2030" },
 ];
 
-function PaymentModal({ state, setState, hotel, setState2, selectedRooms }) {
+function PaymentModal({ state, setState, hotel, setState2, selectedRooms, start, end }) {
   const [nameOnCard, setNameOnCard] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [ccv, setCcv] = useState("");
-  console.log(selectedRooms);
 
-  const makeHotelBooking = () => {};
+  const makeHotelBooking = () => {
+    selectedRooms.forEach(room => {
+      const body = {
+        hotel_room_no: room.hotel_room_no,
+        hotel_id: hotel.hotel_id,
+        person_id: localStorage.getItem('id'),
+        start_date: start,
+        end_date: end
+      }
+      axios.post(`/api/hotel/bookHotel`, body).then(res => res.status === 200 ? alert("Booking successfully made!") : alert(res.data.message))
+    })
+  };
 
   const getTotalPrice = () => {
     let sum = 0;
@@ -145,7 +155,7 @@ function PaymentModal({ state, setState, hotel, setState2, selectedRooms }) {
           onClick={() => {
             setState(false);
             setState2(false);
-            makeReservation();
+            makeHotelBooking();
           }}
           positive
         />

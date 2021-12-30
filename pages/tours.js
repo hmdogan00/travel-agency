@@ -134,7 +134,7 @@ const Tours = () => {
               <Table celled color="red">
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>ID</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Location</Table.HeaderCell>
                     <Table.HeaderCell>Price</Table.HeaderCell>
@@ -154,7 +154,7 @@ const Tours = () => {
                     return (
                       <>
                         <Table.Row>
-                          <Table.Cell>{i}</Table.Cell>
+                          <Table.Cell>{i + 1}</Table.Cell>
                           <Table.Cell>{e.name}</Table.Cell>
                           <Table.Cell>{e.location}</Table.Cell>
                           <Table.Cell>{e.price}</Table.Cell>
