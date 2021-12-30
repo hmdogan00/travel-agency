@@ -27,6 +27,8 @@ function ReservationModal({ state, setState, tour }) {
     if (window.location !== undefined) setRole(localStorage.getItem('role'))
   }, [])
 
+  console.log(activityChecks)
+  console.log(activityArr)
   useEffect(() => {
     if (state === true && !activityArr && tour.tour_id) {
       axios
@@ -45,7 +47,7 @@ function ReservationModal({ state, setState, tour }) {
       closeOnDimmerClick={false}
       open={state}
     >
-      <Modal.Header>Reservation for {tour.name}</Modal.Header>
+      <Modal.Header>Reservation for {tour?.name}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Reservation Information</Header>
@@ -105,7 +107,7 @@ function ReservationModal({ state, setState, tour }) {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {activityArr && activityArr.map((a, i) => {
+                    {activityChecks && activityChecks.length !== 0 && activityArr && activityArr.map((a, i) => {
                       const [d, t] = getDateTime(a.start_date)
                       return <Table.Row key={`tr-${i}`} onClick={() => clickCheckbox(i)}>
                         <Table.Cell> <Checkbox checked={activityChecks[i]} /> </Table.Cell>

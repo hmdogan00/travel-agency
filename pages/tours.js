@@ -17,6 +17,7 @@ const Tours = () => {
   const [searchType, setSearchType] = useState("");
   const [loading, setLoading] = useState(false);
   const [resModalOpen, setResModalOpen] = useState(false);
+  const [tourIndex, setTourIndex] = useState(0);
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
@@ -165,14 +166,9 @@ const Tours = () => {
                           <Table.Cell>{e.company}</Table.Cell>
                           <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
                           <Table.Cell>
-                            <Button onClick={() => setResModalOpen(true)}>
+                            <Button onClick={() => { setTourIndex(i); setResModalOpen(true) }}>
                               Make Reservation
                             </Button>
-                            <ReservationModal
-                              state={resModalOpen}
-                              setState={setResModalOpen}
-                              tour={e}
-                            />
                           </Table.Cell>
                         </Table.Row>
                       </>
@@ -183,6 +179,11 @@ const Tours = () => {
               <AddNewTourModal
                 state={openAddNewTour}
                 setState={setOpenAddNewTour}
+              />
+              <ReservationModal
+                state={resModalOpen}
+                setState={setResModalOpen}
+                tour={tourArr[tourIndex]}
               />
             </>
           )}
