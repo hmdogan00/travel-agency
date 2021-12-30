@@ -124,15 +124,15 @@ export default function Home() {
           <Checkbox disabled checked></Checkbox>ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>iii. If a customer makes the reservation, approve or decline it. If declined,
           state the reason. (employee)<br/>&emsp;
-          <Checkbox disabled></Checkbox>b. Tour reservation<br/>&emsp;&emsp;
-          <Checkbox disabled></Checkbox>i. Make a tour reservation for a customer.<br/>&emsp;&emsp;
+          <Checkbox disabled checked></Checkbox>b. Tour reservation<br/>&emsp;&emsp;
+          <Checkbox disabled checked></Checkbox>i. Make a tour reservation for a customer.<br/>&emsp;&emsp;
           <Checkbox disabled checked></Checkbox>ii. Approve or decline tour reservations made by customers themselves. If
           declined, state the reason.<br/>&emsp;
           <Checkbox disabled></Checkbox>c. Update a hotel/tour reservation detail<br/>&emsp;&emsp;
           <Checkbox disabled checked></Checkbox>i. Customers cannot update themselves.<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>ii. Employees can update any detail about the reservation.<br/>
           <Checkbox disabled></Checkbox>3. Tour guiding (by an employee and a guide)<br/>&emsp;
-          <Checkbox disabled></Checkbox>a. List all tours without an assigned guide. (employee)<br/>&emsp;
+          <Checkbox disabled checked></Checkbox>a. List all tours without an assigned guide. (employee)<br/>&emsp;
           <Checkbox disabled></Checkbox>b. Select a tour and assign an available guide. (employee)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>c. List all available assigned tours. (guide)<br/>&emsp;
           <Checkbox disabled checked></Checkbox>d. Select a tour and accept or decline to guide. (guide)<br/>&emsp;&emsp;
