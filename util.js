@@ -36,7 +36,7 @@ export const parseDateString = s => {
  * @returns {Boolean} true if strings are inside, false otherwise
  */
 export const includesNoCase = (s1, s2) => {
-  return s1.toLowerCase().includes(s2.toLowerCase());
+  return s2 === '' ? true : s1.toLowerCase().includes(s2.toLowerCase());
 };
 
 /**

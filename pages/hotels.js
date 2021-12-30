@@ -1,36 +1,31 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { Card, Form, Header } from "semantic-ui-react";
+import { Card, Form, Header, Label, Rating } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import HotelCard from "../Components/Hotels/HotelCard.js"
+import HotelCard from "../Components/Hotels/HotelCard.js";
+import { includesNoCase } from "../util";
 
 function Hotel() {
   const [role, setRole] = useState("");
   const [hotelArr, setHotelArr] = useState([]);
-  console.log(hotelArr)
   const [openAddNewTour, setOpenAddNewTour] = useState(false);
   const [searchN, setSearchN] = useState("");
-  const [searchDate, setSearchDate] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
   const [searchType, setSearchType] = useState("");
+  const [ratingFilter, setRatingFilter] = useState({
+    rating: 0,
+    maxRating: 10,
+  });
   const [loading, setLoading] = useState(false);
+
+  const handleRateChange = (e, { rating, maxRating }) =>
+    setRatingFilter({ rating, maxRating });
 
   const searchData = useMemo(() => {
     return hotelArr?.filter(item => {
-      if (searchN !== "")
-        return includesNoCase(
-          role === "Employee" ? item.t_name : item.name,
-          searchN
-        );
-      else if (searchDate !== "") {
-        const [d, t] = getDateTime(item.start_date);
-        return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
-      } else if (searchLoc !== "")
-        return includesNoCase(item.location, searchLoc);
-      else if (searchType !== "") return includesNoCase(item.type, searchType);
-      else return true;
+      return includesNoCase(item.name, searchN) && includesNoCase(item.location, searchLoc) && ratingFilter.rating <= item.rating * 10 && includesNoCase(item.name, searchN);
     });
-  }, [hotelArr, searchN, searchDate, searchLoc, searchType]);
+  }, [hotelArr, searchN, ratingFilter, searchLoc, searchType]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,9 +46,6 @@ function Hotel() {
           loading={loading}
           onChange={e => {
             setSearchN(e.target.value);
-            setSearchDate("");
-            setSearchLoc("");
-            setSearchType("");
           }}
           value={searchN}
           placeholder="Search by Tour Name"
@@ -63,49 +55,31 @@ function Hotel() {
         <Form.Input
           loading={loading}
           onChange={e => {
-            setSearchN("");
-            setSearchType(e.target.value);
-            setSearchLoc("");
-            setSearchDate("");
-          }}
-          value={searchType}
-          placeholder="Search by Type"
-          className="mr-4"
-          icon="search"
-        />
-        <Form.Input
-          loading={loading}
-          onChange={e => {
-            setSearchN("");
-            setSearchType("");
             setSearchLoc(e.target.value);
-            setSearchDate("");
           }}
           value={searchLoc}
           placeholder="Search by Location"
           className="mr-4"
           icon="search"
         />
-        <Form.Input
-          loading={loading}
-          onChange={e => {
-            setSearchN("");
-            setSearchType("");
-            setSearchLoc("");
-            setSearchDate(e.target.value);
-          }}
-          value={searchDate}
-          placeholder="Search by Date"
-          icon="search"
-        />
+        <label style={{marginTop:'8px'}}>Minimum rating:</label>
+        <div style={{display:'flex', flexDirection:'column'}}>
+          <Rating
+            rating={ratingFilter.rating}
+            maxRating={10}
+            onRate={handleRateChange}
+          ></Rating>
+          <label style={{alignSelf:'center'}}>{`${ratingFilter.rating}/10`}</label>
+        </div>
       </div>
       {role === "Customer" && (
         <div style={{ margin: "30px" }}>
           <Card.Group itemsPerRow={4}>
             {searchData?.length === 0 && (
-              <Header>There are no hotels for reservation.</Header>
+              <Header>There are no hotels with given filters.</Header>
             )}
-            {searchData && searchData.map((e, i) => {
+            {searchData &&
+              searchData.map((e, i) => {
                 return <HotelCard hotel={e} key={`hotelCard-${i}`} />;
               })}
           </Card.Group>

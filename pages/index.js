@@ -119,9 +119,9 @@ export default function Home() {
           <Checkbox disabled checked></Checkbox>f. Give feedback about the tour and the guide. (comment and rate)<br/>
           <Checkbox disabled></Checkbox>2. Reservation management (by an employee and a customer)<br/>&emsp;
           <Checkbox disabled></Checkbox>a. Hotel reservation<br/>&emsp;&emsp;
-          <Checkbox disabled></Checkbox>i. List all available hotels and select the desired one. (apply filters like stars,
+          <Checkbox disabled checked></Checkbox>i. List all available hotels and select the desired one. (apply filters like stars,
           city, etc.)<br/>&emsp;&emsp;
-          <Checkbox disabled></Checkbox>ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
+          <Checkbox disabled checked></Checkbox>ii. Select the dates for the reservation and indicate the number of guests.<br/>&emsp;&emsp;
           <Checkbox disabled></Checkbox>iii. If a customer makes the reservation, approve or decline it. If declined,
           state the reason. (employee)<br/>&emsp;
           <Checkbox disabled></Checkbox>b. Tour reservation<br/>&emsp;&emsp;

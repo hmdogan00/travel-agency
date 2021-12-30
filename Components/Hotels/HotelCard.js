@@ -5,7 +5,6 @@ import ReservationModal from "./ReservationModal.js";
 
 const TourCard = ({ hotel }) => {
   hotel.desc = [`Total Rooms: ${hotel.no_of_total_room}`];
-  hotel.desc.push(`Empty Rooms: ${hotel.no_of_empty_room}`);
   hotel.desc.push(
     hotel.rating ? `Rating: ${makeRatingString(hotel.rating)}` : `No rating`
   );
@@ -35,7 +34,7 @@ const TourCard = ({ hotel }) => {
                 return <Grid.Column width={16}>{e}</Grid.Column>;
               })
             ) : (
-              <Grid.Column width={15}>{`${hotel.desc[0]}...`}</Grid.Column>
+              <Grid.Column width={15}>{`${hotel.desc[0]}`}</Grid.Column>
             )}
             <Grid.Column width={15}>
               <Button
