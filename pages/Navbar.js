@@ -54,6 +54,13 @@ function Navbar({ activeType }) {
       >
         Activity Management
       </Menu.Item>
+      {role === 'Employee' && <Menu.Item
+        name='assignGuides'
+        active={activeType === 'assignGuides'}
+        onClick={(e) => handleItemClick(e, 'assignGuides')}
+      >
+        Assign Guides
+      </Menu.Item>}
       <Menu.Menu position="right">
         <Menu.Item>
           <Button color='red' onClick={logout}>Logout</Button>
