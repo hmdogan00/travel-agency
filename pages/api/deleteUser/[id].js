@@ -6,7 +6,6 @@ export default async (req, res) => {
     return;
   }
   let {id} = req.query;
-  id = parseInt(id);
   if (!id){
     res.status(423).json({message: 'No id found!'});
     return;

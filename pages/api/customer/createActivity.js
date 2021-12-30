@@ -4,9 +4,7 @@ export default async (req, res) => {
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method not allowed" });
   try {
-    let { activity } = req.body;
-    let { id } = req.body;
-    id = parseInt(id);
+    let { activity, id } = req.body;
     let result;
     let answer;
     db.query(

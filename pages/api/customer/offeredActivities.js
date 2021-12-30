@@ -4,7 +4,6 @@ export default async (req, res) => {
         return res.status(400).json({ message: "Method not allowed" });
     try {
         let { id } = req.query;
-        id = parseInt(id);
         await db.query(`SELECT AI.type, AI.name, AI.location, AI.description, AI.is_accepted FROM ActivityIdea AI, create_activity CA
         WHERE AI.act_idea_id = CA.act_idea_id and CA.person_id = ${id}`, (err, result, fields) =>{
             if (err) {  

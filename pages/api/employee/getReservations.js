@@ -4,7 +4,6 @@ export default async (req, res) => {
       res.status(400).json({message: 'Method Not Allowed'})
       return;
     }
-    let answer;
     try {
       await db.query(`SELECT T.name as t_name, T.location, C.name as c_name, R1.end_date, R1.start_date, R1.reservation_id
       FROM ((Customer C INNER JOIN make M ON C.id = M.person_id) NATURAL JOIN Reservation R1), (Reservation R2 INNER JOIN Tour T ON R2.tour_id = T.tour_id)
