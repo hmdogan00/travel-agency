@@ -5,8 +5,7 @@ export default async (req, res) => {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {id} = req.body;
-  id = parseInt(id);
+  let {id, comment, rate} = req.body;
   if (!id){
     res.status(423).json({message: 'No id found!'})
     return;
@@ -14,7 +13,7 @@ export default async (req, res) => {
   let answer;
   try {
     await db.query(`UPDATE Tour 
-                    SET is_accepted='accepted'
+                    SET is_accepted='accepted', comment = '${comment}', rating = ${rate}
                     WHERE tour_id = ${id}`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
