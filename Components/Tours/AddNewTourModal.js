@@ -1,5 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
-import { Modal, Form, List, Button, Header } from "semantic-ui-react";
+import { Modal, Form, Button, Header } from "semantic-ui-react";
 
 function AddNewTourModal({ state, setState }) {
   const [name, setName] = useState("");
@@ -10,12 +11,27 @@ function AddNewTourModal({ state, setState }) {
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
 
+  const [endDate, setEndDate] = useState("");
   const [tempDate, setTempDate] = useState("");
   const today = new Date().toISOString().split("T")[0];
 
-  const addDate = () => setDatesArr(lastDates => [...lastDates, tempDate]);
-  const deleteDate = date =>
-    setDatesArr(lastDates => lastDates.filter(e => e !== date));
+  const addNewTour = () => {
+    if ( !confirm("You are adding a new tour. Are you sure?") ) {
+      return;
+    }
+    const body = {
+      name:name,
+      price:price,
+      capacity:capacity,
+      type:type,
+      company:company,
+      location:location,
+      start_date:tempDate,
+      end_date:endDate
+    }
+    axios.post(`/api/employee/addNewTour`, body).then(res => alert(`${name} added successfully!`)).catch(err => alert(err.data.message))
+    window.location.reload();
+  }
 
   const cancelAddTour = () => {
     setName("");
@@ -86,32 +102,23 @@ function AddNewTourModal({ state, setState }) {
             </Form.Group>
             <Form.Group inline>
               <Form.Input
-                label="Dates"
+                label="Starting Date"
                 value={tempDate}
                 onChange={e => setTempDate(e.target.value)}
                 width={4}
                 type="date"
                 min={today}
               />
-              <Button color="blue" circular icon="plus" onClick={addDate} />
+              <Form.Input
+                label="End Date"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+                width={4}
+                type="date"
+                min={tempDate}
+              />
             </Form.Group>
           </Form>
-          <List>
-            {datesArr?.map(date => {
-              return (
-                <List.Item>
-                  <Button
-                    content={date}
-                    color="red"
-                    icon="minus"
-                    circular
-                    size="mini"
-                    onClick={() => deleteDate(date)}
-                  />
-                </List.Item>
-              );
-            })}
-          </List>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
@@ -122,7 +129,7 @@ function AddNewTourModal({ state, setState }) {
           content="Add Tour"
           labelPosition="right"
           icon="add square"
-          onClick={() => console.log("lol")}
+          onClick={() => addNewTour()}
           positive
         />
       </Modal.Actions>
