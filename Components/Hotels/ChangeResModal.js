@@ -22,12 +22,12 @@ function ChangeResModal({ state, closeModal, resItem }) {
       setPersonNo(resItem.personNo);
       setTourId(resItem.tour_id);
 
-      if (!tourArr) {
-        axios
-          .get("/api/getAllTours")
-          .then(res => setTourArr([...res.data.results]));
-        setRadioState(resItem.tour_id);
-      }
+      // if (!tourArr) {
+      //   axios
+      //     .get("/api/getAllTours")
+      //     .then(res => setTourArr([...res.data.results]));
+      //   setRadioState(resItem.tour_id);
+      // }
     }
   }, [state]);
 
@@ -54,16 +54,16 @@ function ChangeResModal({ state, closeModal, resItem }) {
         res_id: resItem.reservation_id
       };
 
-      axios
-        .post('/api/employee/updateTourReservation', body)
-        .then(res => {
-          if (res.status === 200) {
-            alert(res.statusText);
-            closeModal();
-            window.location.reload();
-          }
-          else alert(res.statusText);
-        })
+      // axios
+      //   .post('/api/employee/updateTourReservation', body)
+      //   .then(res => {
+      //     if (res.status === 200) {
+      //       alert(res.statusText);
+      //       closeModal();
+      //       window.location.reload();
+      //     }
+      //     else alert(res.statusText);
+      //   })
     }
   }
 

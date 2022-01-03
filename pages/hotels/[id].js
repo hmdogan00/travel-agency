@@ -6,12 +6,12 @@ import {
   Header,
   Button,
   Table,
-  ButtonGroup,
-  Label
+  ButtonGroup
 } from "semantic-ui-react";
 import { getDateTime, includesNoCase, parseDateString } from "../../util";
 import Navbar from "../Navbar";
 import ReasonModal from "../../Components/Hotels/ReasonModal";
+import ChangeResModal from "../../Components/Hotels/ChangeResModal";
 
 const HotelResPage = () => {
   const router = useRouter();
@@ -27,6 +27,18 @@ const HotelResPage = () => {
   const [searchEndDate, setSearchEndDate] = useState("");
   const [listType, setListType] = useState("waiting");
   const [hotelName, setHotelName] = useState('');
+
+  const [changeResModal, setChangeResModal] = useState(false);
+  const [resChangeItem, setResChangeItem] = useState(null);
+
+  const openChangeResModal = (e) => {
+    setResChangeItem(e);
+    setChangeResModal(true);
+  }
+  const closeChangeResModal = () => {
+    setResChangeItem(null);
+    setChangeResModal(false);
+  }
 
   const openReasonModal = (e) => {
     setResItem(e);
@@ -319,16 +331,17 @@ const HotelResPage = () => {
                       >
                         Decline
                       </Button>
-                      {/* <Button
-                        onClick={() => changeRes(e)}
+                      <Button
+                        onClick={() => openChangeResModal(e)}
                         color="yellow"
                       >
                         Change
-                      </Button> */}
+                      </Button>
                     </Table.Cell>}
                   </Table.Row>
                 );
               })}
+            <ChangeResModal state={changeResModal} closeModal={closeChangeResModal} resItem={resChangeItem} />
             <ReasonModal state={reasonModal} closeModal={closeReasonModal} resItem={resItem} />
           </Table.Body>
         </Table>
