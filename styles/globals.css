@@ -45,6 +45,11 @@ a {
   margin: 7%;
 }
 
+.logo-nav {
+  width: 35px;
+  margin-right: 10px;
+}
+
 .mr-1 {
   margin-right: 10px;
 }
@@ -66,13 +71,13 @@ a {
   overflow-y: scroll;
 }
 
-.tour-review-finish-btn{
+.tour-review-finish-btn {
   margin: 0 46% 0 46%;
   width: 9%;
   align-self: center;
 }
 
-.activity-requests{
+.activity-requests {
   overflow-y: scroll;
   height: 385px;
 }
