@@ -3,12 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Form, Header, Label, Rating, Table } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import HotelCard from "../Components/Hotels/HotelCard.js";
-import { getDateTime, includesNoCase } from "../util";
+import AddNewHotelModal from "../Components/Hotels/AddNewHotelModal";
+import { includesNoCase } from "../util";
 
 function Hotel() {
   const [role, setRole] = useState("");
   const [hotelArr, setHotelArr] = useState([]);
-  const [openAddNewTour, setOpenAddNewTour] = useState(false);
+  const [openAddNewHotel, setOpenAddNewHotel] = useState(false);
   const [searchN, setSearchN] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
   const [searchType, setSearchType] = useState("");
@@ -98,9 +99,10 @@ function Hotel() {
                 <Button
                   content="Add New Hotel"
                   color="blue"
-                  onClick={() => setOpenAddNewTour(true)}
+                  onClick={() => setOpenAddNewHotel(true)}
                 />
               </Header>
+              <AddNewHotelModal state={openAddNewHotel} setState={setOpenAddNewHotel} />
               <Table celled fixed color="red">
                 <Table.Header>
                   <Table.Row>
