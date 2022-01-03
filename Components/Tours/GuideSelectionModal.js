@@ -21,6 +21,7 @@ function GuideSelectionModal({ state, setState, tour }) {
     axios.post(`/api/employee/assignGuide?guide_id=${guideArr[guideSelectionIndex].guide_id}&tour_id=${tour.tour_id}`).then(res => {
       if (res.status === 200) alert(`Successfully sent guidance offer to ${guideArr[guideSelectionIndex].name}`);
       else alert(res.data.message);
+      window.location.reload();
     }).catch( err => alert(err.data.message))
   }
 
