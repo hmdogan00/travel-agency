@@ -205,4 +205,26 @@ sendQuery(`
     guide_rate FLOAT NOT NULL,
     PRIMARY KEY(tour_id, G_person_id, C_person_id))`);
 
+sendQuery(`
+DELIMITER //
+
+CREATE PROCEDURE GetAllHotels()
+BEGIN
+	SELECT *  FROM Hotel;
+END //
+
+DELIMITER ;  
+`);
+
+
+sendQuery(`
+DELIMITER //
+
+CREATE PROCEDURE GetAllTour()
+BEGIN
+	SELECT *  FROM Tour;
+END //
+
+DELIMITER ;  
+`);
 db.end();
