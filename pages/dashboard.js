@@ -9,26 +9,26 @@ const approveRes = rId =>
   axios
     .post("/api/employee/approveReservation", { id: rId })
     .then(res => {alert('Approved Successfully!'); window.location.reload()})
-    .catch(e => alert(e.data.message));
+    .catch(e => alert(e.message));
 
 const approveResGuide = tId =>
   axios
     .post("/api/guide/approveOffer", { id: tId })
     .then(res => {alert('Approved Successfully!'); window.location.reload()})
-    .catch(e => alert(e.data.message));
+    .catch(e => alert(e.message));
 
 const declineRes = rId =>
   axios
     .post("/api/employee/declineReservation", { id: rId })
     .then(res => {alert('Declined Successfully!'); window.location.reload()})
-    .catch(e => alert(e.data.message));
+    .catch(e => alert(e.message));
 
 const declineResGuide = tId => {
   const comment = prompt("Please state your reason for declining the offer?")
   axios
     .post("/api/guide/declineOffer", { id: tId, reason:comment })
     .then(res => {alert('Declined Successfully!'); window.location.reload()})
-    .catch(e => alert(e.data.message));
+    .catch(e => alert(e.message));
 }
 
 function Dashboard() {
