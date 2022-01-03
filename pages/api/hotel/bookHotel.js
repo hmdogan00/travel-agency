@@ -15,6 +15,5 @@ export default (req, res) => {
       return Promise.resolve(res);
     });
   } catch (e) {
-    console.log(e);
   }
 };
