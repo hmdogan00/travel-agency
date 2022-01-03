@@ -15,11 +15,12 @@ export default async (req, res) => {
       return db.query(`UPDATE book
         SET is_accepted = '${is_accepted}'
         WHERE employee_id = ${employee_id} and hotel_room_no = ${hotel_room_no} and hotel_id = ${hotel_id} 
-        and person_id = ${person_id} and start_date = '${start_date}' and end_date = '${end_date}'`, (err, result, fields) => {
+        and person_id = ${person_id} and start_date = '${start_date}' and end_date = '${end_date}'`, (err, results, fields) => {
         if (err) {
           return res.status(400).json({ message: err });
         }
-        res.status(200).json({ result })
+        console.log(results, fields)
+        return res.status(200).json({ results })
       })
     }
     else {
@@ -32,12 +33,11 @@ export default async (req, res) => {
           res.status(400).json({ message: err })
           return;
         }
-        res.status(200).json({ result })
+        return res.status(200).json({ result })
       })
     }
   }
   catch (err) {
-    res.status(200).json({ message: err, messageType: 'ERROR' })
-    return;
+    return res.status(401).json({ message: err, messageType: 'ERROR' })
   }
 }

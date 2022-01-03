@@ -9,7 +9,7 @@ import {
   Modal,
   TextArea,
 } from "semantic-ui-react";
-import { getDateTime, includesNoCase } from "../../util";
+import { getDateTime, includesNoCase, parseDateString } from "../../util";
 import Navbar from "../Navbar";
 
 const HotelResPage = () => {
@@ -36,14 +36,15 @@ const HotelResPage = () => {
   }
 
   const approveRes = (e) => {
+    console.log(parseDateString(e.start_date).toISOString())
     if (confirm("Do you want to approve this reservation?")) {
       const body = {
         employee_id: e.employee_id,
         hotel_room_no: e.hotel_room_no,
         hotel_id: e.hotel_id,
         person_id: e.person_id,
-        start_date: e.start_date,
-        end_date: e.end_date,
+        start_date: e.start_date.split('T')[0],
+        end_date: e.end_date.split('T')[0],
         is_accepted: "accepted"
       }
       console.log(body);
