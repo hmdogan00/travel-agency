@@ -6,7 +6,7 @@ export default async (req, res) => {
     return;
   }
   let {guide_id, tour_id} = req.body;
-  if (!id){
+  if (!guide_id){
     res.status(423).json({message: 'No id found!'})
     return;
   }
