@@ -127,7 +127,7 @@ const AssignGuides = () => {
                   return (
                     <>
                       <Table.Row>
-                        <Table.Cell>{i + i}</Table.Cell>
+                        <Table.Cell>{i + 1}</Table.Cell>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
                         <Table.Cell>{e.price}</Table.Cell>
@@ -145,7 +145,7 @@ const AssignGuides = () => {
                               setAssignModalOpen(true);
                             }}
                           >
-                            Make Reservation
+                            Assign Guides
                           </Button>
                         </Table.Cell>
                       </Table.Row>

@@ -1,6 +1,6 @@
 import { Button, Card, Container, Form, Label, Table, TextArea } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import { useState, useEffect, useMemo, useReducer } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import ApproveActModal from "../Components/ActivityManagement/ApproveActModal";
 
@@ -10,7 +10,6 @@ function ActivityManagement() {
   const [aType, setAType] = useState('');
   const [aLoc, setALoc] = useState('');
   const [aDesc, setADesc] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const [list, setList] = useState([]);
   const [searchTN, setSearchTN] = useState('');
@@ -34,39 +33,6 @@ function ActivityManagement() {
   },
     [list, searchTN, searchType, searchLoc]
   );
-
-  const [state, dispatch] = useReducer(reducer, {
-    column: null,
-    data: searchList,
-    direction: null,
-  });
-
-  function reducer(state, action) {
-    switch (action.type) {
-      case "CHANGE_SORT":
-        if (state.column === action.column) {
-          return {
-            ...state,
-            data: state.data.slice().reverse(),
-            direction:
-              state.direction === "ascending" ? "descending" : "ascending",
-          };
-        }
-
-        return {
-          column: action.column,
-          data: _.sortBy(state.data, [action.column]),
-          direction: "ascending",
-        };
-      case "UPDATE_DATA":
-        return {
-          ...state,
-          data: searchList,
-        };
-      default:
-        throw new Error();
-    }
-  }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -184,7 +150,7 @@ function ActivityManagement() {
                   </Table.Header>
 
                   <Table.Body>
-                    {list && list.map((e, i) => {
+                    {searchList && searchList.map((e, i) => {
                       return <Table.Row>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.type}</Table.Cell>
@@ -210,7 +176,6 @@ function ActivityManagement() {
                 <Card.Content>
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <Form.Input
-                      loading={loading}
                       onChange={(e) => {
                         setSearchTN(e.target.value);
                         setSearchType("");
@@ -222,7 +187,6 @@ function ActivityManagement() {
                       icon="search"
                     />
                     <Form.Input
-                      loading={loading}
                       onChange={(e) => {
                         setSearchTN("");
                         setSearchType(e.target.value);
@@ -234,7 +198,6 @@ function ActivityManagement() {
                       icon="search"
                     />
                     <Form.Input
-                      loading={loading}
                       onChange={(e) => {
                         setSearchTN("");
                         setSearchType("");
@@ -247,7 +210,7 @@ function ActivityManagement() {
                   </div>
                 </Card.Content>
                 <Card.Content>
-                  <Table sortable celled color="red">
+                  <Table celled color="red">
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell>Tour Name</Table.HeaderCell>

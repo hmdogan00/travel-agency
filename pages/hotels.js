@@ -103,7 +103,7 @@ function Hotel() {
                 />
               </Header>
               <AddNewHotelModal state={openAddNewHotel} setState={setOpenAddNewHotel} />
-              <Table celled fixed color="red">
+              <Table celled color="red">
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell></Table.HeaderCell>
@@ -130,7 +130,7 @@ function Hotel() {
                         <Table.Cell>{e.rating}</Table.Cell>
                         <Table.Cell>
                           <Button
-                            content="Show/Make Reservations"
+                            content="Show Reservations"
                             color="blue"
                             size="tiny"
                             onClick={() => window.location.href = `/hotels/${e.hotel_id}`}

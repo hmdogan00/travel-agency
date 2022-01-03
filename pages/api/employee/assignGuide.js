@@ -5,16 +5,16 @@ export default async (req, res) => {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {id, reason} = req.body;
-  if (!id){
+  let {guide_id, tour_id} = req.query;
+  if (!guide_id){
     res.status(423).json({message: 'No id found!'})
     return;
   }
   let answer;
   try {
-    await db.query(`UPDATE Tour 
-                    SET is_accepted='rejected', reason = '${reason}', person_id = NULL
-                    WHERE tour_id = ${id}`, (err,result,fields) => { 
+    await db.query(`UPDATE Tour
+                    SET person_id = ${guide_id}, is_accepted = 'waiting' 
+                    WHERE tour_id = ${tour_id}`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;

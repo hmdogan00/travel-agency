@@ -8,26 +8,28 @@ import { getDateTime, includesNoCase, parseDateString } from "../util";
 const approveRes = rId =>
   axios
     .post("/api/employee/approveReservation", { id: rId })
-    .then(res => console.log)
-    .catch(e => console.error);
+    .then(res => {alert('Approved Successfully!'); window.location.reload()})
+    .catch(e => alert(e.message));
 
 const approveResGuide = tId =>
   axios
     .post("/api/guide/approveOffer", { id: tId })
-    .then(res => console.log)
-    .catch(e => console.error);
+    .then(res => {alert('Approved Successfully!'); window.location.reload()})
+    .catch(e => alert(e.message));
 
 const declineRes = rId =>
   axios
     .post("/api/employee/declineReservation", { id: rId })
-    .then(res => console.log)
-    .catch(e => console.error);
+    .then(res => {alert('Declined Successfully!'); window.location.reload()})
+    .catch(e => alert(e.message));
 
-const declineResGuide = tId =>
+const declineResGuide = tId => {
+  const comment = prompt("Please state your reason for declining the offer?")
   axios
-    .post("/api/guide/declineOffer", { id: tId })
-    .then(res => console.log)
-    .catch(e => console.error);
+    .post("/api/guide/declineOffer", { id: tId, reason:comment })
+    .then(res => {alert('Declined Successfully!'); window.location.reload()})
+    .catch(e => alert(e.message));
+}
 
 function Dashboard() {
   const [role, setRole] = useState("");
@@ -369,12 +371,6 @@ function Dashboard() {
                             color="red"
                           >
                             Decline
-                          </Button>
-                          <Button
-                            onClick={() => changeResGuide(e.tour_id)}
-                            color="yellow"
-                          >
-                            Change
                           </Button>
                         </Table.Cell>
                       </Table.Row>

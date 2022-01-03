@@ -40,13 +40,13 @@ function Navbar({ activeType }) {
       >
         Tours
       </Menu.Item>
-      <Menu.Item
+      {role !== 'Guide' && <Menu.Item
         name='hotels'
         active={activeType === 'hotels'}
         onClick={(e) => handleItemClick(e, 'hotels')}
       >
         Hotels
-      </Menu.Item>
+      </Menu.Item>}
       <Menu.Item
         name='activityManagement'
         active={activeType === 'activityManagement'}

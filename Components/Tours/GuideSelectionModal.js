@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Modal, Header, Form, Input, Button, Checkbox, Table, Label } from "semantic-ui-react";
+import { Modal, Header, Form, Input, Button, Checkbox, Table, TableCell } from "semantic-ui-react";
 import axios from "axios";
-import { getDateTime } from "../../util.js";
+import { makeRatingString } from "../../util.js";
 
 function GuideSelectionModal({ state, setState, tour }) {
   const [guideArr, setGuideArr] = useState(null);
-  const [guideSelectionIndex, setguideSelectionIndex] = useState(0);
+  const [guideSelectionIndex, setGuideSelectionIndex] = useState(0);
 
   const handleCheckboxSelection = (index, value) => {
     setRoomSelectionArray(latestArr => {
@@ -17,17 +17,27 @@ function GuideSelectionModal({ state, setState, tour }) {
     getRoomInformations();
   }
 
+  const closeModal = () => {
+    setGuideArr(null);
+    setGuideSelectionIndex(0);
+    setState(false);
+  } 
+
   const assignGuide = () => {
-     console.log('assigned')
+    axios.post(`/api/employee/assignGuide?guide_id=${guideArr[guideSelectionIndex].guide_id}&tour_id=${tour.tour_id}`).then(res => {
+      if (res.status === 200) alert(`Successfully sent guidance offer to ${guideArr[guideSelectionIndex].name}`);
+      else alert(res.data.message);
+      window.location.reload();
+    }).catch( err => alert(err.message))
   }
 
   useEffect(() => {
     if (state === true && !guideArr && tour.tour_id) {
       axios
-        .get(`/api/employee/getAvailableGuides?start=${tour.start_date}&end=${tour.end_date}`)
+        .get(`/api/employee/getAvailableGuides?start=${tour.start_date.split("T")[0]}&end=${tour.end_date.split("T")[0]}`)
         .then(res => {
           setGuideArr([...res.data.results]);
-          setguideSelectionIndex(0)
+          setGuideSelectionIndex(0)
         });
     }
   }, [tour, state, guideArr, guideSelectionIndex]);
@@ -57,17 +67,16 @@ function GuideSelectionModal({ state, setState, tour }) {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {guideSelectionIndex && guideSelectionIndex.length !== 0 && guideArr && guideArr.map((g, i) => {
-                      const [d, t] = getDateTime(a.start_date)
+                    {guideArr && guideArr.map((a, i) => {
                       return <Table.Row key={`tr-${i}`}>
                         <TableCell>
                               <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, {value}) => handleCheckboxSelection(value, roomIndex)}/>
                             </TableCell>
                         <Table.Cell> {a.name} </Table.Cell>
-                        <Table.Cell> {`${d}(${t})`} </Table.Cell>
-                        <Table.Cell> {a.duration} </Table.Cell>
+                        <Table.Cell> {a.email} </Table.Cell>
                         <Table.Cell> {a.location} </Table.Cell>
-                        <Table.Cell> {a.price} </Table.Cell>
+                        <Table.Cell> {a.phone_no} </Table.Cell>
+                        <Table.Cell> {makeRatingString(a.rating)} </Table.Cell>
                       </Table.Row>
                     })}
                   </Table.Body>
@@ -78,7 +87,7 @@ function GuideSelectionModal({ state, setState, tour }) {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={() => setState(false)}>
+        <Button color="red" onClick={() => closeModal()}>
           Cancel
         </Button>
         <Button

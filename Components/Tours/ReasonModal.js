@@ -2,6 +2,18 @@ import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Modal, TextArea } from "semantic-ui-react";
 
+// const [reasonModal, setReasonModal] = useState(false);
+// const [resItem, setResItem] = useState(null);
+// const openReasonModal = (e) => {
+//   setResItem(e);
+//   setReasonModal(true);
+// }
+// const closeReasonModal = () => {
+//   setResItem(null);
+//   setReasonModal(false);
+// }
+//<ReasonModal state={reasonModal} closeModal={closeReasonModal} resItem={resItem} />
+
 function ReasonModal({ state, closeModal, resItem }) {
   const [text, setText] = useState("");
 
@@ -14,27 +26,27 @@ function ReasonModal({ state, closeModal, resItem }) {
 
   const declineRes = () => {
     if (confirm("Do you want to decline this reservation?")) {
-      const body = {
-        employee_id: resItem.employee_id,
-        hotel_room_no: resItem.hotel_room_no,
-        hotel_id: resItem.hotel_id,
-        person_id: resItem.person_id,
-        start_date: resItem.start_date,
-        end_date: resItem.end_date,
-        is_accepted: "rejected",
-        reject_reason: text
-      }
+      // const body = {
+      //   employee_id: resItem.employee_id,
+      //   hotel_room_no: resItem.hotel_room_no,
+      //   hotel_id: resItem.hotel_id,
+      //   person_id: resItem.person_id,
+      //   start_date: resItem.start_date,
+      //   end_date: resItem.end_date,
+      //   is_accepted: "rejected",
+      //   reject_reason: text
+      // }
 
-      axios
-        .post('/api/hotel/setBookStatus', body)
-        .then(res => {
-          if (res.status === 200) {
-            alert(res.statusText);
-            closeModal();
-            window.location.reload();
-          }
-          else alert(res.statusText);
-        });
+      // axios
+      //   .post('/api/hotel/setBookStatus', body)
+      //   .then(res => {
+      //     if (res.status === 200) {
+      //       alert(res.statusText);
+      //       closeModal();
+      //       window.location.reload();
+      //     }
+      //     else alert(res.statusText);
+      //   });
     }
   }
 
