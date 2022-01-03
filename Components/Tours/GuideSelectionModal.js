@@ -22,7 +22,7 @@ function GuideSelectionModal({ state, setState, tour }) {
       if (res.status === 200) alert(`Successfully sent guidance offer to ${guideArr[guideSelectionIndex].name}`);
       else alert(res.data.message);
       window.location.reload();
-    }).catch( err => alert(err.data.message))
+    }).catch( err => alert(err.message))
   }
 
   useEffect(() => {
