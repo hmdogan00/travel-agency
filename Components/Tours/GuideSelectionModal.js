@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Modal, Header, Form, Input, Button, Checkbox, Table, Label } from "semantic-ui-react";
+import { Modal, Header, Form, Input, Button, Checkbox, Table, TableCell } from "semantic-ui-react";
 import axios from "axios";
-import { getDateTime } from "../../util.js";
+import { makeRatingString } from "../../util.js";
 
 function GuideSelectionModal({ state, setState, tour }) {
   const [guideArr, setGuideArr] = useState(null);
@@ -24,7 +24,7 @@ function GuideSelectionModal({ state, setState, tour }) {
   useEffect(() => {
     if (state === true && !guideArr && tour.tour_id) {
       axios
-        .get(`/api/employee/getAvailableGuides?start=${tour.start_date}&end=${tour.end_date}`)
+        .get(`/api/employee/getAvailableGuides?start=${tour.start_date.split("T")[0]}&end=${tour.end_date.split("T")[0]}`)
         .then(res => {
           setGuideArr([...res.data.results]);
           setguideSelectionIndex(0)
@@ -57,17 +57,16 @@ function GuideSelectionModal({ state, setState, tour }) {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {guideSelectionIndex && guideSelectionIndex.length !== 0 && guideArr && guideArr.map((g, i) => {
-                      const [d, t] = getDateTime(a.start_date)
+                    {guideArr && guideArr.map((a, i) => {
                       return <Table.Row key={`tr-${i}`}>
                         <TableCell>
                               <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, {value}) => handleCheckboxSelection(value, roomIndex)}/>
                             </TableCell>
                         <Table.Cell> {a.name} </Table.Cell>
-                        <Table.Cell> {`${d}(${t})`} </Table.Cell>
-                        <Table.Cell> {a.duration} </Table.Cell>
+                        <Table.Cell> {a.email} </Table.Cell>
                         <Table.Cell> {a.location} </Table.Cell>
-                        <Table.Cell> {a.price} </Table.Cell>
+                        <Table.Cell> {a.phone_no} </Table.Cell>
+                        <Table.Cell> {makeRatingString(a.rating)} </Table.Cell>
                       </Table.Row>
                     })}
                   </Table.Body>
