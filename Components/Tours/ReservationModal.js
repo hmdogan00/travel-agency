@@ -27,8 +27,6 @@ function ReservationModal({ state, setState, tour }) {
     if (window.location !== undefined) setRole(localStorage.getItem('role'))
   }, [])
 
-  console.log(activityChecks)
-  console.log(activityArr)
   useEffect(() => {
     if (state === true && !activityArr && tour.tour_id) {
       axios
@@ -40,9 +38,15 @@ function ReservationModal({ state, setState, tour }) {
     }
   }, [tour, state, activityArr, activityChecks]);
 
+  const closeModal = () => {
+    setActivityArr(null);
+    setActivityChecks(null);
+    setState(false);
+  }
+
   return (
     <Modal
-      onClose={() => setState(false)}
+      onClose={closeModal}
       onOpen={() => setState(true)}
       closeOnDimmerClick={false}
       open={state}
@@ -92,7 +96,7 @@ function ReservationModal({ state, setState, tour }) {
                 onChange={e => setIdentityNo(e.target.value)}
               />
             </Form.Field>}
-            <Form.Field className='reservation-form-field'>
+            {activityChecks && activityChecks.length !== 0 && activityArr ? <Form.Field className='reservation-form-field'>
               <label>Choose activities:</label>
               <div className="scrollable">
                 <Table>
@@ -121,12 +125,13 @@ function ReservationModal({ state, setState, tour }) {
                   </Table.Body>
                 </Table>
               </div>
-            </Form.Field>
+            </Form.Field> :
+              <Label size="large" color="yellow">There are no activities for this tour!</Label>}
           </Form>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={() => setState(false)}>
+        <Button color="red" onClick={closeModal}>
           Cancel
         </Button>
         <Button
@@ -150,7 +155,7 @@ function ReservationModal({ state, setState, tour }) {
         activityArr={activityArr}
         activityChecks={activityChecks}
       />
-    </Modal>
+    </Modal >
   );
 }
 

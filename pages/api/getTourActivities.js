@@ -1,9 +1,9 @@
 import db from "../../lib/db";
 
 export default (req, res) => {
-  if ( req.method !== "GET" ) return Promise.reject("Invalid method");
+  if (req.method !== "GET") return Promise.reject("Invalid method");
   try {
-    const {id} = req.query;
+    const { id } = req.query;
     return db.query(`SELECT * FROM Activity NATURAL JOIN has WHERE tour_id=${id}`, function (err, results, fields) {
       if (err) {
         res.status(401).json({ message: err }).res.end();
@@ -12,8 +12,8 @@ export default (req, res) => {
       const originalActivities = []
       originalActivities.push(...results)
       return db.query(`SELECT * FROM ActivityIdea NATURAL JOIN accepted WHERE is_accepted='accepted' and tour_id=${id}`, function (err, results, fields) {
-        if ( err ) return res.status(401).json({message:err}.res.end())
-        const activities = [...originalActivities,...results];
+        if (err) return res.status(401).json({ message: err }.res.end())
+        const activities = [...originalActivities, ...results];
         return res.status(200).json({ results: activities });
       })
     });
