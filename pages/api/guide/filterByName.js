@@ -14,7 +14,7 @@ export default async (req, res) => {
   try {
     await db.query(`USELECT T.name, start_date, T.location
     FROM Tour T
-    WHERE T.person_id != null and is_accepted='waiting' and WHERE T.name = '%${name}%'`, (err,result,fields) => {
+    WHERE T.person_id != null and is_accepted='waiting' and WHERE T.name LIKE '%${name}%'`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;

@@ -106,7 +106,7 @@ function Hotel() {
               <Table celled fixed color="red">
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>ID</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Location</Table.HeaderCell>
                     <Table.HeaderCell>Number Of Empty Rooms</Table.HeaderCell>
