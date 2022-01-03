@@ -5,7 +5,7 @@ import { makeRatingString } from "../../util.js";
 
 function GuideSelectionModal({ state, setState, tour }) {
   const [guideArr, setGuideArr] = useState(null);
-  const [guideSelectionIndex, setguideSelectionIndex] = useState(0);
+  const [guideSelectionIndex, setGuideSelectionIndex] = useState(0);
 
   const handleCheckboxSelection = (index, value) => {
     setRoomSelectionArray(latestArr => {
@@ -16,6 +16,12 @@ function GuideSelectionModal({ state, setState, tour }) {
     })
     getRoomInformations();
   }
+
+  const closeModal = () => {
+    setGuideArr(null);
+    setGuideSelectionIndex(0);
+    setState(false);
+  } 
 
   const assignGuide = () => {
     axios.post(`/api/employee/assignGuide?guide_id=${guideArr[guideSelectionIndex].guide_id}&tour_id=${tour.tour_id}`).then(res => {
@@ -31,7 +37,7 @@ function GuideSelectionModal({ state, setState, tour }) {
         .get(`/api/employee/getAvailableGuides?start=${tour.start_date.split("T")[0]}&end=${tour.end_date.split("T")[0]}`)
         .then(res => {
           setGuideArr([...res.data.results]);
-          setguideSelectionIndex(0)
+          setGuideSelectionIndex(0)
         });
     }
   }, [tour, state, guideArr, guideSelectionIndex]);
@@ -81,7 +87,7 @@ function GuideSelectionModal({ state, setState, tour }) {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={() => setState(false)}>
+        <Button color="red" onClick={() => closeModal()}>
           Cancel
         </Button>
         <Button
