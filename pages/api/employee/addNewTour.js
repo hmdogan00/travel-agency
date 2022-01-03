@@ -13,7 +13,7 @@ export default async (req, res) => {
   let answer;
   try {
     await db.query(`
-    INSERT INTO Tour (start_date, end_date, name, price, capacity, company, type, location, ratingCount) VALUES ('${start_date}', '${end_date}', '${name}',${price},${capacity},'${company}','${type}','${location}',0 );`, (err,result,fields) => {
+    INSERT INTO Tour (start_date, end_date, name, price, capacity, company, type,rating,location, ratingCount) VALUES ('${start_date}', '${end_date}', '${name}',${price},${capacity},'${company}','${type}',0,'${location}',0 );`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;
