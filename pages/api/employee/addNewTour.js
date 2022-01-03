@@ -11,8 +11,8 @@ export default async (req, res) => {
     return;
   }
   try {
-    db.query(` INSERT INTO Tour (start_date, end_date, name, price, capacity, company, type,rating,location, ratingCount) 
-    VALUES ('${start_date}', '${end_date}', '${name}',${price},${capacity},'${company}','${type}',0,'${location}',0 );`, (err,result,fields) => {
+    db.query(` INSERT INTO Tour (start_date, end_date, name, price, capacity, company, type,rating,location, is_accepted, ratingCount) 
+    VALUES ('${start_date}', '${end_date}', '${name}',${price},${capacity},'${company}','${type}',0,'${location}', 'waiting',0 );`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;

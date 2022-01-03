@@ -13,7 +13,7 @@ export default async (req, res) => {
   let answer;
   try {
     await db.query(`UPDATE Tour
-                    SET person_id = ${guide_id} 
+                    SET person_id = ${guide_id}, is_accepted = 'waiting' 
                     WHERE tour_id = ${tour_id}`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
