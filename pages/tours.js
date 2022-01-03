@@ -148,7 +148,7 @@ const Tours = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  {tourArr && tourArr.map((e, i) => {
+                  {searchData && searchData.map((e, i) => {
                     const [startDate, startTime] = getDateTime(e.start_date);
                     const [endDate, endTime] = getDateTime(e.end_date);
                     return (
@@ -188,6 +188,57 @@ const Tours = () => {
             </>
           )}
         </div>
+      )}
+      {role === "Guide" && (
+        <div style={{ margin: "30px" }}>
+        {tourArr?.length === 0 && (
+          <Header>There are no tours</Header>
+        )}
+        {tourArr && (
+          <>
+            <Header floated="left">Active Tours</Header>
+            <Table celled color="red">
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell></Table.HeaderCell>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell>Location</Table.HeaderCell>
+                  <Table.HeaderCell>Price</Table.HeaderCell>
+                  <Table.HeaderCell>Dates</Table.HeaderCell>
+                  <Table.HeaderCell>Capacity</Table.HeaderCell>
+                  <Table.HeaderCell>Type</Table.HeaderCell>
+                  <Table.HeaderCell>Company</Table.HeaderCell>
+                  <Table.HeaderCell>Rating</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                {searchData && searchData.map((e, i) => {
+                  const [startDate, startTime] = getDateTime(e.start_date);
+                  const [endDate, endTime] = getDateTime(e.end_date);
+                  return (
+                    <>
+                      <Table.Row>
+                        <Table.Cell>{i + 1}</Table.Cell>
+                        <Table.Cell>{e.name}</Table.Cell>
+                        <Table.Cell>{e.location}</Table.Cell>
+                        <Table.Cell>{e.price}</Table.Cell>
+                        <Table.Cell>
+                          {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+                        </Table.Cell>
+                        <Table.Cell>{e.capacity}</Table.Cell>
+                        <Table.Cell>{e.type}</Table.Cell>
+                        <Table.Cell>{e.company}</Table.Cell>
+                        <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
+                      </Table.Row>
+                    </>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          </>
+        )}
+      </div>
       )}
     </>
   );
