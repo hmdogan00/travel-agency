@@ -10,7 +10,7 @@ export default (req, res) => {
         res.end();
         return Promise.reject(err);
       }
-      res.status(200).json({ results: results, fields: fields });
+      res.status(200).json({ results: results[0]});
       return Promise.resolve(res);
     });
   } catch (e) {

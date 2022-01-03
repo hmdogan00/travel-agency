@@ -148,7 +148,7 @@ const Tours = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  {tourArr.map((e, i) => {
+                  {tourArr && tourArr.map((e, i) => {
                     const [startDate, startTime] = getDateTime(e.start_date);
                     const [endDate, endTime] = getDateTime(e.end_date);
                     return (

@@ -10,7 +10,7 @@ export default (req, res) => {
         res.end();
         return res;
       }
-      res.status(200).json({ results: results});
+      res.status(200).json({ results: results[0]});
       return Promise.resolve(res);
     });
   } catch (e) {
