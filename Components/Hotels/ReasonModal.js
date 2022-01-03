@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Modal, TextArea } from "semantic-ui-react";
 
@@ -20,7 +21,7 @@ function ReasonModal({ state, closeModal, resItem }) {
         person_id: resItem.person_id,
         start_date: resItem.start_date,
         end_date: resItem.end_date,
-        is_accepted: "accepted",
+        is_accepted: "rejected",
         reject_reason: text
       }
 
