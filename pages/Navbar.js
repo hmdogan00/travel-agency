@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu } from 'semantic-ui-react';
+import { Button, Image, Menu } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 
 function Navbar({ activeType }) {
@@ -25,7 +25,10 @@ function Navbar({ activeType }) {
 
   return (
     <Menu pointing secondary color="red">
-      <Menu.Item header>TripFellas</Menu.Item>
+      <Menu.Item header>
+        <Image className="logo-nav" alt="logo" src="/tp-logo.png" />
+        TripFellas
+      </Menu.Item>
       <Menu.Item
         name='dashboard'
         active={activeType === 'dashboard'}
