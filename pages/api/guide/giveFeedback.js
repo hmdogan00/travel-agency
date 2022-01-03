@@ -6,7 +6,7 @@ export default async (req, res) => {
     return;
   }
   let {guideId, tourId, tourOldRate, tourRateCnt, tourComment, tourRate} = req.body;
-  if (!guide_id){
+  if (!guideId){
     res.status(423).json({message: 'No id found!'})
     return;
   }
@@ -15,7 +15,7 @@ export default async (req, res) => {
     let count = tourRateCnt + 1;
     let rate = (tourOldRate * tourRateCnt + tourRate) / count;
     await db.query(`UPDATE Tour
-                    SET comment = ${tourComment}, rating = ${rate}, ratingCount = ${count} 
+                    SET comment = '${tourComment}', rating = ${rate}, ratingCount = ${count} 
                     WHERE tour_id = ${tourId} and person_id = ${guideId} and is_accepted = 'accepted'`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
