@@ -5,16 +5,15 @@ export default async (req, res) => {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {name} = req.body;
-  if (!name){
+  let {start_date,end_date,name,price,capacity,company,type,location} = req.body;
+  if (!start_date,!end_date,!name,!price,!capacity,!company,!type,!location) {
     res.status(423).json({message: 'No id found!'})
     return;
   }
   let answer;
   try {
-    await db.query(`USELECT T.name, start_date, T.location
-    FROM Tour T
-    WHERE T.person_id != null and is_accepted='waiting' and WHERE T.name LIKE '%${name}%'`, (err,result,fields) => {
+    await db.query(`
+    INSERT INTO Tour (start_date, end_date, name, price, capacity, company, type, location, ratingCount) VALUES ('${start_date}', '${end_date}', '${name}',${price},${capacity},'${company}','${type}','${location}',0 );`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;

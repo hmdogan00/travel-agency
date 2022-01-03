@@ -17,7 +17,6 @@ export default async (req, res) => {
     );
     db.query(`SELECT LAST_INSERT_ID() as act_id`, (err, results) => { 
       if (err) return res.status(401).json({message:err})
-      console.log(results);
       const actId = results[0].act_id;
       db.query(`INSERT INTO create_activity (act_idea_id, person_id) 
       VALUES ('${actId}', '${id}')`, (err, results, fields) => {
@@ -27,7 +26,6 @@ export default async (req, res) => {
     })
     return result;
   } catch (err) {
-    console.log(err);
     return res.status(402).json({ message: err });
   }
 };
