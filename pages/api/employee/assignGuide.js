@@ -5,8 +5,8 @@ export default async (req, res) => {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {guide_id, tour_id} = req.body;
-  if (!id){
+  let {guide_id, tour_id} = req.query;
+  if (!guide_id){
     res.status(423).json({message: 'No id found!'})
     return;
   }
