@@ -103,7 +103,7 @@ function Hotel() {
                 />
               </Header>
               <AddNewHotelModal state={openAddNewHotel} setState={setOpenAddNewHotel} />
-              <Table celled fixed color="red">
+              <Table celled color="red">
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell></Table.HeaderCell>
