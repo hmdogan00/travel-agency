@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState, useMemo } from "react";
 import Navbar from "./Navbar";
-import { Card, Header, Table, Button, Form, Icon } from "semantic-ui-react";
+import { Card, Header, Table, Button, Form, Icon, ButtonGroup } from "semantic-ui-react";
 import _ from "lodash";
 import axios from "axios";
 import { getDateTime, includesNoCase, parseDateString } from "../util";
@@ -8,26 +8,26 @@ import { getDateTime, includesNoCase, parseDateString } from "../util";
 const approveRes = rId =>
   axios
     .post("/api/employee/approveReservation", { id: rId })
-    .then(res => {alert('Approved Successfully!'); window.location.reload()})
+    .then(res => { alert('Approved Successfully!'); window.location.reload() })
     .catch(e => alert(e.message));
 
 const approveResGuide = tId =>
   axios
     .post("/api/guide/approveOffer", { id: tId })
-    .then(res => {alert('Approved Successfully!'); window.location.reload()})
+    .then(res => { alert('Approved Successfully!'); window.location.reload() })
     .catch(e => alert(e.message));
 
 const declineRes = rId =>
   axios
     .post("/api/employee/declineReservation", { id: rId })
-    .then(res => {alert('Declined Successfully!'); window.location.reload()})
+    .then(res => { alert('Declined Successfully!'); window.location.reload() })
     .catch(e => alert(e.message));
 
 const declineResGuide = tId => {
   const comment = prompt("Please state your reason for declining the offer?")
   axios
-    .post("/api/guide/declineOffer", { id: tId, reason:comment })
-    .then(res => {alert('Declined Successfully!'); window.location.reload()})
+    .post("/api/guide/declineOffer", { id: tId, reason: comment })
+    .then(res => { alert('Declined Successfully!'); window.location.reload() })
     .catch(e => alert(e.message));
 }
 
@@ -39,6 +39,7 @@ function Dashboard() {
   const [searchTN, setSearchTN] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
+  const [listType, setListType] = useState("waiting");
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
@@ -105,8 +106,12 @@ function Dashboard() {
         })
         .catch(console.error);
     } else if (role === "Employee" && !tourArr) {
+      const body = {
+        res_type: 'waiting'
+      };
+
       axios
-        .get("/api/employee/getReservations")
+        .post("/api/employee/getReservations", body)
         .then(res => {
           setTourArr(res.data.result);
           dispatch({ type: "UPDATE_DATA", data: searchData });
@@ -121,12 +126,73 @@ function Dashboard() {
         })
         .catch(console.error);
     }
-  }, [tourArr, id, role]);
+  }, [id, role]);
 
   // takes effect with search
   useEffect(() => {
     dispatch({ type: "UPDATE_DATA", data: searchData });
   }, [searchData]);
+
+  const listWaiting = () => {
+    setListType('waiting');
+    const body = { res_type: 'waiting' };
+
+    axios
+      .post(`/api/employee/getReservations`, body)
+      .then(res => {
+        const tempArr = res.data.result;
+        if (tempArr.length !== 0) {
+          setTourArr(tempArr);
+        }
+        else {
+          setTourArr(null);
+          alert("There are no waiting reservation!");
+        }
+      })
+      .catch(console.error);
+  }
+
+  const listAccepted = () => {
+    setListType('accepted');
+    const body = {
+      res_type: 'approved'
+    }
+
+    axios
+      .post(`/api/employee/getReservations`, body)
+      .then(res => {
+        const tempArr = res.data.result;
+        if (tempArr.length !== 0) {
+          setTourArr(tempArr);
+        }
+        else {
+          setTourArr(null);
+          alert("There are no accepted reservation!");
+        }
+      })
+      .catch(console.error);
+  }
+
+  const listDeclined = () => {
+    setListType('declined');
+    const body = {
+      res_type: 'rejected'
+    }
+
+    axios
+      .post(`/api/employee/getReservations`, body)
+      .then(res => {
+        const tempArr = res.data.result;
+        if (tempArr.length !== 0) {
+          setTourArr(tempArr);
+        }
+        else {
+          setTourArr(null);
+          alert("There are no declined reservation!");
+        }
+      })
+      .catch(console.error);
+  }
 
   return (
     <>
@@ -164,6 +230,35 @@ function Dashboard() {
             {role === "Employee"
               ? "Latest Reservations"
               : "Latest Reservation Offers"}
+            {role === "Employee"
+              ? <div>
+                <ButtonGroup>
+                  <Button
+                    content="Waiting"
+                    color="yellow"
+                    size="tiny"
+                    basic={listType !== 'waiting'}
+                    onClick={listWaiting}
+                  />
+                  <Button.Or />
+                  <Button
+                    content="Accepted"
+                    color="green"
+                    size="tiny"
+                    basic={listType !== 'accepted'}
+                    onClick={listAccepted}
+                  />
+                  <Button.Or />
+                  <Button
+                    content="Declined"
+                    color="red"
+                    size="tiny"
+                    basic={listType !== 'declined'}
+                    onClick={listDeclined}
+                  />
+                </ButtonGroup>
+              </div>
+              : null}
           </Header>
           <br></br>
           <div style={{ display: "flex", flexDirection: "row" }}>
@@ -265,7 +360,7 @@ function Dashboard() {
                   >
                     Tour Location
                   </Table.HeaderCell>
-                  <Table.HeaderCell></Table.HeaderCell>
+                  {listType === 'waiting' && <Table.HeaderCell></Table.HeaderCell>}
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -280,7 +375,7 @@ function Dashboard() {
                         <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
                         <Table.Cell>{e.t_name}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
-                        <Table.Cell textAlign="right">
+                        {listType === 'waiting' && <Table.Cell textAlign="right">
                           <Button
                             onClick={() => approveRes(e.reservation_id)}
                             color="green"
@@ -293,13 +388,13 @@ function Dashboard() {
                           >
                             Decline
                           </Button>
-                          <Button
+                          {/* <Button
                             onClick={() => changeRes(e.reservation_id)}
                             color="yellow"
                           >
                             Change
-                          </Button>
-                        </Table.Cell>
+                          </Button> */}
+                        </Table.Cell>}
                       </Table.Row>
                     );
                   })}
