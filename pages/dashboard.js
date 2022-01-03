@@ -4,12 +4,16 @@ import { Card, Header, Table, Button, Form, Icon, ButtonGroup } from "semantic-u
 import _ from "lodash";
 import axios from "axios";
 import { getDateTime, includesNoCase, parseDateString } from "../util";
+import ChangeResModal from "../Components/Dashboard/ChangeResModal";
 
-const approveRes = rId =>
-  axios
-    .post("/api/employee/approveReservation", { id: rId })
-    .then(res => { alert('Approved Successfully!'); window.location.reload() })
-    .catch(e => alert(e.message));
+const approveRes = rId => {
+  if (confirm('You are approving this reservation. Are you sure?')) {
+    axios
+      .post("/api/employee/approveReservation", { id: rId })
+      .then(res => { alert('Approved Successfully!'); window.location.reload() })
+      .catch(e => alert(e.message));
+  }
+}
 
 const approveResGuide = tId =>
   axios
@@ -17,11 +21,14 @@ const approveResGuide = tId =>
     .then(res => { alert('Approved Successfully!'); window.location.reload() })
     .catch(e => alert(e.message));
 
-const declineRes = rId =>
-  axios
-    .post("/api/employee/declineReservation", { id: rId })
-    .then(res => { alert('Declined Successfully!'); window.location.reload() })
-    .catch(e => alert(e.message));
+const declineRes = rId => {
+  if (confirm('You are declining this reservation. Are you sure?')) {
+    axios
+      .post("/api/employee/declineReservation", { id: rId })
+      .then(res => { alert('Declined Successfully!'); window.location.reload() })
+      .catch(e => alert(e.message));
+  }
+}
 
 const declineResGuide = tId => {
   const comment = prompt("Please state your reason for declining the offer?")
@@ -40,6 +47,18 @@ function Dashboard() {
   const [searchDate, setSearchDate] = useState("");
   const [searchLoc, setSearchLoc] = useState("");
   const [listType, setListType] = useState("waiting");
+
+  const [changeResModal, setChangeResModal] = useState(false);
+  const [resItem, setResItem] = useState(null);
+
+  const openChangeResModal = (e) => {
+    setResItem(e);
+    setChangeResModal(true);
+  }
+  const closeChangeResModal = () => {
+    setResItem(null);
+    setChangeResModal(false);
+  }
 
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
@@ -365,11 +384,11 @@ function Dashboard() {
               </Table.Header>
               <Table.Body>
                 {state.data &&
-                  state.data.map(e => {
+                  state.data.map((e, i) => {
                     const [s_date, s_time] = getDateTime(e.start_date);
                     const [e_date, e_time] = getDateTime(e.end_date);
                     return (
-                      <Table.Row>
+                      <Table.Row key={`rowValue-${i}`}>
                         <Table.Cell>{e.c_name}</Table.Cell>
                         <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
                         <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
@@ -388,16 +407,17 @@ function Dashboard() {
                           >
                             Decline
                           </Button>
-                          {/* <Button
-                            onClick={() => changeRes(e.reservation_id)}
+                          <Button
+                            onClick={() => openChangeResModal(e)}
                             color="yellow"
                           >
                             Change
-                          </Button> */}
+                          </Button>
                         </Table.Cell>}
                       </Table.Row>
                     );
                   })}
+                <ChangeResModal state={changeResModal} closeModal={closeChangeResModal} resItem={resItem} />
               </Table.Body>
             </Table>
           ) : (
