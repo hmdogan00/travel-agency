@@ -88,9 +88,9 @@ const ReviewPage = () => {
       tourComment: tourComment,
       tourRate: tourRating.rating / tourRating.maxRating,
     }
-    axios.post(role === 'Customer' ? `/api/makeReview` : `api/guide/giveFeedback`, role === 'Customer' ? body : guideBody).then(() => {
+    axios.post(role === 'Customer' ? `/api/makeReview` : `/api/guide/giveFeedback`, role === 'Customer' ? body : guideBody).then(() => {
       alert('Review made successfully!');
-      window.location.href(role === 'Customer' ? '/dashboard' : '/tours')
+      window.location.href = role === 'Customer' ? '/dashboard' : '/tours'
     }).catch(e => alert(e.message));
   };
 

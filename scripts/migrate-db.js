@@ -153,14 +153,6 @@ CREATE TABLE IF NOT EXISTS book(
   PRIMARY KEY(employee_id, hotel_room_no, hotel_id,start_date,end_date))`);
 
 sendQuery(`
-CREATE TABLE IF NOT EXISTS update_res(
-  employee_id INT NOT NULL,
-  reservation_id INT NOT NULL,
-  FOREIGN KEY(employee_id) REFERENCES Employee(employee_id),
-  FOREIGN KEY(reservation_id) REFERENCES Reservation(reservation_id),
-  PRIMARY KEY(employee_id, reservation_id))`);
-
-sendQuery(`
 CREATE TABLE IF NOT EXISTS create_activity(
   act_idea_id INT NOT NULL,
   person_id INT NOT NULL,
@@ -208,7 +200,7 @@ sendQuery(`
 sendQuery(`
 DELIMITER //
 
-CREATE PROCEDURE GetAllHotels()
+CREATE PROCEDURE IF NOT EXISTS GetAllHotels()
 BEGIN
 	SELECT *  FROM Hotel;
 END //
@@ -220,7 +212,7 @@ DELIMITER ;
 sendQuery(`
 DELIMITER //
 
-CREATE PROCEDURE GetAllTour()
+CREATE PROCEDURE IF NOT EXISTS GetAllTour()
 BEGIN
 	SELECT *  FROM Tour;
 END //
