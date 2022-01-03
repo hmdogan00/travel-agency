@@ -20,14 +20,16 @@ function ApproveActOpen({ state, closeModal, actIdea }) {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    if (actIdea !== null) {
-      setName(actIdea.name);
-      setLocation(actIdea.location);
+    if (state) {
+      if (actIdea !== null) {
+        setName(actIdea.name);
+        setLocation(actIdea.location);
+      }
+      axios
+        .get(`/api/getAllTours`)
+        .then(res => setAllTours(res.data.results));
     }
-    axios
-      .get(`/api/getAllTours`)
-      .then(res => setAllTours(res.data.results));
-  }, [actIdea]);
+  }, [actIdea, state]);
 
   const cancelApprove = () => {
     setStartDate("");
