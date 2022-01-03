@@ -130,7 +130,7 @@ function Hotel() {
                         <Table.Cell>{e.rating}</Table.Cell>
                         <Table.Cell>
                           <Button
-                            content="Show/Make Reservations"
+                            content="Show Reservations"
                             color="blue"
                             size="tiny"
                             onClick={() => window.location.href = `/hotels/${e.hotel_id}`}
