@@ -17,6 +17,23 @@ function AddNewHotelModal({ state, setState }) {
     setState(false);
   };
 
+  const addNewHotel = () => {
+    if (name === '', location === '', phone === '', noOfEmptyRoom === '', noOfTotalRoom === '') {
+      if (confirm("You are adding a new hotel. Are you sure?")) {
+        const body = {
+          name: name,
+          location: location,
+          phone_no: phone,
+          no_of_empty_room: noOfEmptyRoom,
+          no_of_total_room: noOfTotalRoom
+        }
+      }
+    }
+    else {
+      alert('You must fill all fields!');
+    }
+  }
+
   return (
     <Modal
       onClose={() => setState(false)}
