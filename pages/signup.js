@@ -113,8 +113,11 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Button>Submit</Form.Button>
-            <Button onClick={() => (window.location.href = "/")}>
+            <Form.Button color="green">Submit</Form.Button>
+            <Button
+              onClick={() => (window.location.href = "/")}
+              color="red"
+            >
               Go Back
             </Button>
           </Form>
@@ -176,8 +179,8 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Button>Submit</Form.Button>
-            <Button onClick={() => (window.location.href = "/")}>
+            <Form.Button color="green">Submit</Form.Button>
+            <Button color="red" onClick={() => (window.location.href = "/")}>
               Go Back
             </Button>
           </Form>
@@ -257,8 +260,8 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Button>Submit</Form.Button>
-            <Button onClick={() => (window.location.href = "/")}>
+            <Form.Button color="green">Submit</Form.Button>
+            <Button color="red" onClick={() => (window.location.href = "/")}>
               Go Back
             </Button>
           </Form>

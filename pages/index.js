@@ -2,16 +2,12 @@ import axios from "axios";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import {
-  Form,
   Container,
   Divider,
   Table,
   Header,
-  Image,
   Button,
   Icon,
-  TableRow,
-  TextArea,
   Checkbox
 } from "semantic-ui-react";
 
@@ -38,8 +34,8 @@ export default function Home() {
         />
       </Head>
       <Container style={{ margin: 20 }}>
-        <Button onClick={() => window.location.href = "/signup"}>Sign Up</Button>
-        <Button onClick={() => window.location.href = "/login"}>Log in</Button>
+        <Button color="linkedin" onClick={() => window.location.href = "/signup"}>Sign Up</Button>
+        <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
         <Divider horizontal>Customers</Divider>
 
         <Table celled unstackable>
