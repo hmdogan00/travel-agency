@@ -43,7 +43,7 @@ const AssignGuides = () => {
 
   return (
     <>
-      <Navbar activeType="tours" />
+      <Navbar activeType="assignGuides" />
       <div style={{ display: "flex", flexDirection: "row", margin: "30px" }}>
         <Form.Input
           loading={loading}
