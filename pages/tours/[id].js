@@ -17,6 +17,7 @@ import Navbar from "../Navbar";
 const ReviewPage = () => {
   const router = useRouter();
   const id = router.query.id;
+  const [role, setRole] = useState('')
   const [tour, setTour] = useState(null);
   const [guide, setGuide] = useState(null);
 
@@ -33,6 +34,7 @@ const ReviewPage = () => {
     setGuideRating({ rating, maxRating });
 
   useEffect(() => {
+    if ( window.location !== undefined) setRole(localStorage.getItem('role'))
     if (!tour && id) {
       axios.get(`/api/getDetailedTour?id=${id}`).then(res => {
         setTour(res.data.results.tour);
@@ -61,7 +63,7 @@ const ReviewPage = () => {
   }, [tour, id, guide]);
 
   const goBack = () => {
-    window.location.href = '/dashboard';
+    window.location.href = role === 'Customer' ? '/dashboard' : '/tours';
   }
 
   const makeReview = () => {
@@ -78,7 +80,18 @@ const ReviewPage = () => {
       guideOldRate: guide.rating,
       guideRateCnt: guide.ratingCount,
     };
-    axios.post(`/api/makeReview`, body).then(console.log).catch(console.log);
+    const guideBody = {
+      tourId: id,
+      guideId: localStorage.getItem('id'),
+      tourOldRate: tour.rating,
+      tourRateCnt: tour.ratingCount,
+      tourComment: tourComment,
+      tourRate: tourRating.rating / tourRating.maxRating,
+    }
+    axios.post(role === 'Customer' ? `/api/makeReview` : `api/guide/giveFeedback`, role === 'Customer' ? body : guideBody).then(() => {
+      alert('Review made successfully!');
+      window.location.href(role === 'Customer' ? '/dashboard' : '/tours')
+    }).catch(e => alert(e.message));
   };
 
   return (
@@ -130,7 +143,7 @@ const ReviewPage = () => {
                   </List.Item>
                 </List>
               </div>
-              <div style={{ width: "100%", marginLeft: "110px" }}>
+              {role !== 'Guide' && <div style={{ width: "100%", marginLeft: "110px" }}>
                 <Header as={"h2"} dividing textAlign="center">
                   Guide Details
                 </Header>
@@ -152,7 +165,7 @@ const ReviewPage = () => {
                     {makeRatingString(guide.rating)}
                   </List.Item>
                 </List>
-              </div>
+              </div>}
             </>
           ) : (
             <Dimmer active>
@@ -202,7 +215,7 @@ const ReviewPage = () => {
               style={{ fontSize: "18px", margin: "5px 50% 0 40%" }}
             >{`${tourRating.rating}/${tourRating.maxRating}`}</p>
           </div>
-          <div style={{ width: "100%", marginLeft: "110px" }}>
+          {role !== 'Guide' && <div style={{ width: "100%", marginLeft: "110px" }}>
             <Form>
               <label>What is your comment about the guide?</label>
               {isReviewed ? (
@@ -233,7 +246,7 @@ const ReviewPage = () => {
             <p
               style={{ fontSize: "18px", margin: "5px 50% 0 40%" }}
             >{`${guideRating.rating}/${guideRating.maxRating}`}</p>
-          </div>
+          </div>}
         </div>
         {!isReviewed && (
           <Button
