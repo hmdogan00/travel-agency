@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
-import { Button, Card, Form, Header, Table } from "semantic-ui-react";
+import { Button, Card, Form, Header, Table, Icon } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import { getDateTime, makeRatingString, includesNoCase } from "../util";
+import { getDateTime, makeRatingString, includesNoCase, parseDateString } from "../util";
 import TourCard from "../Components/Tours/TourCard.js";
 import AddNewTourModal from "../Components/Tours/AddNewTourModal.js";
 import ReservationModal from "../Components/Tours/ReservationModal";
@@ -46,6 +46,16 @@ const Tours = () => {
         .then(res => setTourArr([...res.data.results]));
     }
   }, []);
+
+  useEffect(() => {
+    if ( role && role === 'Guide' ){
+      setTourArr(tours => tours = tours.filter(t => {
+        const end = parseDateString(t.end_date)
+        const now = new Date()
+        return t.person_id === parseInt(localStorage.getItem("id")) && end < now
+      }))
+    }
+  }, [tourArr])
 
   return (
     <>
@@ -196,7 +206,7 @@ const Tours = () => {
         )}
         {tourArr && (
           <>
-            <Header floated="left">Active Tours</Header>
+            <Header floated="left">Past Tours</Header>
             <Table celled color="red">
               <Table.Header>
                 <Table.Row>
@@ -209,6 +219,7 @@ const Tours = () => {
                   <Table.HeaderCell>Type</Table.HeaderCell>
                   <Table.HeaderCell>Company</Table.HeaderCell>
                   <Table.HeaderCell>Rating</Table.HeaderCell>
+                  <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
@@ -230,6 +241,10 @@ const Tours = () => {
                         <Table.Cell>{e.type}</Table.Cell>
                         <Table.Cell>{e.company}</Table.Cell>
                         <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
+                        <Table.Cell>
+                        <Button color="yellow" onClick={() => window.location.href = `/tours/${e.tour_id}`}>
+                          <Icon name="comment alternate" />Review</Button>
+                        </Table.Cell>
                       </Table.Row>
                     </>
                   );

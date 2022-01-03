@@ -202,7 +202,6 @@ const HotelResPage = () => {
         <Header>
           Latest Hotel Reservations for {hotelName}
           <div>
-            <Label size="big">List: </Label>
             <ButtonGroup>
               <Button
                 content="Waiting"
