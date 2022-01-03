@@ -5,7 +5,9 @@ import {
   Form,
   Header,
   Button,
-  Table
+  Table,
+  ButtonGroup,
+  Label
 } from "semantic-ui-react";
 import { getDateTime, includesNoCase, parseDateString } from "../../util";
 import Navbar from "../Navbar";
@@ -23,6 +25,8 @@ const HotelResPage = () => {
   const [searchTN, setSearchTN] = useState("");
   const [searchStartDate, setSearchStartDate] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
+  const [listType, setListType] = useState("waiting");
+  const [hotelName, setHotelName] = useState('');
 
   const openReasonModal = (e) => {
     setResItem(e);
@@ -86,8 +90,20 @@ const HotelResPage = () => {
       setRole(localStorage.getItem("role"));
     }
     if (!hotelArr && id) {
+      axios
+        .get("/api/hotel/getHotels")
+        .then(res => {
+          let tempArr = [...res.data.results];
+          tempArr.forEach(item => {
+            if (item.hotel_id == id) {
+              setHotelName(item.name);
+            }
+          })
+        });
+
       const body = {
-        hotel_id: id
+        hotel_id: id,
+        res_status: 'waiting'
       }
 
       axios
@@ -98,13 +114,78 @@ const HotelResPage = () => {
             setHotelArr(res.data.results);
           }
           else {
-            goBack();
-            alert("There are no reservation for this hotel!");
+            alert("There are no waiting reservation for this hotel!");
           }
         })
         .catch(console.error);
     }
-  }, [hotelArr, id]);
+  }, [id]);
+
+  const listWaiting = () => {
+    setListType('waiting');
+    const body = {
+      hotel_id: id,
+      res_status: 'waiting'
+    }
+
+    axios
+      .post(`/api/hotel/getHotelBookRequests?id=${id}`, body)
+      .then(res => {
+        const tempArr = res.data.results;
+        if (tempArr.length !== 0) {
+          setHotelArr(res.data.results);
+        }
+        else {
+          setHotelArr(null);
+          alert("There are no waiting reservation for this hotel!");
+        }
+      })
+      .catch(console.error);
+  }
+
+  const listAccepted = () => {
+    setListType('accepted');
+    const body = {
+      hotel_id: id,
+      res_status: 'accepted'
+    }
+
+    axios
+      .post(`/api/hotel/getHotelBookRequests?id=${id}`, body)
+      .then(res => {
+        const tempArr = res.data.results;
+        if (tempArr.length !== 0) {
+          setHotelArr(res.data.results);
+        }
+        else {
+          setHotelArr(null);
+          alert("There are no accepted reservation for this hotel!");
+        }
+      })
+      .catch(console.error);
+  }
+
+  const listDeclined = () => {
+    setListType('declined');
+    const body = {
+      hotel_id: id,
+      res_status: 'rejected'
+    }
+
+    axios
+      .post(`/api/hotel/getHotelBookRequests?id=${id}`, body)
+      .then(res => {
+        const tempArr = res.data.results;
+        if (tempArr.length !== 0) {
+          setHotelArr(res.data.results);
+        }
+        else {
+          setHotelArr(null);
+          alert("There are no declined reservation for this hotel!");
+        }
+      })
+      .catch(console.error);
+  }
 
   return (
     <>
@@ -119,7 +200,35 @@ const HotelResPage = () => {
       />
       <div style={{ margin: "30px" }}>
         <Header>
-          Latest Hotel Reservations {hotelArr && ('for ' + hotelArr[0].name)}
+          Latest Hotel Reservations for {hotelName}
+          <div>
+            <Label size="big">List: </Label>
+            <ButtonGroup>
+              <Button
+                content="Waiting"
+                color="yellow"
+                size="tiny"
+                basic={listType !== 'waiting'}
+                onClick={listWaiting}
+              />
+              <Button.Or />
+              <Button
+                content="Accepted"
+                color="green"
+                size="tiny"
+                basic={listType !== 'accepted'}
+                onClick={listAccepted}
+              />
+              <Button.Or />
+              <Button
+                content="Declined"
+                color="red"
+                size="tiny"
+                basic={listType !== 'declined'}
+                onClick={listDeclined}
+              />
+            </ButtonGroup>
+          </div>
         </Header>
         <br></br>
         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -182,7 +291,7 @@ const HotelResPage = () => {
               <Table.HeaderCell>End Date</Table.HeaderCell>
               <Table.HeaderCell>Hotel Room No</Table.HeaderCell>
               <Table.HeaderCell>Number of Person</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
+              {listType === 'waiting' && <Table.HeaderCell></Table.HeaderCell>}
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -198,7 +307,7 @@ const HotelResPage = () => {
                     <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
                     <Table.Cell>{e.hotel_room_no}</Table.Cell>
                     <Table.Cell>{e.no_of_persons}</Table.Cell>
-                    <Table.Cell textAlign="center">
+                    {listType === 'waiting' && <Table.Cell textAlign="center">
                       <Button
                         onClick={() => approveRes(e)}
                         color="green"
@@ -211,13 +320,13 @@ const HotelResPage = () => {
                       >
                         Decline
                       </Button>
-                      <Button
+                      {/* <Button
                         onClick={() => changeRes(e)}
                         color="yellow"
                       >
                         Change
-                      </Button>
-                    </Table.Cell>
+                      </Button> */}
+                    </Table.Cell>}
                   </Table.Row>
                 );
               })}
