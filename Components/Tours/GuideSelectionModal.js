@@ -8,13 +8,7 @@ function GuideSelectionModal({ state, setState, tour }) {
   const [guideSelectionIndex, setGuideSelectionIndex] = useState(0);
 
   const handleCheckboxSelection = (index, value) => {
-    setRoomSelectionArray(latestArr => {
-      return latestArr = latestArr.map((roomSelection, i) => {
-        if (i === index) return value;
-        else return roomSelection;
-      })
-    })
-    getRoomInformations();
+    setGuideSelectionIndex(value)
   }
 
   const closeModal = () => {
