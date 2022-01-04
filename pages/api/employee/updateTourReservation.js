@@ -6,11 +6,6 @@ export default async (req, res) => {
     return;
   }
   let { start, end, person_count, tour_id, res_id } = req.body;
-  id = parseInt(id);
-  if (!id) {
-    res.status(423).json({ message: 'No id found!' })
-    return;
-  }
   let answer;
   try {
     await db.query(`UPDATE Reservation
