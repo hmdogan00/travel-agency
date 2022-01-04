@@ -42,7 +42,7 @@ const ReviewPage = () => {
         const body = {
           tour_id: res.data.results.tour.tour_id,
           G_person_id: res.data.results.guide.guide_id,
-          C_person_id: localStorage.getItem("id"),
+          C_person_id: parseInt(localStorage.getItem("id")),
         };
         axios.post(`/api/reviews/getReview`, body).then(res => {
           setIsReviewed(res.data.isReviewed);
@@ -54,7 +54,7 @@ const ReviewPage = () => {
             });
             setTourRating({
               ...tourRating,
-              rating: res.data.review[0].tour_rate * 10,
+              rating: role === 'Customer' ? (res.data.review[0].tour_rate * 10).toFixed(2) : (res.data.review[0].rating * 10).toFixed(2),
             });
           }
         });
@@ -190,7 +190,7 @@ const ReviewPage = () => {
                 <textarea
                   readOnly
                   rows={4}
-                  value={isReviewed && reviews ? reviews.tour_comment : ""}
+                  value={isReviewed && reviews ? (role === 'Customer' ? reviews.tour_comment : reviews.comment) : ""}
                 ></textarea>
               ) : (
                 <TextArea
