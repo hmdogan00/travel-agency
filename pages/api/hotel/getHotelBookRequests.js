@@ -6,8 +6,8 @@ export default (req, res) => {
   try {
     db.query(`SELECT B.start_date, B.end_date, H.name, 
     B.hotel_room_no, C.name AS c_name, C.phone_no,
-    B.employee_id, B.hotel_id, B.person_id, COUNT(*) AS no_of_persons
-    FROM Customer C, book B, Hotel H
+    B.employee_id, B.hotel_id, B.person_id, HR.room_size
+    FROM Customer C, book B NATURAL JOIN HotelRoom HR, Hotel H
     WHERE B.is_accepted = '${res_status}' and B.hotel_id = ${hotel_id}
     and B.hotel_id = H.hotel_id and C.id = B.person_id
     GROUP BY C.name, B.hotel_room_no, B.start_date, B.end_date`, function (err, results, fields) {

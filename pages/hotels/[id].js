@@ -317,7 +317,7 @@ const HotelResPage = () => {
                     <Table.Cell>{`${s_date}-${s_time}`}</Table.Cell>
                     <Table.Cell>{`${e_date}-${e_time}`}</Table.Cell>
                     <Table.Cell>{e.hotel_room_no}</Table.Cell>
-                    <Table.Cell>{e.no_of_persons}</Table.Cell>
+                    <Table.Cell>{e.room_size}</Table.Cell>
                     {listType === 'waiting' && <Table.Cell textAlign="center">
                       <Button
                         onClick={() => approveRes(e)}
