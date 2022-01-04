@@ -1,25 +1,23 @@
 import db from "../../../lib/db";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
-  if ( req.method !== 'POST' ) {
+  if ( req.method !== 'GET' ) {
     res.status(400).json({message: 'Method Not Allowed'})
     return;
   }
-  let {name} = req.body;
+  let {name} = req.query;
   if (!name){
     res.status(423).json({message: 'No id found!'})
     return;
   }
-  let answer;
   try {
-    await db.query(`USELECT T.name, start_date, T.location
+    return db.query(`SELECT *
     FROM Tour T
-    WHERE T.person_id != null and is_accepted='waiting' and WHERE T.name LIKE '%${name}%'`, (err,result,fields) => {
+    WHERE T.name LIKE '%${name}%'`, (err,result,fields) => {
       if (err) {  
         res.status(400).json({message: err})
         return;
       }
-      answer = result
       res.status(200).json({result})
     })
   }

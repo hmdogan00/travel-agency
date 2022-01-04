@@ -2,7 +2,12 @@ import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { Button, Card, Form, Header, Table, Icon } from "semantic-ui-react";
 import Navbar from "./Navbar";
-import { getDateTime, makeRatingString, includesNoCase, parseDateString } from "../util";
+import {
+  getDateTime,
+  makeRatingString,
+  includesNoCase,
+  parseDateString,
+} from "../util";
 import TourCard from "../Components/Tours/TourCard.js";
 import AddNewTourModal from "../Components/Tours/AddNewTourModal.js";
 import ReservationModal from "../Components/Tours/ReservationModal";
@@ -22,10 +27,7 @@ const Tours = () => {
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
       if (searchN !== "")
-        return includesNoCase(
-          role === "Employee" ? item.t_name : item.name,
-          searchN
-        );
+        return includesNoCase(item.name,searchN);
       else if (searchDate !== "") {
         const [d, t] = getDateTime(item.start_date);
         return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
@@ -35,6 +37,20 @@ const Tours = () => {
       else return true;
     });
   }, [tourArr, searchN, searchDate, searchLoc, searchType]);
+
+  useEffect(async () => {
+    if (role === "Employee") {
+      if (searchN !== "") {
+        const result = await axios.get(`/api/guide/filterByName?name=${searchN}`)
+        setTourArr(result.data.result);
+      }
+      else {
+        axios
+          .get("/api/getAllTours")
+          .then(res => setTourArr([...res.data.results]));
+      }
+    }
+  }, [searchN]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -48,14 +64,19 @@ const Tours = () => {
   }, []);
 
   useEffect(() => {
-    if (role && role === 'Guide') {
-      setTourArr(tours => tours = tours.filter(t => {
-        const end = parseDateString(t.end_date)
-        const now = new Date()
-        return t.person_id === parseInt(localStorage.getItem("id")) && end < now
-      }))
+    if (role && role === "Guide") {
+      setTourArr(
+        tours =>
+          (tours = tours.filter(t => {
+            const end = parseDateString(t.end_date);
+            const now = new Date();
+            return (
+              t.person_id === parseInt(localStorage.getItem("id")) && end < now
+            );
+          }))
+      );
     }
-  }, [tourArr])
+  }, [tourArr]);
 
   return (
     <>
@@ -158,32 +179,41 @@ const Tours = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  {searchData && searchData.map((e, i) => {
-                    const [startDate, startTime] = getDateTime(e.start_date);
-                    const [endDate, endTime] = getDateTime(e.end_date);
-                    return (
-                      <>
-                        <Table.Row>
-                          <Table.Cell>{i + 1}</Table.Cell>
-                          <Table.Cell>{e.name}</Table.Cell>
-                          <Table.Cell>{e.location}</Table.Cell>
-                          <Table.Cell>{e.price}</Table.Cell>
-                          <Table.Cell>
-                            {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
-                          </Table.Cell>
-                          <Table.Cell>{e.capacity}</Table.Cell>
-                          <Table.Cell>{e.type}</Table.Cell>
-                          <Table.Cell>{e.company}</Table.Cell>
-                          <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
-                          <Table.Cell>
-                            <Button color="blue" onClick={() => { setTourIndex(i); setResModalOpen(true) }}>
-                              Make Reservation
-                            </Button>
-                          </Table.Cell>
-                        </Table.Row>
-                      </>
-                    );
-                  })}
+                  {searchData &&
+                    searchData.map((e, i) => {
+                      const [startDate, startTime] = getDateTime(e.start_date);
+                      const [endDate, endTime] = getDateTime(e.end_date);
+                      return (
+                        <>
+                          <Table.Row>
+                            <Table.Cell>{i + 1}</Table.Cell>
+                            <Table.Cell>{e.name}</Table.Cell>
+                            <Table.Cell>{e.location}</Table.Cell>
+                            <Table.Cell>{e.price}</Table.Cell>
+                            <Table.Cell>
+                              {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+                            </Table.Cell>
+                            <Table.Cell>{e.capacity}</Table.Cell>
+                            <Table.Cell>{e.type}</Table.Cell>
+                            <Table.Cell>{e.company}</Table.Cell>
+                            <Table.Cell>
+                              {makeRatingString(e.rating)}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Button
+                                color="blue"
+                                onClick={() => {
+                                  setTourIndex(i);
+                                  setResModalOpen(true);
+                                }}
+                              >
+                                Make Reservation
+                              </Button>
+                            </Table.Cell>
+                          </Table.Row>
+                        </>
+                      );
+                    })}
                 </Table.Body>
               </Table>
               <AddNewTourModal
@@ -201,9 +231,7 @@ const Tours = () => {
       )}
       {role === "Guide" && (
         <div style={{ margin: "30px" }}>
-          {tourArr?.length === 0 && (
-            <Header>There are no tours</Header>
-          )}
+          {tourArr?.length === 0 && <Header>There are no tours</Header>}
           {tourArr && (
             <>
               <Header floated="left">Past Tours</Header>
@@ -224,31 +252,41 @@ const Tours = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  {searchData && searchData.map((e, i) => {
-                    const [startDate, startTime] = getDateTime(e.start_date);
-                    const [endDate, endTime] = getDateTime(e.end_date);
-                    return (
-                      <>
-                        <Table.Row>
-                          <Table.Cell>{i + 1}</Table.Cell>
-                          <Table.Cell>{e.name}</Table.Cell>
-                          <Table.Cell>{e.location}</Table.Cell>
-                          <Table.Cell>{e.price}</Table.Cell>
-                          <Table.Cell>
-                            {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
-                          </Table.Cell>
-                          <Table.Cell>{e.capacity}</Table.Cell>
-                          <Table.Cell>{e.type}</Table.Cell>
-                          <Table.Cell>{e.company}</Table.Cell>
-                          <Table.Cell>{makeRatingString(e.rating)}</Table.Cell>
-                          <Table.Cell>
-                            <Button color="yellow" onClick={() => window.location.href = `/tours/${e.tour_id}`}>
-                              <Icon name="comment alternate" />Review</Button>
-                          </Table.Cell>
-                        </Table.Row>
-                      </>
-                    );
-                  })}
+                  {searchData &&
+                    searchData.map((e, i) => {
+                      const [startDate, startTime] = getDateTime(e.start_date);
+                      const [endDate, endTime] = getDateTime(e.end_date);
+                      return (
+                        <>
+                          <Table.Row>
+                            <Table.Cell>{i + 1}</Table.Cell>
+                            <Table.Cell>{e.name}</Table.Cell>
+                            <Table.Cell>{e.location}</Table.Cell>
+                            <Table.Cell>{e.price}</Table.Cell>
+                            <Table.Cell>
+                              {`${startDate}(${startTime}) - ${endDate}(${endTime})`}
+                            </Table.Cell>
+                            <Table.Cell>{e.capacity}</Table.Cell>
+                            <Table.Cell>{e.type}</Table.Cell>
+                            <Table.Cell>{e.company}</Table.Cell>
+                            <Table.Cell>
+                              {makeRatingString(e.rating)}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Button
+                                color="yellow"
+                                onClick={() =>
+                                  (window.location.href = `/tours/${e.tour_id}`)
+                                }
+                              >
+                                <Icon name="comment alternate" />
+                                Review
+                              </Button>
+                            </Table.Cell>
+                          </Table.Row>
+                        </>
+                      );
+                    })}
                 </Table.Body>
               </Table>
             </>
