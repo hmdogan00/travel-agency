@@ -86,7 +86,7 @@ export default function LoginPage() {
                 </div>
               </Form.Group>
               <Form.Button color="green">Log in</Form.Button>
-              <Button color="red" onClick={() => (window.location.href = "/")}>Go Back</Button>
+              <Button color="linkedin" onClick={() => window.location.href = "/signup"}>Sign Up</Button>
             </Form>
           </Container>
           {login === 1 && loginCredentials !== null && (

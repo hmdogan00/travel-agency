@@ -50,7 +50,7 @@ const Tours = () => {
           .then(res => setTourArr([...res.data.results]));
       }
     }
-  }, [searchN]);
+  }, [searchN, role, tourArr]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -61,7 +61,7 @@ const Tours = () => {
         .get("/api/getAllTours")
         .then(res => setTourArr([...res.data.results]));
     }
-  }, []);
+  }, [role, tourArr]);
 
   useEffect(() => {
     if (role && role === "Guide") {
@@ -76,7 +76,7 @@ const Tours = () => {
           }))
       );
     }
-  }, [tourArr]);
+  }, [role, tourArr]);
 
   return (
     <>

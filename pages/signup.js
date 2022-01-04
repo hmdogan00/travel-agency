@@ -114,12 +114,7 @@ export default function SignupPage() {
               />
             </Form.Group>
             <Form.Button color="green">Submit</Form.Button>
-            <Button
-              onClick={() => (window.location.href = "/")}
-              color="red"
-            >
-              Go Back
-            </Button>
+        <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
           </Form>
         </Tab.Pane>
       ),
@@ -180,9 +175,7 @@ export default function SignupPage() {
               />
             </Form.Group>
             <Form.Button color="green">Submit</Form.Button>
-            <Button color="red" onClick={() => (window.location.href = "/")}>
-              Go Back
-            </Button>
+        <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
           </Form>
         </Tab.Pane>
       ),
@@ -261,9 +254,7 @@ export default function SignupPage() {
               />
             </Form.Group>
             <Form.Button color="green">Submit</Form.Button>
-            <Button color="red" onClick={() => (window.location.href = "/")}>
-              Go Back
-            </Button>
+            <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
           </Form>
         </Tab.Pane>
       ),
