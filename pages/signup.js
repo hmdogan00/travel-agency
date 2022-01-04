@@ -36,6 +36,7 @@ export default function SignupPage() {
         setPhoneNo("");
         setPassword("");
         setRole("");
+        alert("Successful");
       })
       .catch((err) => console.error(err));
   };
@@ -114,7 +115,7 @@ export default function SignupPage() {
               />
             </Form.Group>
             <Form.Button color="green">Submit</Form.Button>
-        <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
+            <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
           </Form>
         </Tab.Pane>
       ),
@@ -175,7 +176,7 @@ export default function SignupPage() {
               />
             </Form.Group>
             <Form.Button color="green">Submit</Form.Button>
-        <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
+            <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
           </Form>
         </Tab.Pane>
       ),
