@@ -76,7 +76,7 @@ function GuideSelectionModal({ state, setState, tour }) {
                     {guideArr && guideArr.map((a, i) => {
                       return <Table.Row key={`tr-${i}`}>
                         <TableCell>
-                          <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, { value }) => handleCheckboxSelection(value, roomIndex)} />
+                          <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, { value }) => handleCheckboxSelection(i, value)} />
                         </TableCell>
                         <Table.Cell> {a.name} </Table.Cell>
                         <Table.Cell> {a.email} </Table.Cell>
