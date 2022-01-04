@@ -110,7 +110,6 @@ function Hotel() {
                     <Table.HeaderCell></Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Location</Table.HeaderCell>
-                    <Table.HeaderCell>Number Of Empty Rooms</Table.HeaderCell>
                     <Table.HeaderCell>Number Of Total Rooms</Table.HeaderCell>
                     <Table.HeaderCell>Hotel Phone</Table.HeaderCell>
                     <Table.HeaderCell>Rating</Table.HeaderCell>
@@ -125,7 +124,6 @@ function Hotel() {
                         <Table.Cell>{i + 1}</Table.Cell>
                         <Table.Cell>{e.name}</Table.Cell>
                         <Table.Cell>{e.location}</Table.Cell>
-                        <Table.Cell>{e.no_of_empty_room}</Table.Cell>
                         <Table.Cell>{e.no_of_total_room}</Table.Cell>
                         <Table.Cell>{e.phone_no}</Table.Cell>
                         <Table.Cell>{e.rating}</Table.Cell>
