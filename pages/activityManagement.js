@@ -72,6 +72,7 @@ function ActivityManagement() {
       .then(res => {
         res.status === 200 ? alert(res.statusText) : null;
       })
+    window.location.reload();
   };
 
   const declineActivityIdea = id => {
