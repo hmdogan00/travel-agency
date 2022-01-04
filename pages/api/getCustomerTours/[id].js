@@ -14,11 +14,12 @@ export default async (req, res) => {
   let answer;
   try {
     await db.query(
-      `SELECT tour_id, name, start_date,end_date,location
-                    FROM Tour NATURAL JOIN (SELECT tour_id
+      `SELECT tour_id, name, start_date, end_date, location
+      FROM Tour NATURAL JOIN (SELECT tour_id
                               FROM make NATURAL JOIN Reservation
                               WHERE make.person_id =${id}) as mRti
-                              ORDER BY start_date DESC`,
+      GROUP BY tour_id, start_date, end_date
+      ORDER BY start_date DESC`,
       (err, result, fields) => {
         if (err) {
           res.statusCode = 401;

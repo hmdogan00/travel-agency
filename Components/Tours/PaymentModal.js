@@ -53,17 +53,27 @@ function PaymentModal({
   const [endDate, endTime] = getDateTime(tour.end_date);
 
   const makeReservation = () => {
-    const body = {
-      reservation: {
-        start: wantedDate,
-        end: wantedEndDate,
-        resNumber: resPerson,
-        tourId: tour.tour_id,
-        identity: identityNo
-      },
-      id: localStorage.getItem("id"),
-    };
-    axios.post(role === 'Customer' ? `/api/customer/makeReservation` : `/api/employee/makeCustomerReservation`, body).then(alert).catch(alert);
+    if (confirm('You are paying for this reservation. Are you sure?')) {
+      const body = {
+        reservation: {
+          start: wantedDate,
+          end: wantedEndDate,
+          resNumber: resPerson,
+          tourId: tour.tour_id,
+          identity: identityNo
+        },
+        id: localStorage.getItem("id")
+      };
+
+      axios
+        .post(role === 'Customer' ? `/api/customer/makeReservation` : `/api/employee/makeCustomerReservation`, body)
+        .then(res => {
+          alert("Success");
+          setState(false);
+          setState2(false);
+        })
+        .catch(alert);
+    }
   };
 
   const getTotalPrice = () => {
@@ -160,8 +170,6 @@ function PaymentModal({
           labelPosition="right"
           icon="payment"
           onClick={() => {
-            setState(false);
-            setState2(false);
             makeReservation();
           }}
           positive

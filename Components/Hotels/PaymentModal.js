@@ -55,7 +55,10 @@ function PaymentModal({ state, setState, hotel, setState2, selectedRooms, start,
         start_date: start,
         end_date: end
       }
-      axios.post(`/api/hotel/bookHotel`, body).then(res => res.status === 200 ? alert("Booking successfully made!") : alert(res.data.message))
+      axios
+        .post(`/api/hotel/bookHotel`, body)
+        .then(res => res.status === 200 ? alert("Booking successfully made!") : alert(res.data.message))
+        .catch(e => alert(e.message));
     })
   };
 

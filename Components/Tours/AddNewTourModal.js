@@ -16,21 +16,23 @@ function AddNewTourModal({ state, setState }) {
   const today = new Date().toISOString().split("T")[0];
 
   const addNewTour = () => {
-    if ( !confirm("You are adding a new tour. Are you sure?") ) {
-      return;
+    if (confirm("You are adding a new tour. Are you sure?")) {
+      const body = {
+        name: name,
+        price: price,
+        capacity: capacity,
+        type: type,
+        company: company,
+        location: location,
+        start_date: tempDate,
+        end_date: endDate
+      }
+      axios
+        .post(`/api/employee/addNewTour`, body)
+        .then(res => alert(`${name} added successfully!`))
+        .catch(err => alert(err.data.message))
+      window.location.reload();
     }
-    const body = {
-      name:name,
-      price:price,
-      capacity:capacity,
-      type:type,
-      company:company,
-      location:location,
-      start_date:tempDate,
-      end_date:endDate
-    }
-    axios.post(`/api/employee/addNewTour`, body).then(res => alert(`${name} added successfully!`)).catch(err => alert(err.data.message))
-    window.location.reload();
   }
 
   const cancelAddTour = () => {

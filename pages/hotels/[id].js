@@ -51,7 +51,6 @@ const HotelResPage = () => {
   }
 
   const approveRes = (e) => {
-    console.log(parseDateString(e.start_date).toISOString())
     if (confirm("Do you want to approve this reservation?")) {
       const body = {
         employee_id: e.employee_id,
@@ -62,7 +61,7 @@ const HotelResPage = () => {
         end_date: e.end_date.split('T')[0],
         is_accepted: "accepted"
       }
-      console.log(body);
+
       axios
         .post('/api/hotel/setBookStatus', body)
         .then(res => {
@@ -71,7 +70,8 @@ const HotelResPage = () => {
             window.location.reload();
           }
           else alert(res.statusText);
-        });
+        })
+        .catch(e => alert(e.message));
     }
   }
 
@@ -111,7 +111,8 @@ const HotelResPage = () => {
               setHotelName(item.name);
             }
           })
-        });
+        })
+        .catch(e => console.error(e.message));
 
       const body = {
         hotel_id: id,
@@ -152,7 +153,7 @@ const HotelResPage = () => {
           alert("There are no waiting reservation for this hotel!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
   const listAccepted = () => {
@@ -174,7 +175,7 @@ const HotelResPage = () => {
           alert("There are no accepted reservation for this hotel!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
   const listDeclined = () => {
@@ -196,7 +197,7 @@ const HotelResPage = () => {
           alert("There are no declined reservation for this hotel!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
   return (

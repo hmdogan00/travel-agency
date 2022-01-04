@@ -10,7 +10,7 @@ function GuideSelectionModal({ state, setState, tour }) {
   const handleCheckboxSelection = (index, value) => {
     setRoomSelectionArray(latestArr => {
       return latestArr = latestArr.map((roomSelection, i) => {
-        if ( i === index ) return value;
+        if (i === index) return value;
         else return roomSelection;
       })
     })
@@ -21,14 +21,19 @@ function GuideSelectionModal({ state, setState, tour }) {
     setGuideArr(null);
     setGuideSelectionIndex(0);
     setState(false);
-  } 
+  }
 
   const assignGuide = () => {
-    axios.post(`/api/employee/assignGuide?guide_id=${guideArr[guideSelectionIndex].guide_id}&tour_id=${tour.tour_id}`).then(res => {
-      if (res.status === 200) alert(`Successfully sent guidance offer to ${guideArr[guideSelectionIndex].name}`);
-      else alert(res.data.message);
-      window.location.reload();
-    }).catch( err => alert(err.message))
+    if (confirm('You are assigning this quide? Are you sure?')) {
+      axios
+        .post(`/api/employee/assignGuide?guide_id=${guideArr[guideSelectionIndex].guide_id}&tour_id=${tour.tour_id}`)
+        .then(res => {
+          if (res.status === 200) alert(`Successfully sent guidance offer to ${guideArr[guideSelectionIndex].name}`);
+          else alert(res.data.message);
+          window.location.reload();
+        })
+        .catch(err => alert(err.message));
+    }
   }
 
   useEffect(() => {
@@ -38,7 +43,8 @@ function GuideSelectionModal({ state, setState, tour }) {
         .then(res => {
           setGuideArr([...res.data.results]);
           setGuideSelectionIndex(0)
-        });
+        })
+        .catch(e => console.error(e.message));
     }
   }, [tour, state, guideArr, guideSelectionIndex]);
 
@@ -70,8 +76,8 @@ function GuideSelectionModal({ state, setState, tour }) {
                     {guideArr && guideArr.map((a, i) => {
                       return <Table.Row key={`tr-${i}`}>
                         <TableCell>
-                              <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, {value}) => handleCheckboxSelection(value, roomIndex)}/>
-                            </TableCell>
+                          <Checkbox name={`radio-button-${i}`} radio checked={guideSelectionIndex === i} value={i} onChange={(e, { value }) => handleCheckboxSelection(value, roomIndex)} />
+                        </TableCell>
                         <Table.Cell> {a.name} </Table.Cell>
                         <Table.Cell> {a.email} </Table.Cell>
                         <Table.Cell> {a.location} </Table.Cell>

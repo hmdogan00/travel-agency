@@ -41,7 +41,8 @@ function ReservationModal({ state, setState, hotel }) {
             latestArr => (latestArr = [...latestArr, res.data.results])
           );
           setRoomSelectionArray(latestArr => (latestArr = [...latestArr, 0]))
-        });
+        })
+        .catch(e => alert(e.message));
     });
     setIsRoomSearched(true);
   };
@@ -49,7 +50,7 @@ function ReservationModal({ state, setState, hotel }) {
   const handleCheckboxSelection = (index, value) => {
     setRoomSelectionArray(latestArr => {
       return latestArr = latestArr.map((roomSelection, i) => {
-        if ( i === index ) return value;
+        if (i === index) return value;
         else return roomSelection;
       })
     })
@@ -68,7 +69,7 @@ function ReservationModal({ state, setState, hotel }) {
   const getRoomInformations = () => {
     const tmp = []
     roomList.forEach((rooms, i) => {
-      tmp.push( rooms[roomSelectionArray[i]] );
+      tmp.push(rooms[roomSelectionArray[i]]);
     })
     setSelectedRooms(latest => latest = tmp)
   }
@@ -142,7 +143,7 @@ function ReservationModal({ state, setState, hotel }) {
             isRoomSearched &&
             roomList?.map((rooms, i) => {
               return (
-                <>{ i === 0 && <br/> }
+                <>{i === 0 && <br />}
                   <Label>Selection for room {i + 1}</Label>
                   <Table>
                     <Table.Header>
@@ -160,7 +161,7 @@ function ReservationModal({ state, setState, hotel }) {
                         return (
                           <TableRow>
                             <TableCell>
-                              <Checkbox name={`radio-button-${i}`} radio checked={roomSelectionArray[i] === roomIndex} value={i} onChange={(e, {value}) => handleCheckboxSelection(value, roomIndex)}/>
+                              <Checkbox name={`radio-button-${i}`} radio checked={roomSelectionArray[i] === roomIndex} value={i} onChange={(e, { value }) => handleCheckboxSelection(value, roomIndex)} />
                             </TableCell>
                             <TableCell>{room.hotel_room_no}</TableCell>
                             <TableCell>{room.room_floor}</TableCell>
@@ -184,7 +185,7 @@ function ReservationModal({ state, setState, hotel }) {
           content="Go to Payment"
           labelPosition="right"
           icon="payment"
-          onClick={() => {setPayModalOpen(true)}}
+          onClick={() => { setPayModalOpen(true) }}
           positive
         />
       </Modal.Actions>

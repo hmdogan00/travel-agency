@@ -34,7 +34,8 @@ function ReservationModal({ state, setState, tour }) {
         .then(res => {
           setActivityArr([...res.data.results]);
           setActivityChecks(res.data.results.map(e => false))
-        });
+        })
+        .catch(e => console.error(e.message));
     }
   }, [tour, state, activityArr, activityChecks]);
 
