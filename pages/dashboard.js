@@ -248,7 +248,7 @@ function Dashboard() {
           <Header>
             {role === "Employee"
               ? "Latest Reservations"
-              : "Latest Reservation Offers"}
+              : "Latest Tour Offers"}
             {role === "Employee"
               ? <div>
                 <ButtonGroup>
