@@ -25,7 +25,8 @@ function ChangeResModal({ state, closeModal, resItem }) {
       if (!tourArr) {
         axios
           .get("/api/getAllTours")
-          .then(res => setTourArr([...res.data.results]));
+          .then(res => setTourArr([...res.data.results]))
+          .catch(e => alert(e.message));
         setRadioState(resItem.tour_id);
       }
     }
@@ -64,6 +65,7 @@ function ChangeResModal({ state, closeModal, resItem }) {
           }
           else alert(res.statusText);
         })
+        .catch(e => alert(e.message));
     }
   }
 

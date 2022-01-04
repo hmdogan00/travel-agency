@@ -27,7 +27,8 @@ function ApproveActOpen({ state, closeModal, actIdea }) {
       }
       axios
         .get(`/api/getAllTours`)
-        .then(res => setAllTours(res.data.results));
+        .then(res => setAllTours(res.data.results))
+        .catch(e => alert(e.message));
     }
   }, [actIdea, state]);
 
@@ -41,35 +42,38 @@ function ApproveActOpen({ state, closeModal, actIdea }) {
   };
 
   const approveActivityIdea = () => {
-    if (startDate !== '' && endDate !== '' && price !== '' &&
-      duration !== '' && ageRestriction !== '' && selectedTourId !== '') {
-      var empID = "";
-      if (typeof window !== "undefined") {
-        empID = localStorage.getItem('id');
+    if (startDate !== '' || endDate !== '' || price !== '' ||
+      duration !== '' || ageRestriction !== '' || selectedTourId !== '') {
+      if (confirm('Are you sure?')) {
+        var empID = "";
+        if (typeof window !== "undefined") {
+          empID = localStorage.getItem('id');
+        }
+        const activity = {
+          tour: selectedTourId,
+          start: startDate,
+          end: endDate,
+          price: price,
+          duration: duration,
+          age: ageRestriction
+        }
+        const body = {
+          actID: actIdea.act_idea_id,
+          empID: empID,
+          activity: activity
+        }
+        axios
+          .post(`/api/employee/approveActivityIdea`, body)
+          .then(res => {
+            if (res.status === 200) {
+              alert(res.statusText);
+              closeModal();
+              window.location.reload();
+            }
+            else alert(res.statusText);
+          })
+          .catch(e => alert(e.message));
       }
-      const activity = {
-        tour: selectedTourId,
-        start: startDate,
-        end: endDate,
-        price: price,
-        duration: duration,
-        age: ageRestriction
-      }
-      const body = {
-        actID: actIdea.act_idea_id,
-        empID: empID,
-        activity: activity
-      }
-      axios
-        .post(`/api/employee/approveActivityIdea`, body)
-        .then(res => {
-          if (res.status === 200) {
-            alert(res.statusText);
-            closeModal();
-            window.location.reload();
-          }
-          else alert(res.statusText);
-        });
     }
     else {
       alert('Please fill all input fields!');

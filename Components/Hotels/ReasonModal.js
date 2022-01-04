@@ -34,7 +34,8 @@ function ReasonModal({ state, closeModal, resItem }) {
             window.location.reload();
           }
           else alert(res.statusText);
-        });
+        })
+        .catch(e => alert(e.message));
     }
   }
 

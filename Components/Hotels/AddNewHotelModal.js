@@ -8,7 +8,7 @@ function AddNewHotelModal({ state, setState }) {
   const [phone, setPhone] = useState("");
   const [noOfEmptyRoom, setNoOfEmptyRoom] = useState("");
   const [noOfTotalRoom, setNoOfTotalRoom] = useState("");
-  const [rooms, setRooms] = useState([{size: 1, price: 0, floor: 1, minibarPrice: 3, count: 10}])
+  const [rooms, setRooms] = useState([{ size: 1, price: 0, floor: 1, minibarPrice: 3, count: 10 }])
 
   const cancelAddHotel = () => {
     setName("");
@@ -29,22 +29,28 @@ function AddNewHotelModal({ state, setState }) {
           no_of_empty_room: noOfEmptyRoom,
           no_of_total_room: noOfTotalRoom
         }
-        axios.post(`/api/employee/addNewHotel`, body).then(res => {
-          const newId = res.data.result.insertId
-          rooms.forEach((r,i) => {
-            console.log('Line %s-- Size: %s Price: %s Floor: %s minibar: %s count: %s', i, r.size, r.price, r.floor, r.minibarPrice, r.count)
-            //hotel_id, room_count, price, room_size, floor, minibar_price
-            const roomBody = {
-              hotel_id: newId,
-              room_count: r.count,
-              price: r.price,
-              room_size: r.size,
-              floor: r.floor,
-              minibar_price: r.minibarPrice
-            }
-            axios.post(`/api/employee/addHotelRoom`, roomBody).catch(e => alert(e.message))
+        axios
+          .post(`/api/employee/addNewHotel`, body)
+          .then(res => {
+            const newId = res.data.result.insertId
+            rooms.forEach((r, i) => {
+              console.log('Line %s-- Size: %s Price: %s Floor: %s minibar: %s count: %s', i, r.size, r.price, r.floor, r.minibarPrice, r.count)
+              //hotel_id, room_count, price, room_size, floor, minibar_price
+              const roomBody = {
+                hotel_id: newId,
+                room_count: r.count,
+                price: r.price,
+                room_size: r.size,
+                floor: r.floor,
+                minibar_price: r.minibarPrice
+              }
+
+              axios
+                .post(`/api/employee/addHotelRoom`, roomBody)
+                .catch(e => alert(e.message))
+            })
           })
-        }).catch(e => alert(e.message))
+          .catch(e => alert(e.message))
         alert('Hotel is added!')
       }
     }
@@ -54,7 +60,7 @@ function AddNewHotelModal({ state, setState }) {
   }
 
   const addRoom = () => {
-    setRooms([...rooms, {size: 1, price: 0, floor: 1, minibarPrice: 3, count: 10}]);
+    setRooms([...rooms, { size: 1, price: 0, floor: 1, minibarPrice: 3, count: 10 }]);
   };
 
   const deleteRoom = index => {
@@ -65,23 +71,23 @@ function AddNewHotelModal({ state, setState }) {
     const arr = [];
     rooms.forEach((e, i) => {
       if (i === index) {
-        switch (type){
+        switch (type) {
           case 'floor':
-            arr.push({...e, floor: value})
+            arr.push({ ...e, floor: value })
             break;
           case 'price':
-            arr.push({...e, price: value})
+            arr.push({ ...e, price: value })
             break;
           case 'size':
-            arr.push({...e, size: value})
+            arr.push({ ...e, size: value })
             break;
           case 'minibar':
-            arr.push({...e, minibarPrice: value})
+            arr.push({ ...e, minibarPrice: value })
             break;
-          case 'count': 
-            arr.push({...e, count: value})
+          case 'count':
+            arr.push({ ...e, count: value })
             break;
-          default : break;
+          default: break;
         }
       }
       else arr.push(e);
@@ -142,11 +148,11 @@ function AddNewHotelModal({ state, setState }) {
             {rooms?.map((r, i) => {
               return (
                 <Form.Group inline>
-                <Button color="red" onClick={() => deleteRoom(i)}>
-                  <Button.Content>
-                    <Icon name="close" />
-                  </Button.Content>
-                </Button>
+                  <Button color="red" onClick={() => deleteRoom(i)}>
+                    <Button.Content>
+                      <Icon name="close" />
+                    </Button.Content>
+                  </Button>
                   <label>Room Floor:</label>
                   <Input
                     type="number"
@@ -187,7 +193,7 @@ function AddNewHotelModal({ state, setState }) {
                     onChange={e => handleRoomChange(e.target.value, i, 'count')}
                     style={{ width: "89.7%" }}
                   />
-                  </Form.Group>
+                </Form.Group>
               );
             })}
             <Button color="blue" onClick={addRoom} content="Add Room" />

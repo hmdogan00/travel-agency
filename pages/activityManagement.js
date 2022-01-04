@@ -43,7 +43,8 @@ function ActivityManagement() {
         if (role === 'Customer' || role === 'Guide') {
           axios
             .get(`/api/customer/offeredActivities?id=${localStorage.getItem('id')}`)
-            .then(res => setList(res.data.result));
+            .then(res => setList(res.data.result))
+            .catch(e => console.error(e.message));
         }
         else {
           const body = {
@@ -51,28 +52,32 @@ function ActivityManagement() {
           }
           axios
             .post(`/api/employee/getActivityIdeas`, body)
-            .then(res => setList(res.data.result));
+            .then(res => setList(res.data.result))
+            .catch(e => console.error(e.message));
         }
       }
     }
   }, []);
 
   const submitForm = () => {
-    const body = {
-      activity: {
-        name: aTitle,
-        type: aType,
-        location: aLoc,
-        description: aDesc
-      },
-      id: localStorage.getItem('id')
-    };
-    axios
-      .post(`/api/customer/createActivity`, body)
-      .then(res => {
-        res.status === 200 ? alert(res.statusText) : null;
-      })
-    window.location.reload();
+    if (confirm('You are submiting this form. Are you sure?')) {
+      const body = {
+        activity: {
+          name: aTitle,
+          type: aType,
+          location: aLoc,
+          description: aDesc
+        },
+        id: localStorage.getItem('id')
+      };
+      axios
+        .post(`/api/customer/createActivity`, body)
+        .then(res => {
+          res.status === 200 ? alert(res.statusText) : null;
+        })
+        .catch(e => alert(e.message));
+      window.location.reload();
+    }
   };
 
   const declineActivityIdea = id => {
@@ -84,7 +89,8 @@ function ActivityManagement() {
         .post(`/api/employee/declineActivityIdea`, body)
         .then(res => {
           res.status === 200 ? alert(res.statusText) : null;
-        });
+        })
+        .catch(e => alert(e.message));
       window.location.reload();
     }
   };
@@ -118,7 +124,7 @@ function ActivityManagement() {
           alert("There are no waiting activity ideas!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
   const listAccepted = () => {
@@ -139,7 +145,7 @@ function ActivityManagement() {
           alert("There are no accepted activity ideas!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
   const listDeclined = () => {
@@ -160,7 +166,7 @@ function ActivityManagement() {
           alert("There are no declined activity ideas!");
         }
       })
-      .catch(console.error);
+      .catch(e => alert(e.message));
   }
 
 

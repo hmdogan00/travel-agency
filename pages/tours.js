@@ -27,7 +27,7 @@ const Tours = () => {
   const searchData = useMemo(() => {
     return tourArr?.filter(item => {
       if (searchN !== "")
-        return includesNoCase(item.name,searchN);
+        return includesNoCase(item.name, searchN);
       else if (searchDate !== "") {
         const [d, t] = getDateTime(item.start_date);
         return includesNoCase(d, searchDate) || includesNoCase(t, searchDate);
@@ -41,16 +41,17 @@ const Tours = () => {
   useEffect(async () => {
     if (role === "Employee") {
       if (searchN !== "") {
-        const result = await axios.get(`/api/guide/filterByName?name=${searchN}`)
+        const result = await axios.get(`/api/guide/filterByName?name=${searchN}`).catch(e => console.error(e.message))
         setTourArr(result.data.result);
       }
       else {
         axios
           .get("/api/getAllTours")
-          .then(res => setTourArr([...res.data.results]));
+          .then(res => setTourArr([...res.data.results]))
+          .catch(e => console.error(e.message));
       }
     }
-  }, [searchN, role, tourArr]);
+  }, [searchN]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -59,7 +60,8 @@ const Tours = () => {
     if (tourArr.length === 0) {
       axios
         .get("/api/getAllTours")
-        .then(res => setTourArr([...res.data.results]));
+        .then(res => setTourArr([...res.data.results]))
+        .catch(e => console.error(e.message));
     }
   }, [role, tourArr]);
 
@@ -67,13 +69,13 @@ const Tours = () => {
     if (role && role === "Guide") {
       setTourArr(
         tours =>
-          (tours = tours.filter(t => {
-            const end = parseDateString(t.end_date);
-            const now = new Date();
-            return (
-              t.person_id === parseInt(localStorage.getItem("id")) && end < now
-            );
-          }))
+        (tours = tours.filter(t => {
+          const end = parseDateString(t.end_date);
+          const now = new Date();
+          return (
+            t.person_id === parseInt(localStorage.getItem("id")) && end < now
+          );
+        }))
       );
     }
   }, [role, tourArr]);

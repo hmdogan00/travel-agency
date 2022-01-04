@@ -34,31 +34,35 @@ const ReviewPage = () => {
     setGuideRating({ rating, maxRating });
 
   useEffect(() => {
-    if ( window.location !== undefined) setRole(localStorage.getItem('role'))
+    if (window.location !== undefined) setRole(localStorage.getItem('role'))
     if (!tour && id) {
-      axios.get(`/api/getDetailedTour?id=${id}`).then(res => {
-        setTour(res.data.results.tour);
-        setGuide(res.data.results.guide);
-        const body = {
-          tour_id: res.data.results.tour.tour_id,
-          G_person_id: res.data.results.guide.guide_id,
-          C_person_id: parseInt(localStorage.getItem("id")),
-        };
-        axios.post(`/api/reviews/getReview`, body).then(res => {
-          setIsReviewed(res.data.isReviewed);
-          if (res.data.isReviewed) {
-            setReviews(res.data.review[0]);
-            setGuideRating({
-              ...guideRating,
-              rating: res.data.review[0].guide_rate * 10,
+      axios
+        .get(`/api/getDetailedTour?id=${id}`)
+        .then(res => {
+          setTour(res.data.results.tour);
+          setGuide(res.data.results.guide);
+          const body = {
+            tour_id: res.data.results.tour.tour_id,
+            G_person_id: res.data.results.guide.guide_id,
+            C_person_id: parseInt(localStorage.getItem("id")),
+          };
+          axios
+            .post(`/api/reviews/getReview`, body)
+            .then(res => {
+              setIsReviewed(res.data.isReviewed);
+              if (res.data.isReviewed) {
+                setReviews(res.data.review[0]);
+                setGuideRating({
+                  ...guideRating,
+                  rating: res.data.review[0].guide_rate * 10,
+                });
+                setTourRating({
+                  ...tourRating,
+                  rating: role === 'Customer' ? (res.data.review[0].tour_rate * 10).toFixed(2) : (res.data.review[0].rating * 10).toFixed(2),
+                });
+              }
             });
-            setTourRating({
-              ...tourRating,
-              rating: role === 'Customer' ? (res.data.review[0].tour_rate * 10).toFixed(2) : (res.data.review[0].rating * 10).toFixed(2),
-            });
-          }
         });
-      });
     }
   }, [tour, id, guide]);
 
@@ -67,31 +71,36 @@ const ReviewPage = () => {
   }
 
   const makeReview = () => {
-    const body = {
-      tourId: id,
-      guideId: guide.guide_id,
-      customerId: localStorage.getItem("id"),
-      tourComment: tourComment,
-      tourRate: tourRating.rating / tourRating.maxRating,
-      guideComment: guideComment,
-      guideRate: guideRating.rating / guideRating.maxRating,
-      tourOldRate: tour.rating,
-      tourRateCnt: tour.ratingCount,
-      guideOldRate: guide.rating,
-      guideRateCnt: guide.ratingCount,
-    };
-    const guideBody = {
-      tourId: id,
-      guideId: localStorage.getItem('id'),
-      tourOldRate: tour.rating,
-      tourRateCnt: tour.ratingCount,
-      tourComment: tourComment,
-      tourRate: tourRating.rating / tourRating.maxRating,
+    if (confirm('You are submiting your review. Are you sure?')) {
+      const body = {
+        tourId: id,
+        guideId: guide.guide_id,
+        customerId: localStorage.getItem("id"),
+        tourComment: tourComment,
+        tourRate: tourRating.rating / tourRating.maxRating,
+        guideComment: guideComment,
+        guideRate: guideRating.rating / guideRating.maxRating,
+        tourOldRate: tour.rating,
+        tourRateCnt: tour.ratingCount,
+        guideOldRate: guide.rating,
+        guideRateCnt: guide.ratingCount,
+      };
+      const guideBody = {
+        tourId: id,
+        guideId: localStorage.getItem('id'),
+        tourOldRate: tour.rating,
+        tourRateCnt: tour.ratingCount,
+        tourComment: tourComment,
+        tourRate: tourRating.rating / tourRating.maxRating,
+      }
+      axios
+        .post(role === 'Customer' ? `/api/makeReview` : `/api/guide/giveFeedback`, role === 'Customer' ? body : guideBody)
+        .then(() => {
+          alert('Review made successfully!');
+          window.location.href = role === 'Customer' ? '/dashboard' : '/tours'
+        })
+        .catch(e => alert(e.message));
     }
-    axios.post(role === 'Customer' ? `/api/makeReview` : `/api/guide/giveFeedback`, role === 'Customer' ? body : guideBody).then(() => {
-      alert('Review made successfully!');
-      window.location.href = role === 'Customer' ? '/dashboard' : '/tours'
-    }).catch(e => alert(e.message));
   };
 
   return (

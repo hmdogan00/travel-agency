@@ -35,7 +35,8 @@ function Hotel() {
       if (hotelArr.length === 0) {
         axios
           .get("/api/hotel/getHotels")
-          .then(res => { setHotelArr([...res.data.results]); console.log([...res.data.results]) });
+          .then(res => { setHotelArr([...res.data.results]); console.log([...res.data.results]) })
+          .catch(e => alert(e.message));
       }
     }
   }, []);

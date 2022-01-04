@@ -116,6 +116,7 @@ function Dashboard() {
       setRole(localStorage.getItem("role"));
       setId(localStorage.getItem("id"));
     }
+
     if (role === "Customer" && !tourArr) {
       axios
         .get(`/api/getCustomerTours/${id}`)
@@ -124,7 +125,8 @@ function Dashboard() {
           dispatch({ type: "UPDATE_DATA", data: searchData });
         })
         .catch(console.error);
-    } else if (role === "Employee" && !tourArr) {
+    }
+    else if (role === "Employee" && !tourArr) {
       const body = {
         res_type: 'waiting'
       };
@@ -136,7 +138,8 @@ function Dashboard() {
           dispatch({ type: "UPDATE_DATA", data: searchData });
         })
         .catch(console.error);
-    } else if (role === "Guide" && !tourArr && id) {
+    }
+    else if (role === "Guide" && !tourArr && id) {
       axios
         .get(`/api/guide/seeOffers/${id}`)
         .then(res => {
