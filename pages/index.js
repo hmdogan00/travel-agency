@@ -36,7 +36,6 @@ export default function Home() {
       <Container style={{ margin: 20 }}>
         <Button color="linkedin" onClick={() => window.location.href = "/signup"}>Sign Up</Button>
         <Button color="facebook" onClick={() => window.location.href = "/login"}>Log in</Button>
-        <Divider horizontal>Customers</Divider>
       </Container>
     </>
   );
